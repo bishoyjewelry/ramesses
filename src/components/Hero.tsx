@@ -5,13 +5,13 @@ import bannerRing from "@/assets/banner-ring.png";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury-charcoal">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm">
       {/* Background image with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${bannerRing})` }}
       >
-        <div className="absolute inset-0 bg-luxury-charcoal/85"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-luxury-charcoal/90 via-luxury-charcoal/80 to-transparent"></div>
       </div>
       
       {/* Decorative elements */}
