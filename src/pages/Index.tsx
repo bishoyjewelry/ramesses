@@ -4,7 +4,8 @@ import { FeaturedWork } from "@/components/FeaturedWork";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Phone, Instagram, MessageCircle } from "lucide-react";
-import logoMain from "@/assets/logo-main.png";
+import logoIcon from "@/assets/logo-icon.png";
+import logoText from "@/assets/logo-text-only.png";
 
 const Index = () => {
   return (
@@ -43,11 +44,18 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <img 
-                src={logoMain} 
-                alt="Ramesses Jewelry" 
-                className="h-16 w-auto mb-4 brightness-0 invert"
-              />
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src={logoIcon} 
+                  alt="Ramesses Jewelry Icon" 
+                  className="h-12 w-auto"
+                />
+                <img 
+                  src={logoText} 
+                  alt="Ramesses Jewelry" 
+                  className="h-8 w-auto brightness-0 invert"
+                />
+              </div>
               <p className="text-muted-foreground">Expert jewelry repair and custom design. Serving NYC for over 30 years.</p>
             </div>
             <div>
