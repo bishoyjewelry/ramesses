@@ -57,6 +57,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        luxury: {
+          gold: "hsl(var(--luxury-gold))",
+          "gold-light": "hsl(var(--luxury-gold-light))",
+          dark: "hsl(var(--luxury-dark))",
+          charcoal: "hsl(var(--luxury-charcoal))",
+          cream: "hsl(var(--luxury-cream))",
+        },
+      },
+      fontFamily: {
+        serif: ["Cormorant Garamond", "serif"],
+        sans: ["Montserrat", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
