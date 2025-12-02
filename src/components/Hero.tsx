@@ -5,13 +5,13 @@ import bannerRing from "@/assets/banner-ring.png";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-luxury-dark via-luxury-charcoal to-luxury-warm">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury-charcoal">
       {/* Background image with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${bannerRing})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-luxury-dark/90 via-luxury-charcoal/85 to-luxury-warm/60"></div>
+        <div className="absolute inset-0 bg-luxury-charcoal/85"></div>
       </div>
       
       {/* Decorative elements */}
@@ -20,26 +20,26 @@ export const Hero = () => {
 
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-6 inline-block">
+          <div className="mb-6 inline-block animate-fade-in">
             <span className="text-luxury-gold font-medium tracking-wider uppercase text-sm">
               Master Jewelers Since 1993
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-foreground leading-tight">
+          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
             Expert Jewelry Repair &{" "}
             <span className="text-luxury-gold">Custom Design</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
             30 years of craftsmanship excellence. Transform your vision into timeless pieces or restore your treasured jewelry to perfection.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Link to="/repairs">
               <Button 
                 size="lg" 
-                className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 py-6 text-lg group"
+                className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 py-6 text-lg group transition-all hover-scale"
               >
                 Get Free Repair Quote
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -49,25 +49,25 @@ export const Hero = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 py-6 text-lg"
+                className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 py-6 text-lg transition-all hover-scale"
               >
                 Shop Collection
               </Button>
             </Link>
           </div>
 
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <div className="text-center">
               <div className="text-3xl font-bold text-luxury-gold mb-2">30+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">Years Experience</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Years Experience</div>
             </div>
-            <div className="text-center border-x border-luxury-gold/20">
+            <div className="text-center border-x border-luxury-gold/30">
               <div className="text-3xl font-bold text-luxury-gold mb-2">5000+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">Repairs Completed</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Repairs Completed</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-luxury-gold mb-2">100%</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wide">Satisfaction</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Satisfaction</div>
             </div>
           </div>
         </div>
