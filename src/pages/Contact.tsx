@@ -6,18 +6,18 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
       
-      <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
             Get In <span className="text-luxury-gold">Touch</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
             Visit our showroom or reach out for a consultation
           </p>
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <Card className="border-luxury-gold/20">

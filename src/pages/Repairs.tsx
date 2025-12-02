@@ -36,20 +36,20 @@ const Repairs = () => {
   return (
     <div className="min-h-screen bg-background">
       
-      <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
             Expert <span className="text-luxury-gold">Jewelry Repair</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
             30+ years of master craftsmanship. We restore your treasured pieces to perfection.
           </p>
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-12 text-center">Our Repair Services</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-12 text-center text-luxury-dark">Our Repair Services</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {services.map((service, index) => (
               <Card key={index} className="border-luxury-gold/20 hover:border-luxury-gold/40 transition-colors">

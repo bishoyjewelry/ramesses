@@ -8,23 +8,23 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
+    --background: 40 20% 97%;
+    --foreground: 0 0% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover-foreground: 0 0% 15%;
 
     --primary: 43 74% 49%;
     --primary-foreground: 0 0% 5%;
 
-    --secondary: 36 45% 15%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 36 33% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 40 15% 92%;
+    --muted-foreground: 0 0% 45%;
 
     --accent: 43 74% 49%;
     --accent-foreground: 0 0% 5%;
@@ -32,27 +32,28 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 36 33% 90%;
-    --input: 36 33% 90%;
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
     --ring: 43 74% 49%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-background: 40 20% 97%;
+    --sidebar-foreground: 0 0% 15%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 40 15% 92%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    --sidebar-border: 40 15% 88%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Custom luxury jewelry tokens */
     --luxury-gold: 43 74% 49%;
     --luxury-gold-light: 43 74% 70%;
-    --luxury-dark: 0 0% 8%;
-    --luxury-charcoal: 0 0% 15%;
-    --luxury-cream: 36 33% 96%;
+    --luxury-dark: 30 15% 12%;
+    --luxury-charcoal: 30 10% 20%;
+    --luxury-cream: 40 20% 97%;
+    --luxury-warm: 40 30% 94%;
     
     /* Gradients */
     --gradient-gold: linear-gradient(135deg, hsl(43 74% 49%), hsl(43 74% 70%));

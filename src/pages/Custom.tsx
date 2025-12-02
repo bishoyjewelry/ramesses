@@ -28,18 +28,18 @@ const Custom = () => {
   };
   return <div className="min-h-screen bg-background">
       
-      <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-luxury-gold">
-            Custom Jewelry Design
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
+            Custom <span className="text-luxury-gold">Jewelry Design</span>
           </h1>
-          <p className="text-xl max-w-2xl mx-auto text-muted">
+          <p className="text-xl max-w-2xl mx-auto text-white/70">
             Transform your vision into a one-of-a-kind masterpiece crafted by expert jewelers.
           </p>
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             <Card className="border-luxury-gold/20">

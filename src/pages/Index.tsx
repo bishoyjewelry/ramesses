@@ -15,12 +15,13 @@ const Index = () => {
       <FeaturedWork />
       
       {/* CTA Section */}
-      <section className="py-24 bg-luxury-dark text-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">
+      <section className="py-24 bg-gradient-to-b from-background via-luxury-warm to-luxury-charcoal text-foreground relative">
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-luxury-dark">
             Ready to Get Started?
           </h2>
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-luxury-dark/70 mb-12 max-w-2xl mx-auto">
             Contact us today for a free consultation or quote
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

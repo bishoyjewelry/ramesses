@@ -4,13 +4,14 @@ import bannerPendant from "@/assets/banner-pendant.png";
 
 export const FeaturedWork = () => {
   return (
-    <section className="py-24 bg-luxury-dark">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-background relative">
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-luxury-warm to-transparent"></div>
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-foreground">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-luxury-dark">
             Featured <span className="text-luxury-gold">Work</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-luxury-dark/70 max-w-2xl mx-auto">
             Exquisite craftsmanship in every detail
           </p>
         </div>
