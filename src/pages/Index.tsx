@@ -15,7 +15,7 @@ const Index = () => {
       <FeaturedWork />
       
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-luxury-warm to-luxury-charcoal text-foreground relative">
+      <section className="py-24 bg-luxury-warm text-foreground relative">
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-luxury-dark">
             Ready to Get Started?
