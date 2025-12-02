@@ -15,8 +15,7 @@ const Index = () => {
       <FeaturedWork />
       
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-b from-background via-luxury-warm to-luxury-charcoal text-foreground relative">
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent"></div>
+      <section className="py-24 bg-gradient-to-b from-luxury-warm to-luxury-charcoal text-foreground relative">
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-luxury-dark">
             Ready to Get Started?
@@ -26,13 +25,13 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact">
-              <Button size="lg" className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8">
+              <Button size="lg" className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 transition-all hover-scale">
                 <Phone className="mr-2 h-5 w-5" />
                 Contact Us
               </Button>
             </Link>
             <Link to="/repairs">
-              <Button size="lg" variant="outline" className="border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8">
+              <Button size="lg" variant="outline" className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 transition-all hover-scale">
                 Request Quote
               </Button>
             </Link>
