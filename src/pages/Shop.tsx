@@ -58,18 +58,18 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-background">
       
-      <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
             Our <span className="text-luxury-gold">Jewelry Collection</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white/70 max-w-2xl mx-auto">
             Discover our curated selection of fine gold and silver jewelry
           </p>
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
           {products.length === 0 ? (
             <div className="text-center py-16">
