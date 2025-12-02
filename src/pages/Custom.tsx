@@ -5,7 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
-
 const Custom = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -13,24 +12,28 @@ const Custom = () => {
     phone: "",
     type: "",
     budget: "",
-    description: "",
+    description: ""
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Custom quote request received! We'll contact you soon.");
-    setFormData({ name: "", email: "", phone: "", type: "", budget: "", description: "" });
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      type: "",
+      budget: "",
+      description: ""
+    });
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       
       <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-luxury-gold">
             Custom Jewelry Design
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl max-w-2xl mx-auto text-muted">
             Transform your vision into a one-of-a-kind masterpiece crafted by expert jewelers.
           </p>
         </div>
@@ -65,13 +68,11 @@ const Custom = () => {
           <div className="mb-16">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-8 text-center">What We Create</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {["Custom Engagement Rings", "Personalized Pendants", "Unique Nameplates"].map((item, index) => (
-                <Card key={index} className="border-luxury-gold/20 hover:border-luxury-gold/40 transition-colors">
+              {["Custom Engagement Rings", "Personalized Pendants", "Unique Nameplates"].map((item, index) => <Card key={index} className="border-luxury-gold/20 hover:border-luxury-gold/40 transition-colors">
                   <CardContent className="p-6 text-center">
                     <h3 className="font-semibold text-lg text-luxury-gold">{item}</h3>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
 
@@ -81,68 +82,45 @@ const Custom = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Input id="name" value={formData.name} onChange={e => setFormData({
+                  ...formData,
+                  name: e.target.value
+                })} required className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Input id="email" type="email" value={formData.email} onChange={e => setFormData({
+                  ...formData,
+                  email: e.target.value
+                })} required className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    required
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Input id="phone" type="tel" value={formData.phone} onChange={e => setFormData({
+                  ...formData,
+                  phone: e.target.value
+                })} required className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <div>
                   <Label htmlFor="type">Jewelry Type</Label>
-                  <Input
-                    id="type"
-                    value={formData.type}
-                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    placeholder="e.g., Engagement Ring, Pendant"
-                    required
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Input id="type" value={formData.type} onChange={e => setFormData({
+                  ...formData,
+                  type: e.target.value
+                })} placeholder="e.g., Engagement Ring, Pendant" required className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <div>
                   <Label htmlFor="budget">Budget Range</Label>
-                  <Input
-                    id="budget"
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    placeholder="e.g., $2,000 - $5,000"
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Input id="budget" value={formData.budget} onChange={e => setFormData({
+                  ...formData,
+                  budget: e.target.value
+                })} placeholder="e.g., $2,000 - $5,000" className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <div>
                   <Label htmlFor="description">Your Vision</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Describe your dream piece in detail..."
-                    rows={4}
-                    required
-                    className="border-luxury-gold/20 focus:border-luxury-gold"
-                  />
+                  <Textarea id="description" value={formData.description} onChange={e => setFormData({
+                  ...formData,
+                  description: e.target.value
+                })} placeholder="Describe your dream piece in detail..." rows={4} required className="border-luxury-gold/20 focus:border-luxury-gold" />
                 </div>
                 <Button type="submit" className="w-full bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold py-6">
                   Request Custom Quote
@@ -152,8 +130,6 @@ const Custom = () => {
           </Card>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Custom;
