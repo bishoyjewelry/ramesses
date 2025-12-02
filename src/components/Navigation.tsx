@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartDrawer } from "@/components/CartDrawer";
-import logoMain from "@/assets/logo-main.png";
+import logoIcon from "@/assets/logo-icon.png";
+import logoText from "@/assets/logo-text-only.png";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,15 +19,22 @@ export const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-luxury-dark/95 backdrop-blur-md border-b border-luxury-gold/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-luxury-dark backdrop-blur-md border-b border-luxury-gold/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-3">
             <img 
-              src={logoMain} 
-              alt="Ramesses Jewelry" 
-              className="h-16 w-auto"
+              src={logoIcon} 
+              alt="Ramesses Jewelry Icon" 
+              className="h-12 w-auto"
             />
+            <div className="hidden sm:block">
+              <img 
+                src={logoText} 
+                alt="Ramesses Jewelry" 
+                className="h-8 w-auto brightness-0 invert"
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -35,7 +43,7 @@ export const Navigation = () => {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-foreground hover:text-luxury-gold transition-colors duration-300 font-medium"
+                className="text-white/90 hover:text-luxury-gold transition-colors duration-300 font-medium"
               >
                 {link.label}
               </Link>
@@ -48,7 +56,7 @@ export const Navigation = () => {
               variant="ghost"
               size="icon"
               onClick={() => setLanguage(language === "en" ? "es" : "en")}
-              className="text-foreground hover:text-luxury-gold"
+              className="text-white/90 hover:text-luxury-gold hover:bg-luxury-gold/10"
             >
               <Globe className="h-5 w-5" />
             </Button>
@@ -59,7 +67,7 @@ export const Navigation = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden text-foreground"
+              className="md:hidden text-white/90 hover:text-luxury-gold hover:bg-luxury-gold/10"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -75,7 +83,7 @@ export const Navigation = () => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="text-foreground hover:text-luxury-gold transition-colors duration-300 font-medium"
+                  className="text-white/90 hover:text-luxury-gold transition-colors duration-300 font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}
