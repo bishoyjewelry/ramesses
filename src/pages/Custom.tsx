@@ -27,7 +27,7 @@ const Custom = () => {
       
       <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
             Custom <span className="text-luxury-gold">Jewelry Design</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
