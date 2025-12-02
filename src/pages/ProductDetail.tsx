@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -53,7 +52,6 @@ const ProductDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <Loader2 className="h-12 w-12 animate-spin text-luxury-gold" />
         </div>
@@ -64,7 +62,6 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
         <div className="container mx-auto px-4 pt-32">
           <p className="text-center text-xl">Product not found</p>
           <div className="text-center mt-6">
@@ -85,7 +82,6 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       
       <section className="pt-32 pb-16">
         <div className="container mx-auto px-4">

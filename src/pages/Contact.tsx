@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Instagram, MessageCircle, Clock } from "lucide-react";
@@ -6,7 +5,6 @@ import { Phone, Mail, MapPin, Instagram, MessageCircle, Clock } from "lucide-rea
 const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       
       <section className="pt-32 pb-16 bg-luxury-dark text-foreground">
         <div className="container mx-auto px-4 text-center">

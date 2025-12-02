@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { Hero } from "@/components/Hero";
 import { ServicesSection } from "@/components/ServicesSection";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import { Phone, Instagram, MessageCircle } from "lucide-react";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       <Hero />
       <ServicesSection />
       
