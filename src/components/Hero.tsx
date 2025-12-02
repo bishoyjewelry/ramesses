@@ -1,12 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import bannerRing from "@/assets/banner-ring.png";
 
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury-dark">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-luxury-dark via-luxury-charcoal to-luxury-dark opacity-90"></div>
+      {/* Background image with overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bannerRing})` }}
+      >
+        <div className="absolute inset-0 bg-luxury-dark/80"></div>
+      </div>
       
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-64 h-64 bg-luxury-gold/10 rounded-full blur-3xl"></div>

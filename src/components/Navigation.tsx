@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartDrawer } from "@/components/CartDrawer";
+import logoMain from "@/assets/logo-main.png";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,10 +21,12 @@ export const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-luxury-dark/95 backdrop-blur-md border-b border-luxury-gold/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-2">
-            <h1 className="text-2xl font-serif font-bold text-luxury-gold">
-              Ramesses Jewelry
-            </h1>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={logoMain} 
+              alt="Ramesses Jewelry" 
+              className="h-16 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}

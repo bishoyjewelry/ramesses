@@ -1,14 +1,17 @@
 import { Hero } from "@/components/Hero";
 import { ServicesSection } from "@/components/ServicesSection";
+import { FeaturedWork } from "@/components/FeaturedWork";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Phone, Instagram, MessageCircle } from "lucide-react";
+import logoMain from "@/assets/logo-main.png";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Hero />
       <ServicesSection />
+      <FeaturedWork />
       
       {/* CTA Section */}
       <section className="py-24 bg-luxury-dark text-foreground">
@@ -40,7 +43,11 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-serif font-bold text-luxury-gold mb-4">Ramesses Jewelry</h3>
+              <img 
+                src={logoMain} 
+                alt="Ramesses Jewelry" 
+                className="h-16 w-auto mb-4 brightness-0 invert"
+              />
               <p className="text-muted-foreground">Expert jewelry repair and custom design. Serving NYC for over 30 years.</p>
             </div>
             <div>
