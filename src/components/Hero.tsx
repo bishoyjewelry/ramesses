@@ -20,21 +20,21 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-6 inline-block animate-fade-in">
             <span className="text-luxury-gold font-medium tracking-wider uppercase text-sm">
-              Master Jewelers Since 1993
+              Trusted by New York for Over 30 Years
             </span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white leading-tight animate-fade-in" style={{
           animationDelay: '0.1s'
         }}>
-            Expert Jewelry Repair &{" "}
+            Professional Jewelry Repair &{" "}
             <span className="text-luxury-gold">Custom Design</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{
           animationDelay: '0.2s'
         }}>
-            30 years of craftsmanship excellence. Transform your vision into timeless pieces or restore your treasured jewelry to perfection.
+            With master-level skill honed in NYC's Diamond District, we provide expert jewelry repair, custom design, and full restoration services — all completed in-house with precise craftsmanship.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{
@@ -61,12 +61,12 @@ export const Hero = () => {
               <div className="text-sm text-white/70 uppercase tracking-wide">Years Experience</div>
             </div>
             <div className="text-center border-x border-luxury-gold/30">
-              <div className="text-3xl font-bold text-luxury-gold mb-2">150000+</div>
-              <div className="text-sm text-white/70 uppercase tracking-wide">Repairs Completed</div>
+              <div className="text-3xl font-bold text-luxury-gold mb-2">In-House</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">All Repairs</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-luxury-gold mb-2">100%</div>
-              <div className="text-sm text-white/70 uppercase tracking-wide">Satisfaction</div>
+              <div className="text-3xl font-bold text-luxury-gold mb-2">Same-Day</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Available</div>
             </div>
           </div>
         </div>

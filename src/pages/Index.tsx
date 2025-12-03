@@ -18,10 +18,10 @@ const Index = () => {
       <section className="py-24 bg-luxury-warm text-foreground relative">
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-luxury-dark">
-            Ready to Get Started?
+            Ready to Start?
           </h2>
           <p className="text-xl text-luxury-dark/70 mb-12 max-w-2xl mx-auto">
-            Contact us today for a free consultation or quote
+            Visit our shop, text us a photo for a quote, or begin your repair online today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact">
