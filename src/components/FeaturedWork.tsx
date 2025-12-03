@@ -18,7 +18,7 @@ export const FeaturedWork = () => {
 
         <div className="grid md:grid-cols-2 gap-8">
           <Card className="border-luxury-gold/20 overflow-hidden group hover:border-luxury-gold/40 transition-all">
-            <div className="relative aspect-[2/1] overflow-hidden">
+            <div className="relative aspect-[3/1] overflow-hidden">
               <img 
                 src={bannerRing} 
                 alt="Custom Diamond Engagement Ring" 
@@ -36,7 +36,7 @@ export const FeaturedWork = () => {
           </Card>
 
           <Card className="border-luxury-gold/20 overflow-hidden group hover:border-luxury-gold/40 transition-all">
-            <div className="relative aspect-[2/1] overflow-hidden">
+            <div className="relative aspect-[3/1] overflow-hidden">
               <img 
                 src={bannerPendant} 
                 alt="Elegant Gemstone Pendant" 
