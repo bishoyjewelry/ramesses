@@ -7,19 +7,19 @@ const services = [
   {
     icon: Wrench,
     title: "Expert Repairs",
-    description: "Ring resizing, chain repair, clasp replacement, stone setting, laser welding, and full restoration. Free quotes available.",
+    description: "Ring resizing, chain repair, clasp replacement, prong repair, stone setting, laser welding, and full restoration. Free quotes and fast turnaround available.",
     link: "/repairs",
   },
   {
     icon: Sparkles,
     title: "Custom Jewelry",
-    description: "From engagement rings to one-of-a-kind pieces, we create custom jewelry using CAD modeling + handcrafted finishing.",
+    description: "Engagement rings, custom designs, one-of-a-kind pieces. CAD modeling + handcrafted finishing for perfect precision.",
     link: "/custom",
   },
   {
     icon: ShoppingBag,
     title: "Fine Jewelry",
-    description: "Curated collection of gold and silver jewelry. Chains, pendants, rings, and exclusive ready-to-wear pieces.",
+    description: "Curated gold and silver jewelry—chains, pendants, rings, and ready-to-wear pieces available in-store and online.",
     link: "/shop",
   },
 ];
@@ -33,11 +33,11 @@ const repairServicesColumns = [
 const trustReasons = [
   "30+ years of master jeweler experience",
   "All repairs done in-house — never outsourced",
-  "Fast turnaround (same-day for many repairs)",
-  "Laser welding technology for clean results",
+  "Fast turnaround, often same day",
   "Transparent, honest pricing",
-  "Spanish-speaking service available",
   "Diamond District quality without the hassle",
+  "Laser welding technology for clean, strong results",
+  "Spanish-speaking service available",
 ];
 
 export const ServicesSection = () => {
@@ -81,7 +81,7 @@ export const ServicesSection = () => {
         {/* Repair Services List */}
         <div className="mb-20">
           <h3 className="text-3xl font-serif font-bold mb-2 text-luxury-dark text-center">
-            Our Repair Services
+            Our Detailed Repair Services
           </h3>
           <p className="text-luxury-dark/70 text-center mb-8 max-w-2xl mx-auto">
             Comprehensive in-house jewelry repair backed by 30+ years of master craftsmanship.

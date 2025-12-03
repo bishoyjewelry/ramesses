@@ -68,7 +68,12 @@ const Index = () => {
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-luxury-gold">Connect</h4>
+              <h4 className="font-semibold mb-4 text-luxury-gold">Contact Info</h4>
+              <div className="space-y-2 text-muted-foreground text-sm mb-4">
+                <p>Address: (Add your address)</p>
+                <p>Hours: Mon–Sat 10am–6pm</p>
+                <p>Phone: (Add phone number)</p>
+              </div>
               <div className="flex space-x-4">
                 <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-luxury-gold transition-colors">
                   <MessageCircle className="h-6 w-6" />
