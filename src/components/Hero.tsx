@@ -2,15 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import bannerRing from "@/assets/banner-ring.png";
-
 export const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury-charcoal">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-luxury-charcoal">
       {/* Background image with overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{ backgroundImage: `url(${bannerRing})` }}
-      ></div>
+      <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{
+      backgroundImage: `url(${bannerRing})`
+    }}></div>
       
       {/* Gradient overlay at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-luxury-warm"></div>
@@ -27,43 +24,44 @@ export const Hero = () => {
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white leading-tight animate-fade-in" style={{
+          animationDelay: '0.1s'
+        }}>
             Expert Jewelry Repair &{" "}
             <span className="text-luxury-gold">Custom Design</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{
+          animationDelay: '0.2s'
+        }}>
             30 years of craftsmanship excellence. Transform your vision into timeless pieces or restore your treasured jewelry to perfection.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{
+          animationDelay: '0.3s'
+        }}>
             <Link to="/repairs">
-              <Button 
-                size="lg" 
-                className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 py-6 text-lg group transition-all hover-scale"
-              >
+              <Button size="lg" className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 py-6 text-lg group transition-all hover-scale">
                 Get Free Repair Quote
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/shop">
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 py-6 text-lg transition-all hover-scale"
-              >
+              <Button size="lg" variant="outline" className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 py-6 text-lg transition-all hover-scale">
                 Shop Collection
               </Button>
             </Link>
           </div>
 
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in" style={{
+          animationDelay: '0.4s'
+        }}>
             <div className="text-center">
               <div className="text-3xl font-bold text-luxury-gold mb-2">30+</div>
               <div className="text-sm text-white/70 uppercase tracking-wide">Years Experience</div>
             </div>
             <div className="text-center border-x border-luxury-gold/30">
-              <div className="text-3xl font-bold text-luxury-gold mb-2">5000+</div>
+              <div className="text-3xl font-bold text-luxury-gold mb-2">150000+</div>
               <div className="text-sm text-white/70 uppercase tracking-wide">Repairs Completed</div>
             </div>
             <div className="text-center">
@@ -73,6 +71,5 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
