@@ -22,7 +22,7 @@ export const FeaturedWork = () => {
               <img 
                 src={bannerRing} 
                 alt="Custom Diamond Engagement Ring" 
-                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
               />
             </div>
             <CardContent className="p-6">
@@ -40,7 +40,7 @@ export const FeaturedWork = () => {
               <img 
                 src={bannerPendant} 
                 alt="Elegant Gemstone Pendant" 
-                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
               />
             </div>
             <CardContent className="p-6">
