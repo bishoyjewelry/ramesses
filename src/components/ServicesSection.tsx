@@ -24,16 +24,31 @@ const services = [
   },
 ];
 
-const repairServices = [
-  "Ring resizing (up or down)",
-  "Chain and bracelet repair",
-  "Clasp repair & replacement",
-  "Diamond and gemstone setting",
-  "Stone replacement",
-  "Precision laser jewelry repair",
-  "Jewelry polishing & restoration",
-  "Watch battery & link adjustments",
-  "Nationwide mail-in available",
+const repairCategories = [
+  {
+    title: "Jewelry Repair Services",
+    services: [
+      "Bracelet Repair", "Chain Repair", "Chain Soldering", "Necklace Repair",
+      "Earring Repair", "Ring Repair", "Ring Sizing", "Stone Setting",
+      "Stone Replacement", "Jewelry Mounting", "Jewelry Finishing",
+      "Metal Polishing", "Jewelry Polishing", "Jewelry Cleaning",
+      "Jewelry Engraving", "Pearl & Bead Restringing", "Watch Repair",
+    ],
+  },
+  {
+    title: "Specialized Material Repairs",
+    services: [
+      "Platinum Jewelry Repair", "Silver Jewelry Repair", "Hollow Bangle Bracelet Repair",
+    ],
+  },
+  {
+    title: "Advanced Repairs",
+    services: [
+      "Laser Welding (micro-precision repairs)", "Prong Repair & Re-Tipping",
+      "Stone Tightening", "Clasp Repair & Replacement", "Jump Ring Replacement",
+      "Setting Rebuilds", "Restoration & Refinishing",
+    ],
+  },
 ];
 
 const trustReasons = [
@@ -85,37 +100,40 @@ export const ServicesSection = () => {
         </div>
 
         {/* Repair Services List */}
-        <div className="grid md:grid-cols-2 gap-16 items-start mb-20">
-          <div>
-            <h3 className="text-3xl font-serif font-bold mb-6 text-luxury-dark">
-              Complete Repair Services
-            </h3>
-            <div className="grid gap-3">
-              {repairServices.map((service, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
-                    <Check className="h-4 w-4 text-luxury-gold" />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          {repairCategories.map((category, catIndex) => (
+            <div key={catIndex}>
+              <h3 className="text-2xl font-serif font-bold mb-4 text-luxury-dark">
+                {category.title}
+              </h3>
+              <div className="grid gap-2">
+                {category.services.map((service, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-luxury-gold" />
+                    </div>
+                    <span className="text-luxury-dark/80 text-sm">{service}</span>
                   </div>
-                  <span className="text-luxury-dark/80">{service}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div>
-            <h3 className="text-3xl font-serif font-bold mb-6 text-luxury-dark">
-              Why Clients Trust Us
-            </h3>
-            <div className="grid gap-3">
-              {trustReasons.map((reason, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
-                    <Check className="h-4 w-4 text-luxury-gold" />
-                  </div>
-                  <span className="text-luxury-dark/80">{reason}</span>
+        {/* Why Clients Trust Us */}
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-3xl font-serif font-bold mb-6 text-luxury-dark text-center">
+            Why Clients Trust Us
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {trustReasons.map((reason, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-luxury-gold" />
                 </div>
-              ))}
-            </div>
+                <span className="text-luxury-dark/80">{reason}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
