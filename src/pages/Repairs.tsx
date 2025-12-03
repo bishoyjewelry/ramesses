@@ -7,15 +7,10 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const services = [
-  { name: "Ring Resizing", price: "From $50" },
-  { name: "Prong Repair", price: "From $40" },
-  { name: "Stone Replacement", price: "Custom Quote" },
-  { name: "Chain Repair", price: "From $30" },
-  { name: "Laser Welding", price: "From $60" },
-  { name: "Engraving", price: "From $25" },
-  { name: "Polishing & Rhodium", price: "From $45" },
-  { name: "Bangle Repair", price: "From $55" },
+const repairServicesColumns = [
+  ["Bracelet Repair", "Chain Repair", "Chain Soldering", "Necklace Repair", "Earring Repair", "Jewelry Cleaning", "Jewelry Engraving"],
+  ["Jewelry Finishing", "Jewelry Mounting", "Metal Polishing", "Jewelry Polishing", "Pearl & Bead Restringing", "Ring Repair", "Ring Sizing"],
+  ["Silver Jewelry Repair", "Platinum Jewelry Repair", "Hollow Bangle Bracelet Repair", "Stone Setting", "Stone Replacement", "Watch Repair", "Advanced Laser Welding"],
 ];
 
 const Repairs = () => {
@@ -49,16 +44,22 @@ const Repairs = () => {
 
       <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-12 text-center text-luxury-dark">Our Repair Services</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {services.map((service, index) => (
-              <Card key={index} className="border-luxury-gold/20 hover:border-luxury-gold/40 transition-colors">
-                <CardContent className="p-6">
-                  <Check className="h-6 w-6 text-luxury-gold mb-3" />
-                  <h3 className="font-semibold text-lg mb-2">{service.name}</h3>
-                  <p className="text-luxury-gold font-medium">{service.price}</p>
-                </CardContent>
-              </Card>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-2 text-center text-luxury-dark">Our Repair Services</h2>
+          <p className="text-luxury-dark/70 text-center mb-10 max-w-2xl mx-auto">
+            Comprehensive in-house jewelry repair backed by 30+ years of master craftsmanship.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {repairServicesColumns.map((column, colIndex) => (
+              <div key={colIndex} className="grid gap-2">
+                {column.map((service, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-luxury-gold" />
+                    </div>
+                    <span className="text-luxury-dark/80 text-sm">{service}</span>
+                  </div>
+                ))}
+              </div>
             ))}
           </div>
 
