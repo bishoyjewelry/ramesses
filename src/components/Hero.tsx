@@ -34,7 +34,7 @@ export const Hero = () => {
           <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{
           animationDelay: '0.2s'
         }}>
-            With master-level skill honed in NYC's Diamond District, we provide expert jewelry repair, custom design, and full restoration services — all completed in-house with precise craftsmanship.
+            Looking for jewelry repair near me? Our master jeweler brings three decades of Diamond District expertise to every repair, restoration, and custom design. All work is completed in-house using precision laser technology for flawless, long-lasting results.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{
@@ -42,13 +42,13 @@ export const Hero = () => {
         }}>
             <Link to="/repairs">
               <Button size="lg" className="bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold px-8 py-6 text-lg group transition-all hover-scale">
-                Get Free Repair Quote
+                Get Your Free Repair Quote
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link to="/shop">
+            <Link to="/custom">
               <Button size="lg" variant="outline" className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-dark font-semibold px-8 py-6 text-lg transition-all hover-scale">
-                Shop Collection
+                Start My Custom Design
               </Button>
             </Link>
           </div>
