@@ -24,31 +24,10 @@ const services = [
   },
 ];
 
-const repairCategories = [
-  {
-    title: "Jewelry Repair Services",
-    services: [
-      "Bracelet Repair", "Chain Repair", "Chain Soldering", "Necklace Repair",
-      "Earring Repair", "Ring Repair", "Ring Sizing", "Stone Setting",
-      "Stone Replacement", "Jewelry Mounting", "Jewelry Finishing",
-      "Metal Polishing", "Jewelry Polishing", "Jewelry Cleaning",
-      "Jewelry Engraving", "Pearl & Bead Restringing", "Watch Repair",
-    ],
-  },
-  {
-    title: "Specialized Material Repairs",
-    services: [
-      "Platinum Jewelry Repair", "Silver Jewelry Repair", "Hollow Bangle Bracelet Repair",
-    ],
-  },
-  {
-    title: "Advanced Repairs",
-    services: [
-      "Laser Welding (micro-precision repairs)", "Prong Repair & Re-Tipping",
-      "Stone Tightening", "Clasp Repair & Replacement", "Jump Ring Replacement",
-      "Setting Rebuilds", "Restoration & Refinishing",
-    ],
-  },
+const repairServicesColumns = [
+  ["Bracelet Repair", "Chain Repair", "Chain Soldering", "Necklace Repair", "Earring Repair", "Jewelry Cleaning", "Jewelry Engraving"],
+  ["Jewelry Finishing", "Jewelry Mounting", "Metal Polishing", "Jewelry Polishing", "Pearl & Bead Restringing", "Ring Repair", "Ring Sizing"],
+  ["Silver Jewelry Repair", "Platinum Jewelry Repair", "Hollow Bangle Bracelet Repair", "Stone Setting", "Stone Replacement", "Watch Repair", "Advanced Laser Welding"],
 ];
 
 const trustReasons = [
@@ -100,14 +79,17 @@ export const ServicesSection = () => {
         </div>
 
         {/* Repair Services List */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {repairCategories.map((category, catIndex) => (
-            <div key={catIndex}>
-              <h3 className="text-2xl font-serif font-bold mb-4 text-luxury-dark">
-                {category.title}
-              </h3>
-              <div className="grid gap-2">
-                {category.services.map((service, index) => (
+        <div className="mb-20">
+          <h3 className="text-3xl font-serif font-bold mb-2 text-luxury-dark text-center">
+            Our Repair Services
+          </h3>
+          <p className="text-luxury-dark/70 text-center mb-8 max-w-2xl mx-auto">
+            Comprehensive in-house jewelry repair backed by 30+ years of master craftsmanship.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {repairServicesColumns.map((column, colIndex) => (
+              <div key={colIndex} className="grid gap-2">
+                {column.map((service, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full bg-luxury-gold/20 flex items-center justify-center flex-shrink-0">
                       <Check className="h-3 w-3 text-luxury-gold" />
@@ -116,8 +98,8 @@ export const ServicesSection = () => {
                   </div>
                 ))}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Why Clients Trust Us */}
