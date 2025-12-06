@@ -5,22 +5,49 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Upload, Sparkles, PenTool, Gem, Shield, Truck, DollarSign, Crown, Users } from "lucide-react";
+import { AuthCallout } from "@/components/AuthCallout";
+import { LoginModal } from "@/components/LoginModal";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { Upload, Sparkles, PenTool, Gem, Shield, Truck, DollarSign, Crown, Users, Heart, Diamond, ArrowRight } from "lucide-react";
 import { SimpleSelect } from "@/components/SimpleSelect";
 import { SimpleAccordion } from "@/components/SimpleAccordion";
 
+type DesignFlow = "any" | "engagement";
+
 const Custom = () => {
-  const [formData, setFormData] = useState({
+  const { user, isCreator } = useAuth();
+  const [activeFlow, setActiveFlow] = useState<DesignFlow>("any");
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // General jewelry form state
+  const [generalForm, setGeneralForm] = useState({
     pieceType: "",
     metal: "",
-    stone: "",
+    stonePreferences: "",
     budget: "",
-    description: ""
+    description: "",
+    deadline: "",
   });
+  
+  // Engagement ring form state
+  const [engagementForm, setEngagementForm] = useState({
+    style: "",
+    centerStoneType: "",
+    centerStoneSize: "",
+    metal: "",
+    ringSize: "",
+    budget: "",
+    specialRequests: "",
+    timeline: "",
+  });
+  
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -37,10 +64,46 @@ const Custom = () => {
     setUploadedImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    toast.success("Your custom design request has been submitted!");
+    
+    // Check if user is authenticated
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const formData = activeFlow === "engagement" ? {
+        piece_type: `Engagement Ring - ${engagementForm.style}`,
+        description: `Style: ${engagementForm.style}\nCenter Stone: ${engagementForm.centerStoneType} (${engagementForm.centerStoneSize})\nMetal: ${engagementForm.metal}\nRing Size: ${engagementForm.ringSize}\nTimeline: ${engagementForm.timeline}\n\nSpecial Requests:\n${engagementForm.specialRequests}`,
+        budget_range: engagementForm.budget,
+        name: user.email?.split('@')[0] || 'Customer',
+        email: user.email || '',
+      } : {
+        piece_type: generalForm.pieceType,
+        description: `Metal: ${generalForm.metal}\nStone Preferences: ${generalForm.stonePreferences}\nDeadline/Occasion: ${generalForm.deadline}\n\nDescription:\n${generalForm.description}`,
+        budget_range: generalForm.budget,
+        name: user.email?.split('@')[0] || 'Customer',
+        email: user.email || '',
+      };
+      
+      const { error } = await supabase
+        .from('custom_inquiries')
+        .insert([formData]);
+      
+      if (error) throw error;
+      
+      setIsSubmitted(true);
+      toast.success("Your custom design request has been submitted!");
+    } catch (error) {
+      console.error('Error submitting inquiry:', error);
+      toast.error("Failed to submit your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -56,7 +119,7 @@ const Custom = () => {
       <Navigation />
       
       {/* SECTION 1 — HERO */}
-      <section className="pt-32 pb-24 bg-luxury-bg">
+      <section className="pt-32 pb-16 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-luxury-champagne/20 rounded-full mb-8">
@@ -72,7 +135,7 @@ const Custom = () => {
               Welcome to the Ramessés Custom Lab™ — an AI-powered jewelry design studio where your ideas become handcrafted pieces made by master jewelers in NYC.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button 
                 onClick={scrollToForm}
                 className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-6 text-lg font-semibold rounded-lg shadow-luxury transition-all"
@@ -87,15 +150,24 @@ const Custom = () => {
                 How It Works
               </Button>
             </div>
-            
-            {/* Hero Image Placeholder */}
-            <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-luxury-bg-warm aspect-[16/9] max-w-4xl mx-auto">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-luxury-text-muted">
-                  <Gem className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">CAD Model + Sketch + Final Piece</p>
-                  <p className="text-sm">Studio hero image placeholder</p>
-                </div>
+          </div>
+          
+          {/* Auth Callout - Below Hero */}
+          <div className="max-w-4xl mx-auto">
+            <AuthCallout redirectTo="/custom" />
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Image Placeholder */}
+      <section className="pb-24 bg-luxury-bg">
+        <div className="container mx-auto px-4">
+          <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-luxury-bg-warm aspect-[16/9] max-w-4xl mx-auto">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center text-luxury-text-muted">
+                <Gem className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                <p className="text-lg">CAD Model + Sketch + Final Piece</p>
+                <p className="text-sm">Studio hero image placeholder</p>
               </div>
             </div>
           </div>
@@ -167,7 +239,7 @@ const Custom = () => {
         </div>
       </section>
 
-      {/* SECTION 3 — CUSTOM REQUEST FORM */}
+      {/* SECTION 3 — CUSTOM REQUEST FORM WITH TWO FLOWS */}
       <section id="custom-form" className="py-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
@@ -185,152 +257,329 @@ const Custom = () => {
                     <Sparkles className="w-10 h-10 text-luxury-champagne" />
                   </div>
                   <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">
-                    We're Generating Concepts!
+                    Thanks, we've received your design!
                   </h3>
                   <p className="text-luxury-text-muted text-lg font-body">
-                    A designer will follow up shortly with AI previews.
+                    A jeweler will review it and follow up with a quote.
                   </p>
                 </CardContent>
               </Card>
             ) : (
-              <Card className="border-2 border-luxury-champagne/20 shadow-luxury rounded-xl">
-                <CardContent className="p-8 md:p-12">
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    {/* Piece Type */}
-                    <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-text">What do you want to create?</Label>
-                      <SimpleSelect
-                        value={formData.pieceType}
-                        onValueChange={(value) => setFormData({...formData, pieceType: value})}
-                        placeholder="Select piece type"
-                        options={[
-                          { value: "ring", label: "Ring" },
-                          { value: "pendant", label: "Pendant" },
-                          { value: "necklace", label: "Necklace" },
-                          { value: "bracelet", label: "Bracelet" },
-                          { value: "earrings", label: "Earrings" },
-                          { value: "other", label: "Other" },
-                        ]}
-                      />
+              <>
+                {/* Flow Selector Tabs */}
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  <button
+                    onClick={() => setActiveFlow("any")}
+                    className={`p-6 rounded-xl border-2 transition-all text-left ${
+                      activeFlow === "any"
+                        ? "border-luxury-champagne bg-luxury-champagne/10 shadow-luxury"
+                        : "border-luxury-divider bg-luxury-bg hover:border-luxury-champagne/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        activeFlow === "any" ? "bg-luxury-champagne" : "bg-luxury-divider"
+                      }`}>
+                        <Gem className={`w-6 h-6 ${activeFlow === "any" ? "text-luxury-text" : "text-luxury-text-muted"}`} />
+                      </div>
+                      <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design Any Jewelry</h3>
                     </div>
-                    
-                    {/* Metal Preference */}
-                    <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-text">Metal preference</Label>
-                      <SimpleSelect
-                        value={formData.metal}
-                        onValueChange={(value) => setFormData({...formData, metal: value})}
-                        placeholder="Select metal"
-                        options={[
-                          { value: "14k-yellow", label: "14k Yellow Gold" },
-                          { value: "14k-white", label: "14k White Gold" },
-                          { value: "14k-rose", label: "14k Rose Gold" },
-                          { value: "18k", label: "18k Gold" },
-                          { value: "platinum", label: "Platinum" },
-                          { value: "not-sure", label: "Not Sure Yet" },
-                        ]}
-                      />
+                    <p className="text-luxury-text-muted font-body text-sm">
+                      Rings, pendants, chains, bracelets, earrings, and more
+                    </p>
+                  </button>
+                  
+                  <button
+                    onClick={() => setActiveFlow("engagement")}
+                    className={`p-6 rounded-xl border-2 transition-all text-left ${
+                      activeFlow === "engagement"
+                        ? "border-luxury-champagne bg-luxury-champagne/10 shadow-luxury"
+                        : "border-luxury-divider bg-luxury-bg hover:border-luxury-champagne/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        activeFlow === "engagement" ? "bg-luxury-champagne" : "bg-luxury-divider"
+                      }`}>
+                        <Heart className={`w-6 h-6 ${activeFlow === "engagement" ? "text-luxury-text" : "text-luxury-text-muted"}`} />
+                      </div>
+                      <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design an Engagement Ring</h3>
                     </div>
-                    
-                    {/* Stone Preference */}
-                    <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-text">Stone preference</Label>
-                      <SimpleSelect
-                        value={formData.stone}
-                        onValueChange={(value) => setFormData({...formData, stone: value})}
-                        placeholder="Select stone"
-                        options={[
-                          { value: "diamond", label: "Diamond" },
-                          { value: "moissanite", label: "Moissanite" },
-                          { value: "gemstones", label: "Gemstones" },
-                          { value: "no-stones", label: "No Stones" },
-                          { value: "not-sure", label: "Not Sure" },
-                        ]}
-                      />
-                    </div>
-                    
-                    {/* Budget */}
-                    <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-text">Budget range</Label>
-                      <SimpleSelect
-                        value={formData.budget}
-                        onValueChange={(value) => setFormData({...formData, budget: value})}
-                        placeholder="Select budget"
-                        options={[
-                          { value: "500-1000", label: "$500 – $1,000" },
-                          { value: "1000-2500", label: "$1,000 – $2,500" },
-                          { value: "2500-5000", label: "$2,500 – $5,000" },
-                          { value: "5000+", label: "$5,000+" },
-                        ]}
-                      />
-                    </div>
-                    
-                    {/* Image Upload */}
-                    <div className="space-y-4">
-                      <Label className="text-lg font-medium text-luxury-text">Upload inspiration images (up to 6)</Label>
-                      <div className="border-2 border-dashed border-luxury-divider rounded-xl p-8 text-center hover:border-luxury-champagne/50 transition-colors">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={handleImageUpload}
-                          className="hidden"
-                          id="image-upload"
-                        />
-                        <label htmlFor="image-upload" className="cursor-pointer">
-                          <Upload className="w-10 h-10 text-luxury-text-muted mx-auto mb-3" />
-                          <p className="text-luxury-text-muted font-body">Click to upload or drag and drop</p>
-                          <p className="text-sm text-luxury-text-muted/70 mt-1">PNG, JPG up to 10MB each</p>
-                        </label>
+                    <p className="text-luxury-text-muted font-body text-sm">
+                      Custom engagement rings with specific stone and style options
+                    </p>
+                  </button>
+                </div>
+                
+                {/* Form Card */}
+                <Card className="border-2 border-luxury-champagne/20 shadow-luxury rounded-xl">
+                  <CardContent className="p-8 md:p-12">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                      {activeFlow === "any" ? (
+                        <>
+                          {/* Flow 1: Design Any Jewelry */}
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">What type of jewelry?</Label>
+                            <SimpleSelect
+                              value={generalForm.pieceType}
+                              onValueChange={(value) => setGeneralForm({...generalForm, pieceType: value})}
+                              placeholder="Select piece type"
+                              options={[
+                                { value: "ring", label: "Ring" },
+                                { value: "pendant", label: "Pendant" },
+                                { value: "chain", label: "Chain" },
+                                { value: "bracelet", label: "Bracelet" },
+                                { value: "earrings", label: "Earrings" },
+                                { value: "other", label: "Other" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Metal preference</Label>
+                            <SimpleSelect
+                              value={generalForm.metal}
+                              onValueChange={(value) => setGeneralForm({...generalForm, metal: value})}
+                              placeholder="Select metal"
+                              options={[
+                                { value: "14k-yellow", label: "14k Yellow Gold" },
+                                { value: "14k-white", label: "14k White Gold" },
+                                { value: "14k-rose", label: "14k Rose Gold" },
+                                { value: "18k", label: "18k Gold" },
+                                { value: "platinum", label: "Platinum" },
+                                { value: "silver", label: "Silver" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Stone preferences (optional)</Label>
+                            <Textarea
+                              value={generalForm.stonePreferences}
+                              onChange={(e) => setGeneralForm({...generalForm, stonePreferences: e.target.value})}
+                              placeholder="E.g., Diamond center stone, sapphire accents..."
+                              rows={2}
+                              className="border-luxury-divider focus:border-luxury-champagne bg-luxury-bg rounded-lg font-body"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Budget range</Label>
+                            <SimpleSelect
+                              value={generalForm.budget}
+                              onValueChange={(value) => setGeneralForm({...generalForm, budget: value})}
+                              placeholder="Select budget"
+                              options={[
+                                { value: "500-1000", label: "$500 – $1,000" },
+                                { value: "1000-2500", label: "$1,000 – $2,500" },
+                                { value: "2500-5000", label: "$2,500 – $5,000" },
+                                { value: "5000-10000", label: "$5,000 – $10,000" },
+                                { value: "10000+", label: "$10,000+" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Describe your idea</Label>
+                            <Textarea
+                              value={generalForm.description}
+                              onChange={(e) => setGeneralForm({...generalForm, description: e.target.value})}
+                              placeholder="Tell us about your dream piece — the style, meaning, details you envision..."
+                              rows={5}
+                              className="border-luxury-divider focus:border-luxury-champagne text-lg resize-none bg-luxury-bg rounded-lg font-body"
+                              required
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Deadline / occasion (optional)</Label>
+                            <Input
+                              value={generalForm.deadline}
+                              onChange={(e) => setGeneralForm({...generalForm, deadline: e.target.value})}
+                              placeholder="E.g., Anniversary in March, wedding gift..."
+                              className="border-luxury-divider focus:border-luxury-champagne bg-luxury-bg rounded-lg font-body"
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Flow 2: Design an Engagement Ring */}
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Ring Style</Label>
+                            <SimpleSelect
+                              value={engagementForm.style}
+                              onValueChange={(value) => setEngagementForm({...engagementForm, style: value})}
+                              placeholder="Select style"
+                              options={[
+                                { value: "solitaire", label: "Solitaire" },
+                                { value: "halo", label: "Halo" },
+                                { value: "three-stone", label: "Three-Stone" },
+                                { value: "pave", label: "Pavé" },
+                                { value: "vintage", label: "Vintage" },
+                                { value: "other", label: "Other" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Center Stone Type</Label>
+                            <SimpleSelect
+                              value={engagementForm.centerStoneType}
+                              onValueChange={(value) => setEngagementForm({...engagementForm, centerStoneType: value})}
+                              placeholder="Select stone type"
+                              options={[
+                                { value: "natural-diamond", label: "Natural Diamond" },
+                                { value: "lab-diamond", label: "Lab-Grown Diamond" },
+                                { value: "moissanite", label: "Moissanite" },
+                                { value: "colored-stone", label: "Colored Gemstone" },
+                                { value: "other", label: "Other" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Approximate Center Stone Size</Label>
+                            <SimpleSelect
+                              value={engagementForm.centerStoneSize}
+                              onValueChange={(value) => setEngagementForm({...engagementForm, centerStoneSize: value})}
+                              placeholder="Select size"
+                              options={[
+                                { value: "0.5-0.75", label: "0.5 – 0.75 carat" },
+                                { value: "0.75-1.0", label: "0.75 – 1.0 carat" },
+                                { value: "1.0-1.5", label: "1.0 – 1.5 carat" },
+                                { value: "1.5-2.0", label: "1.5 – 2.0 carat" },
+                                { value: "2.0-3.0", label: "2.0 – 3.0 carat" },
+                                { value: "3.0+", label: "3.0+ carat" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Metal</Label>
+                            <SimpleSelect
+                              value={engagementForm.metal}
+                              onValueChange={(value) => setEngagementForm({...engagementForm, metal: value})}
+                              placeholder="Select metal"
+                              options={[
+                                { value: "14k-yellow", label: "14k Yellow Gold" },
+                                { value: "14k-white", label: "14k White Gold" },
+                                { value: "14k-rose", label: "14k Rose Gold" },
+                                { value: "18k", label: "18k Gold" },
+                                { value: "platinum", label: "Platinum" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Ring Size</Label>
+                            <Input
+                              value={engagementForm.ringSize}
+                              onChange={(e) => setEngagementForm({...engagementForm, ringSize: e.target.value})}
+                              placeholder="E.g., 6, 7.5, or 'not sure'"
+                              className="border-luxury-divider focus:border-luxury-champagne bg-luxury-bg rounded-lg font-body"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Budget Range</Label>
+                            <SimpleSelect
+                              value={engagementForm.budget}
+                              onValueChange={(value) => setEngagementForm({...engagementForm, budget: value})}
+                              placeholder="Select budget"
+                              options={[
+                                { value: "1000-2500", label: "$1,000 – $2,500" },
+                                { value: "2500-5000", label: "$2,500 – $5,000" },
+                                { value: "5000-10000", label: "$5,000 – $10,000" },
+                                { value: "10000-20000", label: "$10,000 – $20,000" },
+                                { value: "20000+", label: "$20,000+" },
+                              ]}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Any special requests or engraving?</Label>
+                            <Textarea
+                              value={engagementForm.specialRequests}
+                              onChange={(e) => setEngagementForm({...engagementForm, specialRequests: e.target.value})}
+                              placeholder="E.g., hidden diamond under the setting, custom engraving..."
+                              rows={3}
+                              className="border-luxury-divider focus:border-luxury-champagne bg-luxury-bg rounded-lg font-body"
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label className="text-lg font-medium text-luxury-text">Timeline (when do you need the ring?)</Label>
+                            <Input
+                              value={engagementForm.timeline}
+                              onChange={(e) => setEngagementForm({...engagementForm, timeline: e.target.value})}
+                              placeholder="E.g., proposing in April, need by March 15th..."
+                              className="border-luxury-divider focus:border-luxury-champagne bg-luxury-bg rounded-lg font-body"
+                            />
+                          </div>
+                        </>
+                      )}
+                      
+                      {/* Image Upload - Common to both flows */}
+                      <div className="space-y-4">
+                        <Label className="text-lg font-medium text-luxury-text">Upload inspiration images (up to 6)</Label>
+                        <div className="border-2 border-dashed border-luxury-divider rounded-xl p-8 text-center hover:border-luxury-champagne/50 transition-colors">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageUpload}
+                            className="hidden"
+                            id="image-upload"
+                          />
+                          <label htmlFor="image-upload" className="cursor-pointer">
+                            <Upload className="w-10 h-10 text-luxury-text-muted mx-auto mb-3" />
+                            <p className="text-luxury-text-muted font-body">Click to upload or drag and drop</p>
+                            <p className="text-sm text-luxury-text-muted/70 mt-1">PNG, JPG up to 10MB each</p>
+                          </label>
+                        </div>
+                        
+                        {uploadedImages.length > 0 && (
+                          <div className="flex flex-wrap gap-3">
+                            {uploadedImages.map((file, index) => (
+                              <div key={index} className="relative group">
+                                <div className="w-20 h-20 bg-luxury-bg-warm rounded-lg flex items-center justify-center overflow-hidden">
+                                  <img 
+                                    src={URL.createObjectURL(file)} 
+                                    alt={`Upload ${index + 1}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => removeImage(index)}
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       
-                      {uploadedImages.length > 0 && (
-                        <div className="flex flex-wrap gap-3">
-                          {uploadedImages.map((file, index) => (
-                            <div key={index} className="relative group">
-                              <div className="w-20 h-20 bg-luxury-bg-warm rounded-lg flex items-center justify-center overflow-hidden">
-                                <img 
-                                  src={URL.createObjectURL(file)} 
-                                  alt={`Upload ${index + 1}`}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => removeImage(index)}
-                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Description */}
-                    <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-text">Describe your idea</Label>
-                      <Textarea
-                        value={formData.description}
-                        onChange={(e) => setFormData({...formData, description: e.target.value})}
-                        placeholder="Tell us about your dream piece — the style, meaning, details you envision..."
-                        rows={5}
-                        className="border-luxury-divider focus:border-luxury-champagne text-lg resize-none bg-luxury-bg rounded-lg font-body"
-                        required
-                      />
-                    </div>
-                    
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover py-6 text-lg font-semibold rounded-lg shadow-luxury"
-                    >
-                      <Sparkles className="w-5 h-5 mr-2" />
-                      Generate My AI Designs
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+                      <Button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover py-6 text-lg font-semibold rounded-lg shadow-luxury"
+                      >
+                        {isSubmitting ? (
+                          <>Processing...</>
+                        ) : (
+                          <>
+                            <Sparkles className="w-5 h-5 mr-2" />
+                            Submit Design for Quote
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </>
             )}
           </div>
         </div>
@@ -414,68 +663,36 @@ const Custom = () => {
         </div>
       </section>
 
-      {/* SECTION 6 — CREATOR MARKETPLACE TEASER */}
+      {/* SECTION 6 — CREATOR MARKETPLACE PUBLISH SECTION */}
       <section className="py-24 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Card className="border-2 border-luxury-champagne/20 shadow-luxury overflow-hidden rounded-xl">
-              <CardContent className="p-0">
-                <div className="grid lg:grid-cols-2">
-                  {/* Content */}
-                  <div className="p-10 lg:p-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-luxury-champagne/20 rounded-full mb-6">
-                      <span className="text-xs font-semibold text-luxury-text uppercase tracking-wide">Coming Soon</span>
-                    </div>
-                    
-                    <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-luxury-text mb-4">
-                      The Ramessés Creator Marketplace
-                    </h2>
-                    
-                    <p className="text-xl text-luxury-text-muted mb-6 font-body">
-                      Turn your custom jewelry design into a piece the world can order — and earn commissions every time someone buys it.
-                    </p>
-                    
-                    <p className="text-luxury-text-muted mb-6 font-body">
-                      Soon, every customer whose custom piece we create will be able to:
-                    </p>
-                    
-                    <ul className="space-y-3 mb-8">
-                      {[
-                        "Publish their design on the Ramessés marketplace",
-                        "Share their creation with the community",
-                        "Earn a commission when others order their design",
-                        "Track earnings inside their account"
-                      ].map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <div className="w-5 h-5 bg-luxury-champagne/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-luxury-champagne text-xs">✓</span>
-                          </div>
-                          <span className="text-luxury-text font-body">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <p className="text-sm text-luxury-text-muted italic mb-8 font-body">
-                      This creates the first-ever crowdsourced fine jewelry catalog built by customers, powered by Ramessés craftsmanship.
-                    </p>
-                    
-                    <Button 
-                      disabled
-                      className="bg-luxury-divider text-luxury-text-muted cursor-not-allowed px-6 py-5 rounded-lg"
-                    >
-                      <Users className="w-4 h-4 mr-2" />
-                      Creator Marketplace Launching Soon
-                    </Button>
+              <CardContent className="p-10 lg:p-12">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-luxury-champagne/20 rounded-full mb-6">
+                    <Users className="w-4 h-4 text-luxury-champagne" />
+                    <span className="text-xs font-semibold text-luxury-text uppercase tracking-wide">Creator Opportunity</span>
                   </div>
                   
-                  {/* Image */}
-                  <div className="bg-luxury-champagne/10 flex items-center justify-center p-12">
-                    <div className="text-center text-luxury-text-muted">
-                      <Users className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                      <p className="text-lg">Marketplace Grid Mockup</p>
-                      <p className="text-sm">Image placeholder</p>
-                    </div>
-                  </div>
+                  <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-luxury-text mb-4">
+                    Turn Your Custom Design Into a Marketplace Piece
+                  </h2>
+                  
+                  <p className="text-xl text-luxury-text-muted font-body max-w-2xl mx-auto">
+                    Once your custom piece is completed, you may be eligible to publish the design on the Ramessés Creator Marketplace. 
+                    When your design is published and ordered by others, you earn creator commissions.
+                  </p>
+                </div>
+                
+                <div className="flex justify-center">
+                  <Link 
+                    to="/marketplace"
+                    className="inline-flex items-center gap-2 text-luxury-champagne hover:text-luxury-champagne-hover font-semibold transition-colors"
+                  >
+                    Learn about the Creator Marketplace
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -524,11 +741,28 @@ const Custom = () => {
             >
               Start Your Custom Design
             </Button>
+            
+            {/* Creator Dashboard Link */}
+            {isCreator && (
+              <p className="mt-8 text-luxury-text-muted">
+                Already a Ramessés Creator?{" "}
+                <Link to="/creator" className="text-luxury-champagne hover:underline font-medium">
+                  Visit your Creator Dashboard
+                </Link>
+              </p>
+            )}
           </div>
         </div>
       </section>
 
       <Footer />
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)}
+        redirectTo="/custom"
+      />
     </div>
   );
 };
