@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -9,12 +10,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface ApplicationRequest {
-  name: string;
-  email: string;
-  notes?: string;
-  submitted_design_image_urls?: string[];
-}
+// Input validation schema
+const ApplicationSchema = z.object({
+  name: z.string().min(1, "Name is required").max(100, "Name too long").trim(),
+  email: z.string().email("Invalid email").max(255, "Email too long").trim().toLowerCase(),
+  notes: z.string().max(2000, "Notes too long").optional(),
+  submitted_design_image_urls: z.array(z.string().url("Invalid URL")).max(10, "Max 10 images").optional()
+});
 
 serve(async (req: Request) => {
   // Handle CORS preflight
@@ -27,15 +29,37 @@ serve(async (req: Request) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { name, email, notes, submitted_design_image_urls }: ApplicationRequest = await req.json();
+    // Parse and validate input
+    const rawBody = await req.json();
+    const parseResult = ApplicationSchema.safeParse(rawBody);
+    
+    if (!parseResult.success) {
+      console.error("Validation error:", parseResult.error.message);
+      return new Response(
+        JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { name, email, notes, submitted_design_image_urls } = parseResult.data;
 
     console.log("Processing creator application for:", email);
 
-    // Validate required fields
-    if (!name || !email) {
+    // Rate limiting: Check for recent applications from same email (max 3 per hour)
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+    const { data: recentApps, error: rateCheckError } = await supabase
+      .from("creator_applications")
+      .select("id")
+      .eq("email", email)
+      .gte("created_at", oneHourAgo);
+
+    if (rateCheckError) {
+      console.error("Rate check error:", rateCheckError);
+    } else if (recentApps && recentApps.length >= 3) {
+      console.warn(`Rate limit exceeded for email: ${email}`);
       return new Response(
-        JSON.stringify({ error: "Name and email are required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Too many applications. Please try again later." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 

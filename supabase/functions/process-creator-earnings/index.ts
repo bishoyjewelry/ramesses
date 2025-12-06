@@ -1,30 +1,68 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface EarningRequest {
-  action: 
-    | "create_earning" 
-    | "mark_ready_to_pay" 
-    | "mark_paid" 
-    | "void_earnings"
-    | "create_adjustment"
-    | "process_payout" 
-    | "get_creator_report";
-  design_id?: string;
-  order_id?: string;
-  sale_amount?: number;
-  quantity?: number;
-  earning_ids?: string[];
-  period?: string;
-  creator_profile_id?: string;
-  reason?: string;
-  adjustment_amount?: number;
-}
+// Validation schemas for each action
+const ActionSchema = z.enum([
+  "create_earning",
+  "mark_ready_to_pay",
+  "mark_paid",
+  "void_earnings",
+  "create_adjustment",
+  "process_payout",
+  "get_creator_report"
+]);
+
+const CreateEarningSchema = z.object({
+  action: z.literal("create_earning"),
+  design_id: z.string().uuid("Invalid design ID"),
+  order_id: z.string().min(1).max(100),
+  sale_amount: z.number().min(0).max(10000000),
+  quantity: z.number().int().min(1).max(1000).optional()
+});
+
+const MarkReadyToPaySchema = z.object({
+  action: z.literal("mark_ready_to_pay"),
+  earning_ids: z.array(z.string().uuid()).min(1).max(100)
+});
+
+const MarkPaidSchema = z.object({
+  action: z.literal("mark_paid"),
+  earning_ids: z.array(z.string().uuid()).min(1).max(100)
+});
+
+const VoidEarningsSchema = z.object({
+  action: z.literal("void_earnings"),
+  earning_ids: z.array(z.string().uuid()).max(100).optional(),
+  order_id: z.string().min(1).max(100).optional(),
+  reason: z.string().max(500).optional()
+}).refine(data => data.earning_ids?.length || data.order_id, {
+  message: "Either earning_ids or order_id is required"
+});
+
+const CreateAdjustmentSchema = z.object({
+  action: z.literal("create_adjustment"),
+  creator_profile_id: z.string().uuid("Invalid creator profile ID"),
+  adjustment_amount: z.number().min(0.01).max(1000000),
+  reason: z.string().max(500).optional(),
+  order_id: z.string().max(100).optional()
+});
+
+const ProcessPayoutSchema = z.object({
+  action: z.literal("process_payout"),
+  period: z.string().regex(/^\d{4}-\d{2}$/, "Period must be YYYY-MM format").optional()
+});
+
+const GetCreatorReportSchema = z.object({
+  action: z.literal("get_creator_report"),
+  creator_profile_id: z.string().uuid("Invalid creator profile ID").optional(),
+  period: z.string().regex(/^\d{4}-\d{2}$/, "Period must be YYYY-MM format").optional()
+});
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -66,9 +104,18 @@ serve(async (req: Request) => {
       .eq("status", "active")
       .maybeSingle();
 
-    const body: EarningRequest = await req.json();
-    const { action } = body;
+    const rawBody = await req.json();
+    
+    // Validate action field first
+    const actionResult = ActionSchema.safeParse(rawBody.action);
+    if (!actionResult.success) {
+      return new Response(
+        JSON.stringify({ error: "Invalid action" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
+    const action = actionResult.data;
     console.log(`User ${user.id} (admin: ${isAdmin}, creator: ${!!creatorProfile}) processing action: ${action}`);
 
     // ============================================================
@@ -76,6 +123,14 @@ serve(async (req: Request) => {
     // Called when an order containing a design is fulfilled
     // ============================================================
     if (action === "create_earning") {
+      const parseResult = CreateEarningSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -83,14 +138,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { design_id, order_id, sale_amount, quantity = 1 } = body;
-
-      if (!design_id || !order_id || sale_amount === undefined) {
-        return new Response(
-          JSON.stringify({ error: "design_id, order_id, and sale_amount are required" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
+      const { design_id, order_id, sale_amount, quantity = 1 } = parseResult.data;
 
       // Fetch design to get commission info at time of sale
       const { data: design, error: designError } = await supabase
@@ -171,6 +219,14 @@ serve(async (req: Request) => {
     // Admin marks earnings as ready for payout (order verified non-refundable)
     // ============================================================
     if (action === "mark_ready_to_pay") {
+      const parseResult = MarkReadyToPaySchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -178,14 +234,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { earning_ids } = body;
-
-      if (!earning_ids || earning_ids.length === 0) {
-        return new Response(
-          JSON.stringify({ error: "earning_ids are required" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
+      const { earning_ids } = parseResult.data;
 
       const { data: earnings, error: updateError } = await supabase
         .from("creator_earnings")
@@ -222,6 +271,14 @@ serve(async (req: Request) => {
     // Admin marks earnings as paid after payout
     // ============================================================
     if (action === "mark_paid") {
+      const parseResult = MarkPaidSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -229,15 +286,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { earning_ids } = body;
-
-      if (!earning_ids || earning_ids.length === 0) {
-        return new Response(
-          JSON.stringify({ error: "earning_ids are required" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
+      const { earning_ids } = parseResult.data;
       const paidAt = new Date().toISOString();
 
       const { data: earnings, error: updateError } = await supabase
@@ -279,6 +328,14 @@ serve(async (req: Request) => {
     // Admin voids earnings for refunded orders
     // ============================================================
     if (action === "void_earnings") {
+      const parseResult = VoidEarningsSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -286,16 +343,9 @@ serve(async (req: Request) => {
         );
       }
 
-      const { earning_ids, order_id, reason } = body;
+      const { earning_ids, order_id, reason } = parseResult.data;
 
       // Can void by earning_ids or by order_id
-      if (!earning_ids?.length && !order_id) {
-        return new Response(
-          JSON.stringify({ error: "earning_ids or order_id are required" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
       let query = supabase
         .from("creator_earnings")
         .update({
@@ -340,6 +390,14 @@ serve(async (req: Request) => {
     // Admin creates a negative adjustment for partial refunds
     // ============================================================
     if (action === "create_adjustment") {
+      const parseResult = CreateAdjustmentSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -347,14 +405,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { creator_profile_id, adjustment_amount, reason, order_id } = body;
-
-      if (!creator_profile_id || adjustment_amount === undefined) {
-        return new Response(
-          JSON.stringify({ error: "creator_profile_id and adjustment_amount are required" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
+      const { creator_profile_id, adjustment_amount, reason, order_id } = parseResult.data;
 
       const now = new Date();
       const period = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -399,6 +450,14 @@ serve(async (req: Request) => {
     // Get payout summary aggregated by creator
     // ============================================================
     if (action === "process_payout") {
+      const parseResult = ProcessPayoutSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       if (!isAdmin) {
         return new Response(
           JSON.stringify({ error: "Admin access required" }),
@@ -406,7 +465,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { period } = body;
+      const { period } = parseResult.data;
 
       // Get all pending/ready_to_pay earnings
       let query = supabase
@@ -490,9 +549,8 @@ serve(async (req: Request) => {
           success: true, 
           period: period || "all",
           summary: {
-            total_earnings_count: earnings.length,
             total_sales: grandTotal.sales,
-            total_payout: grandTotal.commission,
+            total_commission: grandTotal.commission,
             creator_count: summary.length
           },
           creators: summary
@@ -506,19 +564,27 @@ serve(async (req: Request) => {
     // Get earnings report for a specific creator (admin or self)
     // ============================================================
     if (action === "get_creator_report") {
-      const { creator_profile_id, period } = body;
+      const parseResult = GetCreatorReportSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
-      // Determine which creator to report on
+      const { creator_profile_id, period } = parseResult.data;
+
+      // If not admin, can only get own report
       let targetCreatorId = creator_profile_id;
-
-      // If not admin, can only view own report
+      
       if (!isAdmin) {
         if (!creatorProfile) {
           return new Response(
-            JSON.stringify({ error: "Not authorized - must be admin or active creator" }),
+            JSON.stringify({ error: "Creator access required" }),
             { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
           );
         }
+        // Force to own profile
         targetCreatorId = creatorProfile.id;
       }
 
@@ -529,7 +595,21 @@ serve(async (req: Request) => {
         );
       }
 
-      // Fetch all earnings for this creator
+      // Fetch creator info
+      const { data: creatorData } = await supabase
+        .from("creator_profiles")
+        .select("id, display_name, status")
+        .eq("id", targetCreatorId)
+        .single();
+
+      if (!creatorData) {
+        return new Response(
+          JSON.stringify({ error: "Creator not found" }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Fetch earnings
       let query = supabase
         .from("creator_earnings")
         .select(`
@@ -553,110 +633,68 @@ serve(async (req: Request) => {
         );
       }
 
-      // Calculate summaries
+      // Calculate summary
       const summary = {
-        lifetime: { sales: 0, commission: 0, count: 0 },
-        pending: { sales: 0, commission: 0, count: 0 },
-        ready_to_pay: { sales: 0, commission: 0, count: 0 },
-        paid: { sales: 0, commission: 0, count: 0 },
-        void: { sales: 0, commission: 0, count: 0 },
-        by_period: {} as Record<string, { sales: number; commission: number; count: number }>,
-        by_year: {} as Record<string, { sales: number; commission: number; count: number }>
+        total_sales: 0,
+        total_commission: 0,
+        pending_commission: 0,
+        ready_to_pay_commission: 0,
+        paid_commission: 0,
+        void_commission: 0,
+        by_status: {} as Record<string, { count: number; commission: number }>,
+        by_period: {} as Record<string, { sales: number; commission: number; count: number }>
       };
 
-      const paidHistory: Array<{ paid_at: string; commission_amount: number }> = [];
-
       for (const earning of earnings) {
-        const saleAmount = Number(earning.sale_amount);
-        const commissionAmount = Number(earning.commission_amount);
-
-        // Lifetime totals (exclude void)
-        if (earning.status !== "void") {
-          summary.lifetime.sales += saleAmount;
-          summary.lifetime.commission += commissionAmount;
-          summary.lifetime.count++;
-        }
+        summary.total_sales += Number(earning.sale_amount);
+        summary.total_commission += Number(earning.commission_amount);
 
         // By status
-        const status = earning.status as string;
-        if (status === "pending") {
-          summary.pending.sales += saleAmount;
-          summary.pending.commission += commissionAmount;
-          summary.pending.count++;
-        } else if (status === "ready_to_pay") {
-          summary.ready_to_pay.sales += saleAmount;
-          summary.ready_to_pay.commission += commissionAmount;
-          summary.ready_to_pay.count++;
-        } else if (status === "paid") {
-          summary.paid.sales += saleAmount;
-          summary.paid.commission += commissionAmount;
-          summary.paid.count++;
-        } else if (status === "void") {
-          summary.void.sales += saleAmount;
-          summary.void.commission += commissionAmount;
-          summary.void.count++;
+        if (!summary.by_status[earning.status]) {
+          summary.by_status[earning.status] = { count: 0, commission: 0 };
         }
+        summary.by_status[earning.status].count++;
+        summary.by_status[earning.status].commission += Number(earning.commission_amount);
 
         // By period
         if (!summary.by_period[earning.period]) {
           summary.by_period[earning.period] = { sales: 0, commission: 0, count: 0 };
         }
-        if (earning.status !== "void") {
-          summary.by_period[earning.period].sales += saleAmount;
-          summary.by_period[earning.period].commission += commissionAmount;
-          summary.by_period[earning.period].count++;
-        }
+        summary.by_period[earning.period].sales += Number(earning.sale_amount);
+        summary.by_period[earning.period].commission += Number(earning.commission_amount);
+        summary.by_period[earning.period].count++;
 
-        // By year
-        const year = earning.period.split("-")[0];
-        if (!summary.by_year[year]) {
-          summary.by_year[year] = { sales: 0, commission: 0, count: 0 };
-        }
-        if (earning.status !== "void") {
-          summary.by_year[year].sales += saleAmount;
-          summary.by_year[year].commission += commissionAmount;
-          summary.by_year[year].count++;
-        }
-
-        // Track paid history
-        if (earning.status === "paid" && earning.paid_at) {
-          paidHistory.push({
-            paid_at: earning.paid_at,
-            commission_amount: commissionAmount
-          });
+        // By specific status
+        if (earning.status === "pending") {
+          summary.pending_commission += Number(earning.commission_amount);
+        } else if (earning.status === "ready_to_pay") {
+          summary.ready_to_pay_commission += Number(earning.commission_amount);
+        } else if (earning.status === "paid") {
+          summary.paid_commission += Number(earning.commission_amount);
+        } else if (earning.status === "void") {
+          summary.void_commission += Number(earning.commission_amount);
         }
       }
-
-      // Calculate unpaid total
-      const unpaid = {
-        sales: summary.pending.sales + summary.ready_to_pay.sales,
-        commission: summary.pending.commission + summary.ready_to_pay.commission,
-        count: summary.pending.count + summary.ready_to_pay.count
-      };
 
       return new Response(
         JSON.stringify({ 
           success: true,
-          creator_profile_id: targetCreatorId,
+          creator: creatorData,
           period: period || "all",
-          summary: {
-            ...summary,
-            unpaid
-          },
-          paid_history: paidHistory.slice(0, 10), // Last 10 payouts
-          recent_earnings: earnings.slice(0, 20) // Last 20 earnings
+          summary,
+          earnings: earnings.slice(0, 100) // Limit to 100 for response size
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     return new Response(
-      JSON.stringify({ error: "Invalid action. Valid actions: create_earning, mark_ready_to_pay, mark_paid, void_earnings, create_adjustment, process_payout, get_creator_report" }),
+      JSON.stringify({ error: "Invalid action" }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error: unknown) {
-    console.error("Error processing earnings:", error);
+    console.error("Error processing creator earnings:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return new Response(
       JSON.stringify({ error: errorMessage }),
