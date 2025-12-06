@@ -83,7 +83,7 @@ export const Navigation = () => {
             </Button>
 
             {/* Cart */}
-            <CartDrawer />
+            <CartDrawer isScrolled={isScrolled} />
 
             {/* Mobile Menu Button */}
             <Button

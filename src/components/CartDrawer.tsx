@@ -15,7 +15,11 @@ import { createStorefrontCheckout } from "@/lib/shopify";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
-export const CartDrawer = () => {
+interface CartDrawerProps {
+  isScrolled?: boolean;
+}
+
+export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
   const { 
@@ -51,7 +55,7 @@ export const CartDrawer = () => {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <ShoppingCart className="h-5 w-5" />
+          <ShoppingCart className={`h-5 w-5 ${isScrolled ? 'text-foreground' : 'text-white'}`} />
           {totalItems > 0 && (
             <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
               {totalItems}
