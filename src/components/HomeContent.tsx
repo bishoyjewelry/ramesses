@@ -14,21 +14,24 @@ export const HomeContent = () => {
       title: t('services.repairs.title'),
       text: t('services.repairs.text'),
       button: t('services.repairs.button'),
-      link: '/repairs'
+      link: '/repairs',
+      isService: true
     },
     {
       icon: Gem,
       title: t('services.custom.title'),
       text: t('services.custom.text'),
       button: t('services.custom.button'),
-      link: '/custom'
+      link: '/custom',
+      isLuxury: true
     },
     {
       icon: ShoppingBag,
       title: t('services.shop.title'),
       text: t('services.shop.text'),
       button: t('services.shop.button'),
-      link: '/shop'
+      link: '/shop',
+      isLuxury: true
     }
   ];
 
@@ -40,19 +43,19 @@ export const HomeContent = () => {
 
   return (
     <>
-      {/* How Mail-In Repairs Work - RIGHT AFTER HERO */}
-      <section className="py-20 bg-background">
+      {/* How Mail-In Repairs Work - Palette 1 styling */}
+      <section className="py-20 bg-service-bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-white">
             {t('mailin.title')}
           </h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-service-text-muted mb-12 max-w-2xl mx-auto font-body">
             {t('mailin.spanish.note')}
           </p>
           <MailInSteps />
           <div className="text-center mt-10">
             <Link to="/repairs">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+              <Button size="lg" className="bg-service-gold text-white hover:bg-service-gold-hover font-semibold rounded">
                 {t('hero.cta.primary')}
               </Button>
             </Link>
@@ -61,36 +64,43 @@ export const HomeContent = () => {
       </section>
 
       {/* Watch Us Work Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 bg-service-bg">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-12 text-white">
             {t('video.title')}
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center border border-border">
+            <div className="aspect-video bg-service-bg-secondary rounded-lg flex items-center justify-center border border-service-gold/20">
               <div className="text-center">
-                <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                  <Play className="w-8 h-8 text-primary" />
+                <div className="w-20 h-20 rounded-full bg-service-gold/20 flex items-center justify-center mx-auto mb-4">
+                  <Play className="w-8 h-8 text-service-gold" />
                 </div>
-                <p className="text-muted-foreground">{t('video.placeholder')}</p>
+                <p className="text-service-text-muted font-body">{t('video.placeholder')}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Overview */}
-      <section className="py-20 bg-background">
+      {/* Services Overview - Light section */}
+      <section className="py-20 bg-service-neutral">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="bg-card border-border hover:shadow-lg transition-shadow">
+              <Card key={index} className="bg-white border-0 shadow-service hover:shadow-lg transition-shadow rounded-lg">
                 <CardContent className="p-8 text-center">
-                  <service.icon className="w-12 h-12 text-primary mx-auto mb-6" />
-                  <h3 className="text-xl font-serif font-bold mb-4">{service.title}</h3>
-                  <p className="text-muted-foreground mb-6">{service.text}</p>
+                  <service.icon className={`w-12 h-12 mx-auto mb-6 ${service.isLuxury ? 'text-luxury-champagne' : 'text-service-gold'}`} />
+                  <h3 className="text-xl font-sans font-bold mb-4 text-luxury-text">{service.title}</h3>
+                  <p className="text-luxury-text-muted mb-6 font-body">{service.text}</p>
                   <Link to={service.link}>
-                    <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                    <Button 
+                      variant="outline" 
+                      className={`rounded ${
+                        service.isLuxury 
+                          ? 'border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text' 
+                          : 'border-service-gold text-service-gold hover:bg-service-gold hover:text-white'
+                      }`}
+                    >
                       {service.button}
                     </Button>
                   </Link>
@@ -102,33 +112,33 @@ export const HomeContent = () => {
       </section>
 
       {/* Before/After Gallery */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-center mb-12 text-luxury-text">
             {t('gallery.title')}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-muted rounded-lg flex items-center justify-center border border-border">
-                <p className="text-muted-foreground text-sm">{t('gallery.placeholder')}</p>
+              <div key={i} className="aspect-square bg-luxury-bg rounded-xl flex items-center justify-center border border-luxury-divider shadow-soft">
+                <p className="text-luxury-text-muted text-sm font-body">{t('gallery.placeholder')}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* About the Master Jeweler */}
-      <section className="py-20 bg-luxury-charcoal text-white">
+      {/* About the Master Jeweler - Palette 1 */}
+      <section className="py-20 bg-service-bg text-white">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="aspect-square bg-white/10 rounded-lg flex items-center justify-center">
-              <p className="text-white/50">{t('about.placeholder')}</p>
+            <div className="aspect-square bg-service-bg-secondary rounded-lg flex items-center justify-center">
+              <p className="text-service-text-muted font-body">{t('about.placeholder')}</p>
             </div>
             <div>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold mb-6 text-white">
                 {t('about.title')}
               </h2>
-              <p className="text-white/80 text-lg leading-relaxed">
+              <p className="text-service-text-muted text-lg leading-relaxed font-body">
                 {t('about.text')}
               </p>
             </div>
@@ -137,17 +147,17 @@ export const HomeContent = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-service-neutral">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-sans font-bold text-center mb-12 text-luxury-text">
             {t('testimonials.title')}
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-card border-border">
+              <Card key={index} className="bg-white border-0 shadow-service rounded-lg">
                 <CardContent className="p-8">
-                  <Quote className="w-8 h-8 text-primary mb-4" />
-                  <p className="text-lg italic">{testimonial}</p>
+                  <Quote className="w-8 h-8 text-service-gold mb-4" />
+                  <p className="text-lg italic text-luxury-text font-body">{testimonial}</p>
                 </CardContent>
               </Card>
             ))}
@@ -157,13 +167,13 @@ export const HomeContent = () => {
 
       {/* Spanish CTA */}
       {language === 'en' && (
-        <section className="py-16 bg-primary/10">
+        <section className="py-16 bg-service-gold/10">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-serif font-bold mb-4">{t('spanish.title')}</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">{t('spanish.text')}</p>
+            <h2 className="text-3xl font-sans font-bold mb-4 text-luxury-text">{t('spanish.title')}</h2>
+            <p className="text-luxury-text-muted mb-6 max-w-2xl mx-auto font-body">{t('spanish.text')}</p>
             <Button 
               onClick={() => setLanguage('es')}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="bg-service-gold text-white hover:bg-service-gold-hover rounded"
             >
               {t('spanish.button')}
             </Button>

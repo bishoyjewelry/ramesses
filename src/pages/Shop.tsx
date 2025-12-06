@@ -51,36 +51,39 @@ const Shop = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-luxury-bg">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="h-12 w-12 animate-spin text-luxury-gold" />
+          <Loader2 className="h-12 w-12 animate-spin text-luxury-champagne" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-luxury-bg">
       <Navigation />
-      <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
+      
+      {/* Hero - Luxury Palette */}
+      <section className="pt-32 pb-16 bg-luxury-bg">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
+          <h1 className="text-5xl md:text-6xl font-serif luxury-heading text-luxury-text mb-6">
             {t('shop.title')}
           </h1>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          <p className="text-xl text-luxury-text-muted max-w-2xl mx-auto font-body">
             {t('shop.subtitle')}
           </p>
         </div>
       </section>
 
-      <section className="py-16 bg-luxury-warm">
+      {/* Products Section */}
+      <section className="py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           {/* Mail-In Note */}
-          <Card className="max-w-2xl mx-auto mb-12 border-primary/20 bg-primary/5">
+          <Card className="max-w-2xl mx-auto mb-12 border-luxury-champagne/20 bg-luxury-champagne/10 rounded-xl">
             <CardContent className="p-6 flex items-center gap-4">
-              <Package className="w-8 h-8 text-primary flex-shrink-0" />
-              <p className="text-foreground">
+              <Package className="w-8 h-8 text-luxury-champagne flex-shrink-0" />
+              <p className="text-luxury-text font-body">
                 {t('shop.mailin.note')}
               </p>
             </CardContent>
@@ -88,8 +91,8 @@ const Shop = () => {
 
           {products.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-xl text-muted-foreground mb-6">{t('shop.empty')}</p>
-              <p className="text-muted-foreground">Our collection is being updated. Please check back soon!</p>
+              <p className="text-xl text-luxury-text-muted mb-6 font-body">{t('shop.empty')}</p>
+              <p className="text-luxury-text-muted font-body">Our collection is being updated. Please check back soon!</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -99,9 +102,9 @@ const Shop = () => {
                 const price = node.priceRange.minVariantPrice;
                 
                 return (
-                  <Card key={node.id} className="border-luxury-gold/20 hover:border-luxury-gold/40 transition-all hover:shadow-xl group">
+                  <Card key={node.id} className="border-luxury-divider hover:border-luxury-champagne/40 transition-all hover:shadow-luxury group rounded-xl overflow-hidden">
                     <Link to={`/product/${node.handle}`}>
-                      <div className="aspect-square overflow-hidden bg-luxury-cream">
+                      <div className="aspect-square overflow-hidden bg-luxury-bg">
                         {image && (
                           <img
                             src={image.url}
@@ -113,16 +116,16 @@ const Shop = () => {
                     </Link>
                     <CardContent className="p-6">
                       <Link to={`/product/${node.handle}`}>
-                        <h3 className="text-xl font-semibold mb-2 group-hover:text-luxury-gold transition-colors">
+                        <h3 className="text-xl font-semibold mb-2 group-hover:text-luxury-champagne transition-colors text-luxury-text">
                           {node.title}
                         </h3>
                       </Link>
-                      <p className="text-2xl font-bold text-luxury-gold mb-4">
+                      <p className="text-2xl font-bold text-luxury-champagne mb-4">
                         {price.currencyCode} ${parseFloat(price.amount).toFixed(2)}
                       </p>
                       <Button 
                         onClick={() => handleAddToCart(product)}
-                        className="w-full bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold"
+                        className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold rounded-lg"
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         {t('shop.addToCart')}
@@ -135,6 +138,7 @@ const Shop = () => {
           )}
         </div>
       </section>
+      
       <Footer />
     </div>
   );
