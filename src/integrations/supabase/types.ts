@@ -41,6 +41,138 @@ export type Database = {
         }
         Relationships: []
       }
+      creator_applications: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          reviewer_id: string | null
+          status: Database["public"]["Enums"]["application_status"]
+          submitted_design_image_urls: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          reviewer_id?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          submitted_design_image_urls?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          reviewer_id?: string | null
+          status?: Database["public"]["Enums"]["application_status"]
+          submitted_design_image_urls?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      creator_earnings: {
+        Row: {
+          commission_amount: number
+          created_at: string
+          creator_profile_id: string
+          design_id: string | null
+          id: string
+          order_id: string | null
+          paid_at: string | null
+          period: string
+          sale_amount: number
+          status: Database["public"]["Enums"]["earning_status"]
+          updated_at: string
+        }
+        Insert: {
+          commission_amount: number
+          created_at?: string
+          creator_profile_id: string
+          design_id?: string | null
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          period: string
+          sale_amount: number
+          status?: Database["public"]["Enums"]["earning_status"]
+          updated_at?: string
+        }
+        Update: {
+          commission_amount?: number
+          created_at?: string
+          creator_profile_id?: string
+          design_id?: string | null
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          period?: string
+          sale_amount?: number
+          status?: Database["public"]["Enums"]["earning_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "creator_earnings_creator_profile_id_fkey"
+            columns: ["creator_profile_id"]
+            isOneToOne: false
+            referencedRelation: "creator_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "creator_earnings_design_id_fkey"
+            columns: ["design_id"]
+            isOneToOne: false
+            referencedRelation: "designs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      creator_profiles: {
+        Row: {
+          bio: string | null
+          created_at: string
+          display_name: string
+          id: string
+          location: string | null
+          profile_image_url: string | null
+          status: Database["public"]["Enums"]["creator_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          location?: string | null
+          profile_image_url?: string | null
+          status?: Database["public"]["Enums"]["creator_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          location?: string | null
+          profile_image_url?: string | null
+          status?: Database["public"]["Enums"]["creator_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       custom_inquiries: {
         Row: {
           budget_range: string | null
@@ -80,6 +212,77 @@ export type Database = {
         }
         Relationships: []
       }
+      designs: {
+        Row: {
+          allowed_metals: Database["public"]["Enums"]["metal_type"][] | null
+          base_cost_estimate: number | null
+          base_price: number
+          category: Database["public"]["Enums"]["design_category"]
+          commission_type: Database["public"]["Enums"]["commission_type"]
+          commission_value: number
+          created_at: string
+          creator_profile_id: string
+          description: string | null
+          gallery_image_urls: string[] | null
+          id: string
+          is_featured: boolean
+          main_image_url: string
+          slug: string
+          status: Database["public"]["Enums"]["design_status"]
+          stone_options: Json | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          allowed_metals?: Database["public"]["Enums"]["metal_type"][] | null
+          base_cost_estimate?: number | null
+          base_price: number
+          category: Database["public"]["Enums"]["design_category"]
+          commission_type?: Database["public"]["Enums"]["commission_type"]
+          commission_value?: number
+          created_at?: string
+          creator_profile_id: string
+          description?: string | null
+          gallery_image_urls?: string[] | null
+          id?: string
+          is_featured?: boolean
+          main_image_url: string
+          slug: string
+          status?: Database["public"]["Enums"]["design_status"]
+          stone_options?: Json | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          allowed_metals?: Database["public"]["Enums"]["metal_type"][] | null
+          base_cost_estimate?: number | null
+          base_price?: number
+          category?: Database["public"]["Enums"]["design_category"]
+          commission_type?: Database["public"]["Enums"]["commission_type"]
+          commission_value?: number
+          created_at?: string
+          creator_profile_id?: string
+          description?: string | null
+          gallery_image_urls?: string[] | null
+          id?: string
+          is_featured?: boolean
+          main_image_url?: string
+          slug?: string
+          status?: Database["public"]["Enums"]["design_status"]
+          stone_options?: Json | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "designs_creator_profile_id_fkey"
+            columns: ["creator_profile_id"]
+            isOneToOne: false
+            referencedRelation: "creator_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       repair_quotes: {
         Row: {
           created_at: string
@@ -116,15 +319,66 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "customer" | "creator" | "admin"
+      application_status: "new" | "under_review" | "approved" | "rejected"
+      commission_type: "percentage" | "fixed"
+      creator_status: "pending" | "active" | "suspended"
+      design_category:
+        | "ring"
+        | "pendant"
+        | "chain"
+        | "bracelet"
+        | "earrings"
+        | "other"
+      design_status:
+        | "draft"
+        | "pending_approval"
+        | "published"
+        | "archived"
+        | "rejected"
+      earning_status: "pending" | "ready_to_pay" | "paid"
+      metal_type:
+        | "14k_yellow"
+        | "14k_white"
+        | "14k_rose"
+        | "18k"
+        | "platinum"
+        | "silver"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -251,6 +505,35 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["customer", "creator", "admin"],
+      application_status: ["new", "under_review", "approved", "rejected"],
+      commission_type: ["percentage", "fixed"],
+      creator_status: ["pending", "active", "suspended"],
+      design_category: [
+        "ring",
+        "pendant",
+        "chain",
+        "bracelet",
+        "earrings",
+        "other",
+      ],
+      design_status: [
+        "draft",
+        "pending_approval",
+        "published",
+        "archived",
+        "rejected",
+      ],
+      earning_status: ["pending", "ready_to_pay", "paid"],
+      metal_type: [
+        "14k_yellow",
+        "14k_white",
+        "14k_rose",
+        "18k",
+        "platinum",
+        "silver",
+      ],
+    },
   },
 } as const
