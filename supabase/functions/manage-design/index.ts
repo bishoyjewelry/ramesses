@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -9,29 +10,49 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface CreateDesignRequest {
-  action: "create" | "update" | "publish" | "archive";
-  design_id?: string;
-  creator_profile_id: string;
-  title: string;
-  description?: string;
-  main_image_url: string;
-  gallery_image_urls?: string[];
-  category: string;
-  base_price: number;
-  base_cost_estimate?: number;
-  allowed_metals?: string[];
-  stone_options?: object;
-  commission_type?: string;
-  commission_value?: number;
-}
+// Validation schemas
+const ActionSchema = z.enum(["create", "update", "publish", "archive", "reject"]);
 
-interface UpdateDesignRequest {
-  action: "update" | "publish" | "archive" | "reject";
-  design_id: string;
-  updates?: Partial<CreateDesignRequest>;
-  admin_notes?: string;
-}
+const DesignCategorySchema = z.enum(["ring", "pendant", "chain", "bracelet", "earrings", "other"]);
+
+const CreateDesignSchema = z.object({
+  action: z.literal("create"),
+  creator_profile_id: z.string().uuid("Invalid creator profile ID"),
+  title: z.string().min(1, "Title required").max(200, "Title too long").trim(),
+  description: z.string().max(2000, "Description too long").optional(),
+  main_image_url: z.string().url("Invalid main image URL"),
+  gallery_image_urls: z.array(z.string().url("Invalid gallery URL")).max(20).optional(),
+  category: DesignCategorySchema,
+  base_price: z.number().min(0, "Price must be positive").max(1000000),
+  base_cost_estimate: z.number().min(0).max(1000000).optional(),
+  allowed_metals: z.array(z.string()).max(10).optional(),
+  stone_options: z.record(z.unknown()).optional(),
+  commission_type: z.enum(["percentage", "fixed"]).optional(),
+  commission_value: z.number().min(0).max(100).optional()
+});
+
+const UpdateDesignSchema = z.object({
+  action: z.literal("update"),
+  design_id: z.string().uuid("Invalid design ID"),
+  updates: z.object({
+    title: z.string().min(1).max(200).trim().optional(),
+    description: z.string().max(2000).optional(),
+    main_image_url: z.string().url().optional(),
+    gallery_image_urls: z.array(z.string().url()).max(20).optional(),
+    category: DesignCategorySchema.optional(),
+    base_price: z.number().min(0).max(1000000).optional(),
+    base_cost_estimate: z.number().min(0).max(1000000).optional(),
+    allowed_metals: z.array(z.string()).max(10).optional(),
+    stone_options: z.record(z.unknown()).optional(),
+    commission_type: z.enum(["percentage", "fixed"]).optional(),
+    commission_value: z.number().min(0).max(100).optional()
+  }).optional()
+});
+
+const SimpleActionSchema = z.object({
+  action: z.enum(["publish", "archive", "reject"]),
+  design_id: z.string().uuid("Invalid design ID")
+});
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -62,8 +83,18 @@ serve(async (req: Request) => {
       );
     }
 
-    const body = await req.json();
-    const { action } = body;
+    const rawBody = await req.json();
+    
+    // Validate action field first
+    const actionResult = ActionSchema.safeParse(rawBody.action);
+    if (!actionResult.success) {
+      return new Response(
+        JSON.stringify({ error: "Invalid action" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const action = actionResult.data;
 
     // Check if user is admin
     const { data: isAdmin } = await supabase
@@ -79,6 +110,15 @@ serve(async (req: Request) => {
     console.log(`User ${user.id} performing ${action} on design. Admin: ${isAdmin}, Creator: ${!!creatorProfile}`);
 
     if (action === "create") {
+      // Validate create request
+      const parseResult = CreateDesignSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       // Only admins can create designs (on behalf of creators)
       if (!isAdmin) {
         return new Response(
@@ -100,7 +140,7 @@ serve(async (req: Request) => {
         stone_options,
         commission_type,
         commission_value
-      } = body;
+      } = parseResult.data;
 
       // Generate slug from title
       const slug = title
@@ -144,6 +184,15 @@ serve(async (req: Request) => {
     }
 
     if (action === "publish") {
+      // Validate publish request
+      const parseResult = SimpleActionSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       // Only admins can publish designs
       if (!isAdmin) {
         return new Response(
@@ -152,7 +201,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { design_id } = body;
+      const { design_id } = parseResult.data;
 
       // Fetch design with creator info for email
       const { data: designData } = await supabase
@@ -265,6 +314,15 @@ serve(async (req: Request) => {
     }
 
     if (action === "archive" || action === "reject") {
+      // Validate request
+      const parseResult = SimpleActionSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       // Only admins can archive/reject designs
       if (!isAdmin) {
         return new Response(
@@ -273,7 +331,7 @@ serve(async (req: Request) => {
         );
       }
 
-      const { design_id } = body;
+      const { design_id } = parseResult.data;
       const newStatus = action === "archive" ? "archived" : "rejected";
 
       const { data: design, error: updateError } = await supabase
@@ -301,7 +359,16 @@ serve(async (req: Request) => {
     }
 
     if (action === "update") {
-      const { design_id, updates } = body;
+      // Validate update request
+      const parseResult = UpdateDesignSchema.safeParse(rawBody);
+      if (!parseResult.success) {
+        return new Response(
+          JSON.stringify({ error: parseResult.error.errors[0]?.message || "Invalid input" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const { design_id, updates } = parseResult.data;
 
       // Fetch the design to check ownership
       const { data: existingDesign } = await supabase
@@ -328,7 +395,7 @@ serve(async (req: Request) => {
       }
 
       // If creator updates, set status back to pending_approval
-      const updateData = {
+      const updateData: Record<string, unknown> = {
         ...updates,
         updated_at: new Date().toISOString()
       };
