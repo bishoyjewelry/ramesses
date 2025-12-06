@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { MailInSteps } from "@/components/MailInSteps";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 const repairServicesColumns = [
   ["Bracelet Repair", "Chain Repair", "Chain Soldering", "Necklace Repair", "Earring Repair", "Jewelry Cleaning", "Jewelry Engraving"],
@@ -35,7 +37,7 @@ const Repairs = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
+      <Navigation />
       <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
@@ -184,6 +186,7 @@ const Repairs = () => {
           </Card>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
