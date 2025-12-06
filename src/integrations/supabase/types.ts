@@ -371,7 +371,7 @@ export type Database = {
         | "published"
         | "archived"
         | "rejected"
-      earning_status: "pending" | "ready_to_pay" | "paid"
+      earning_status: "pending" | "ready_to_pay" | "paid" | "void"
       metal_type:
         | "14k_yellow"
         | "14k_white"
@@ -525,7 +525,7 @@ export const Constants = {
         "archived",
         "rejected",
       ],
-      earning_status: ["pending", "ready_to_pay", "paid"],
+      earning_status: ["pending", "ready_to_pay", "paid", "void"],
       metal_type: [
         "14k_yellow",
         "14k_white",
