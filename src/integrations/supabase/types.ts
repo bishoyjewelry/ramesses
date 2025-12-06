@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      custom_inquiries: {
+        Row: {
+          budget_range: string | null
+          created_at: string
+          description: string
+          email: string
+          id: string
+          image_urls: string[] | null
+          name: string
+          phone: string | null
+          piece_type: string
+          status: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          image_urls?: string[] | null
+          name: string
+          phone?: string | null
+          piece_type: string
+          status?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          image_urls?: string[] | null
+          name?: string
+          phone?: string | null
+          piece_type?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
+      repair_quotes: {
+        Row: {
+          created_at: string
+          description: string
+          email: string
+          id: string
+          image_urls: string[] | null
+          name: string
+          phone: string | null
+          preferred_contact: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          image_urls?: string[] | null
+          name: string
+          phone?: string | null
+          preferred_contact?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          image_urls?: string[] | null
+          name?: string
+          phone?: string | null
+          preferred_contact?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

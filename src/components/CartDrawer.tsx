@@ -12,10 +12,12 @@ import {
 import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { createStorefrontCheckout } from "@/lib/shopify";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
   const { 
     items, 
     isLoading, 
@@ -48,10 +50,10 @@ export const CartDrawer = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative text-white/90 hover:text-luxury-gold hover:bg-luxury-gold/10">
+        <Button variant="ghost" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
           {totalItems > 0 && (
-            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-luxury-gold text-luxury-dark">
+            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
               {totalItems}
             </Badge>
           )}
@@ -60,9 +62,9 @@ export const CartDrawer = () => {
       
       <SheetContent className="w-full sm:max-w-lg flex flex-col h-full">
         <SheetHeader className="flex-shrink-0">
-          <SheetTitle>Shopping Cart</SheetTitle>
+          <SheetTitle>{t('cart.title')}</SheetTitle>
           <SheetDescription>
-            {totalItems === 0 ? "Your cart is empty" : `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`}
+            {totalItems === 0 ? t('cart.empty') : `${totalItems} item${totalItems !== 1 ? 's' : ''}`}
           </SheetDescription>
         </SheetHeader>
         
@@ -71,7 +73,7 @@ export const CartDrawer = () => {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Your cart is empty</p>
+                <p className="text-muted-foreground">{t('cart.empty')}</p>
               </div>
             </div>
           ) : (
@@ -80,7 +82,7 @@ export const CartDrawer = () => {
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item.variantId} className="flex gap-4 p-2 border-b border-border">
-                      <div className="w-16 h-16 bg-secondary/20 rounded-md overflow-hidden flex-shrink-0">
+                      <div className="w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
                         {item.product.node.images?.edges?.[0]?.node && (
                           <img
                             src={item.product.node.images.edges[0].node.url}
@@ -91,12 +93,12 @@ export const CartDrawer = () => {
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium truncate">{item.product.node.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {item.selectedOptions.map(option => option.value).join(' • ')}
-                        </p>
-                        <p className="font-semibold text-luxury-gold">
-                          {item.price.currencyCode} ${parseFloat(item.price.amount).toFixed(2)}
+                        <h4 className="font-medium truncate text-sm">{item.product.node.title}</h4>
+                        {item.variantTitle !== 'Default Title' && (
+                          <p className="text-xs text-muted-foreground">{item.variantTitle}</p>
+                        )}
+                        <p className="font-semibold text-sm mt-1 text-primary">
+                          ${parseFloat(item.price.amount).toFixed(2)}
                         </p>
                       </div>
                       
@@ -135,29 +137,27 @@ export const CartDrawer = () => {
                 </div>
               </div>
               
-              <div className="flex-shrink-0 space-y-4 pt-4 border-t bg-background">
+              <div className="flex-shrink-0 space-y-4 pt-4 border-t border-border bg-background">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold">Total</span>
-                  <span className="text-xl font-bold text-luxury-gold">
-                    {items[0]?.price.currencyCode || '$'} ${totalPrice.toFixed(2)}
-                  </span>
+                  <span className="text-lg font-semibold">{t('cart.total')}</span>
+                  <span className="text-xl font-bold text-primary">${totalPrice.toFixed(2)}</span>
                 </div>
                 
                 <Button 
                   onClick={handleCheckout}
-                  className="w-full bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light" 
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
                   size="lg"
                   disabled={items.length === 0 || isLoading}
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Creating Checkout...
+                      {t('cart.creating')}
                     </>
                   ) : (
                     <>
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Checkout with Shopify
+                      {t('cart.checkout')}
                     </>
                   )}
                 </Button>
