@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Wrench, Gem, ShoppingBag, Play, Check, Quote } from "lucide-react";
+import { MailInSteps } from "@/components/MailInSteps";
+import { Wrench, Gem, ShoppingBag, Play, Quote } from "lucide-react";
 
 export const HomeContent = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -39,8 +40,28 @@ export const HomeContent = () => {
 
   return (
     <>
-      {/* Watch Us Work Section */}
+      {/* How Mail-In Repairs Work - RIGHT AFTER HERO */}
       <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-4">
+            {t('mailin.title')}
+          </h2>
+          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+            {t('mailin.spanish.note')}
+          </p>
+          <MailInSteps />
+          <div className="text-center mt-10">
+            <Link to="/repairs">
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
+                {t('hero.cta.primary')}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Watch Us Work Section */}
+      <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">
             {t('video.title')}
@@ -59,7 +80,7 @@ export const HomeContent = () => {
       </section>
 
       {/* Services Overview */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
@@ -81,7 +102,7 @@ export const HomeContent = () => {
       </section>
 
       {/* Before/After Gallery */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-12">
             {t('gallery.title')}

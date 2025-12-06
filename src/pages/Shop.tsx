@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { getProducts } from "@/lib/shopify";
 import { ShopifyProduct, useCartStore } from "@/stores/cartStore";
-import { Loader2, ShoppingCart } from "lucide-react";
+import { Loader2, ShoppingCart, Package } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Shop = () => {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore(state => state.addItem);
@@ -61,19 +63,29 @@ const Shop = () => {
       <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
-            Our <span className="text-luxury-gold">Jewelry Collection</span>
+            {t('shop.title')}
           </h1>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Discover our curated selection of fine gold and silver jewelry
+            {t('shop.subtitle')}
           </p>
         </div>
       </section>
 
       <section className="py-16 bg-luxury-warm">
         <div className="container mx-auto px-4">
+          {/* Mail-In Note */}
+          <Card className="max-w-2xl mx-auto mb-12 border-primary/20 bg-primary/5">
+            <CardContent className="p-6 flex items-center gap-4">
+              <Package className="w-8 h-8 text-primary flex-shrink-0" />
+              <p className="text-foreground">
+                {t('shop.mailin.note')}
+              </p>
+            </CardContent>
+          </Card>
+
           {products.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-xl text-muted-foreground mb-6">No products found</p>
+              <p className="text-xl text-muted-foreground mb-6">{t('shop.empty')}</p>
               <p className="text-muted-foreground">Our collection is being updated. Please check back soon!</p>
             </div>
           ) : (
@@ -110,7 +122,7 @@ const Shop = () => {
                         className="w-full bg-luxury-gold text-luxury-dark hover:bg-luxury-gold-light font-semibold"
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Add to Cart
+                        {t('shop.addToCart')}
                       </Button>
                     </CardContent>
                   </Card>
