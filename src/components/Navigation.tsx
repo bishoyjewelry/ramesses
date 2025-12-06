@@ -4,6 +4,8 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CartDrawer } from "./CartDrawer";
+import { AccountDropdown } from "./AccountDropdown";
+import { useAuth } from "@/hooks/useAuth";
 import logoIcon from "@/assets/logo-icon.png";
 import logoText from "@/assets/logo-text-only.png";
 
@@ -11,6 +13,7 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const { user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
@@ -86,7 +89,7 @@ export const Navigation = () => {
           </nav>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* Language Toggle */}
             <Button
               variant="ghost"
@@ -99,6 +102,11 @@ export const Navigation = () => {
 
             {/* Cart */}
             <CartDrawer isScrolled={true} />
+
+            {/* Account Actions */}
+            <div className="hidden sm:block">
+              <AccountDropdown />
+            </div>
 
             {/* Mobile Menu Button */}
             <Button
@@ -138,6 +146,53 @@ export const Navigation = () => {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* Mobile Account Links */}
+              <div className="border-t border-luxury-divider mt-2 pt-2">
+                {user ? (
+                  <>
+                    <Link
+                      to="/account"
+                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      My Account
+                    </Link>
+                    <Link
+                      to="/orders"
+                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      My Orders / Repairs
+                    </Link>
+                    <Link
+                      to="/my-designs"
+                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      My Custom Designs
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/auth?mode=login"
+                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/auth?mode=signup"
+                      className="px-4 py-3 text-sm font-medium text-luxury-champagne hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Create Account
+                    </Link>
+                  </>
+                )}
+              </div>
+              
               <button
                 onClick={() => {
                   toggleLanguage();
