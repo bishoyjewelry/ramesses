@@ -7,12 +7,7 @@ import {
   Video, FileText, DollarSign, Package, Star, Quote,
   Users, ArrowRight, Crown, Clock
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { SimpleAccordion } from "@/components/SimpleAccordion";
 
 export const HomeContent = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -337,28 +332,15 @@ export const HomeContent = () => {
             </h2>
             <div className="w-24 h-1 bg-luxury-champagne mx-auto mb-12"></div>
             
-            <Accordion type="single" collapsible className="space-y-4">
-              {[
-                { q: "Do you ship repairs nationwide?", a: "Yes — fully insured shipping both ways, anywhere in the United States." },
-                { q: "How long do repairs take?", a: "Most repairs are completed in 3–5 business days after approval." },
-                { q: "How does the Custom Lab work?", a: "Upload your inspiration, our AI generates concepts, then our master jeweler refines and crafts your piece." },
-                { q: "Can I design jewelry from scratch?", a: "Absolutely! Describe your vision and we'll bring it to life with AI concepting and expert craftsmanship." },
-                { q: "What types of jewelry do you repair?", a: "Rings, chains, bracelets, earrings, pendants, watches — gold, silver, platinum, and more." }
-              ].map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-luxury-divider rounded-xl px-6 data-[state=open]:border-luxury-champagne/50 data-[state=open]:shadow-soft transition-all bg-luxury-bg"
-                >
-                  <AccordionTrigger className="text-lg font-semibold text-luxury-text hover:text-luxury-champagne py-5 font-sans">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-luxury-text-muted text-base pb-5 font-body">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <SimpleAccordion
+              items={[
+                { question: "Do you ship repairs nationwide?", answer: "Yes — fully insured shipping both ways, anywhere in the United States." },
+                { question: "How long do repairs take?", answer: "Most repairs are completed in 3–5 business days after approval." },
+                { question: "How does the Custom Lab work?", answer: "Upload your inspiration, our AI generates concepts, then our master jeweler refines and crafts your piece." },
+                { question: "Can I design jewelry from scratch?", answer: "Absolutely! Describe your vision and we'll bring it to life with AI concepting and expert craftsmanship." },
+                { question: "What types of jewelry do you repair?", answer: "Rings, chains, bracelets, earrings, pendants, watches — gold, silver, platinum, and more." }
+              ]}
+            />
           </div>
         </div>
       </section>
