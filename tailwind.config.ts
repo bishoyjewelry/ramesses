@@ -57,22 +57,48 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Palette 1: Service Core
+        service: {
+          bg: "hsl(var(--service-bg-primary))",
+          "bg-secondary": "hsl(var(--service-bg-secondary))",
+          gold: "hsl(var(--service-gold))",
+          "gold-hover": "hsl(var(--service-gold-hover))",
+          text: "hsl(var(--service-text-primary))",
+          "text-muted": "hsl(var(--service-text-secondary))",
+          neutral: "hsl(var(--service-neutral))",
+        },
+        // Palette 2: Luxury Lab
         luxury: {
+          bg: "hsl(var(--luxury-bg-primary))",
+          "bg-warm": "hsl(var(--luxury-bg-secondary))",
+          champagne: "hsl(var(--luxury-champagne))",
+          "champagne-hover": "hsl(var(--luxury-champagne-hover))",
+          text: "hsl(var(--luxury-text-primary))",
+          "text-muted": "hsl(var(--luxury-text-secondary))",
+          divider: "hsl(var(--luxury-divider))",
+          // Legacy tokens
           gold: "hsl(var(--luxury-gold))",
           "gold-light": "hsl(var(--luxury-gold-light))",
           dark: "hsl(var(--luxury-dark))",
           charcoal: "hsl(var(--luxury-charcoal))",
           cream: "hsl(var(--luxury-cream))",
+          warm: "hsl(var(--luxury-warm))",
         },
       },
       fontFamily: {
-        serif: ["Cormorant Garamond", "serif"],
+        serif: ["Playfair Display", "serif"],
         sans: ["Montserrat", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        luxury: "var(--shadow-luxury)",
+        soft: "var(--shadow-soft)",
+        service: "var(--shadow-service)",
       },
       keyframes: {
         "accordion-down": {

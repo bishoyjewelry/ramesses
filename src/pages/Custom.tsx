@@ -7,7 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Upload, Sparkles, PenTool, Gem, Shield, Truck, DollarSign, ChevronDown, Crown, Users } from "lucide-react";
+import { Upload, Sparkles, PenTool, Gem, Shield, Truck, DollarSign, Crown, Users } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -63,46 +63,46 @@ const Custom = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-luxury-bg">
       <Navigation />
       
       {/* SECTION 1 — HERO */}
-      <section className="pt-32 pb-20 bg-white">
+      <section className="pt-32 pb-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-luxury-gold/10 rounded-full mb-8">
-              <Sparkles className="w-4 h-4 text-luxury-gold" />
-              <span className="text-sm font-medium text-luxury-gold">Ramessés Custom Lab™</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-luxury-champagne/20 rounded-full mb-8">
+              <Sparkles className="w-4 h-4 text-luxury-champagne" />
+              <span className="text-sm font-medium text-luxury-text">Ramessés Custom Lab™</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-luxury-charcoal mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif luxury-heading text-luxury-text mb-8 leading-tight">
               Design the Jewelry You Can't Find Anywhere Else
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-luxury-text-muted mb-12 max-w-3xl mx-auto leading-relaxed font-body">
               Welcome to the Ramessés Custom Lab™ — an AI-powered jewelry design studio where your ideas become handcrafted pieces made by master jewelers in NYC.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
               <Button 
                 onClick={scrollToForm}
-                className="bg-luxury-gold text-white hover:bg-luxury-gold-light px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-6 text-lg font-semibold rounded-lg shadow-luxury transition-all"
               >
                 Start Your Custom Design
               </Button>
               <Button 
                 onClick={scrollToHowItWorks}
                 variant="outline"
-                className="border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold/5 px-8 py-6 text-lg font-semibold"
+                className="border-2 border-luxury-text text-luxury-text hover:bg-luxury-text/5 px-8 py-6 text-lg font-semibold rounded-lg"
               >
                 How It Works
               </Button>
             </div>
             
             {/* Hero Image Placeholder */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200 aspect-[16/9] max-w-4xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-luxury-bg-warm aspect-[16/9] max-w-4xl mx-auto">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-400">
+                <div className="text-center text-luxury-text-muted">
                   <Gem className="w-16 h-16 mx-auto mb-4 opacity-50" />
                   <p className="text-lg">CAD Model + Sketch + Final Piece</p>
                   <p className="text-sm">Studio hero image placeholder</p>
@@ -114,53 +114,53 @@ const Custom = () => {
       </section>
 
       {/* SECTION 2 — HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 bg-gray-50">
+      <section id="how-it-works" className="py-24 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-4">
+            <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-4">
               How the Custom Lab Works
             </h2>
-            <div className="w-24 h-1 bg-luxury-gold mx-auto"></div>
+            <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
             {/* Step 1 */}
-            <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-              <div className="aspect-[4/3] bg-gradient-to-br from-luxury-gold/10 to-luxury-gold/5 flex items-center justify-center">
-                <Upload className="w-16 h-16 text-luxury-gold/60" />
+            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
+              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
+                <Upload className="w-16 h-16 text-luxury-champagne/60" />
               </div>
               <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-gold text-white font-bold mb-4">1</div>
-                <h3 className="text-2xl font-serif font-bold text-luxury-charcoal mb-4">Tell Us Your Idea</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">1</div>
+                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">Tell Us Your Idea</h3>
+                <p className="text-luxury-text-muted leading-relaxed font-body">
                   Upload photos, sketches, or inspiration. Describe what you're imagining — metal, stones, style, budget, and story.
                 </p>
               </CardContent>
             </Card>
             
             {/* Step 2 */}
-            <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-              <div className="aspect-[4/3] bg-gradient-to-br from-luxury-gold/10 to-luxury-gold/5 flex items-center justify-center">
-                <Sparkles className="w-16 h-16 text-luxury-gold/60" />
+            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
+              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
+                <Sparkles className="w-16 h-16 text-luxury-champagne/60" />
               </div>
               <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-gold text-white font-bold mb-4">2</div>
-                <h3 className="text-2xl font-serif font-bold text-luxury-charcoal mb-4">AI Concepts + Human Refinement</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">2</div>
+                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">AI Concepts + Human Refinement</h3>
+                <p className="text-luxury-text-muted leading-relaxed font-body">
                   Our AI creates concept images based on your idea. You choose your favorites, and our master jeweler refines the design into a final CAD model.
                 </p>
               </CardContent>
             </Card>
             
             {/* Step 3 */}
-            <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
-              <div className="aspect-[4/3] bg-gradient-to-br from-luxury-gold/10 to-luxury-gold/5 flex items-center justify-center">
-                <PenTool className="w-16 h-16 text-luxury-gold/60" />
+            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
+              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
+                <PenTool className="w-16 h-16 text-luxury-champagne/60" />
               </div>
               <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-gold text-white font-bold mb-4">3</div>
-                <h3 className="text-2xl font-serif font-bold text-luxury-charcoal mb-4">Handcrafted in NYC</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">3</div>
+                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">Handcrafted in NYC</h3>
+                <p className="text-luxury-text-muted leading-relaxed font-body">
                   Once you approve the final design, our 47th Street workshops cast, set, polish, and finish your piece. Insured shipping nationwide.
                 </p>
               </CardContent>
@@ -170,7 +170,7 @@ const Custom = () => {
           <div className="text-center">
             <Button 
               onClick={scrollToForm}
-              className="bg-luxury-gold text-white hover:bg-luxury-gold-light px-8 py-6 text-lg font-semibold shadow-lg"
+              className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-6 text-lg font-semibold rounded-lg shadow-luxury"
             >
               Start Your Custom Design
             </Button>
@@ -179,42 +179,42 @@ const Custom = () => {
       </section>
 
       {/* SECTION 3 — CUSTOM REQUEST FORM */}
-      <section id="custom-form" className="py-24 bg-white">
+      <section id="custom-form" className="py-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-4">
+              <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-4">
                 Start Your Custom Jewelry Project
               </h2>
-              <div className="w-24 h-1 bg-luxury-gold mx-auto"></div>
+              <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
             </div>
             
             {isSubmitted ? (
-              <Card className="border-2 border-luxury-gold/30 shadow-xl">
+              <Card className="border-2 border-luxury-champagne/30 shadow-luxury rounded-xl">
                 <CardContent className="p-12 text-center">
-                  <div className="w-20 h-20 bg-luxury-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Sparkles className="w-10 h-10 text-luxury-gold" />
+                  <div className="w-20 h-20 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Sparkles className="w-10 h-10 text-luxury-champagne" />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-luxury-charcoal mb-4">
+                  <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">
                     We're Generating Concepts!
                   </h3>
-                  <p className="text-gray-600 text-lg">
+                  <p className="text-luxury-text-muted text-lg font-body">
                     A designer will follow up shortly with AI previews.
                   </p>
                 </CardContent>
               </Card>
             ) : (
-              <Card className="border-2 border-luxury-gold/20 shadow-xl">
+              <Card className="border-2 border-luxury-champagne/20 shadow-luxury rounded-xl">
                 <CardContent className="p-8 md:p-12">
                   <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Piece Type */}
                     <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-charcoal">What do you want to create?</Label>
+                      <Label className="text-lg font-medium text-luxury-text">What do you want to create?</Label>
                       <Select onValueChange={(value) => setFormData({...formData, pieceType: value})} required>
-                        <SelectTrigger className="h-14 border-gray-200 focus:border-luxury-gold text-lg">
+                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
                           <SelectValue placeholder="Select piece type" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-luxury-bg border-luxury-divider">
                           <SelectItem value="ring">Ring</SelectItem>
                           <SelectItem value="pendant">Pendant</SelectItem>
                           <SelectItem value="necklace">Necklace</SelectItem>
@@ -227,12 +227,12 @@ const Custom = () => {
                     
                     {/* Metal Preference */}
                     <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-charcoal">Metal preference</Label>
+                      <Label className="text-lg font-medium text-luxury-text">Metal preference</Label>
                       <Select onValueChange={(value) => setFormData({...formData, metal: value})}>
-                        <SelectTrigger className="h-14 border-gray-200 focus:border-luxury-gold text-lg">
+                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
                           <SelectValue placeholder="Select metal" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-luxury-bg border-luxury-divider">
                           <SelectItem value="14k-yellow">14k Yellow Gold</SelectItem>
                           <SelectItem value="14k-white">14k White Gold</SelectItem>
                           <SelectItem value="14k-rose">14k Rose Gold</SelectItem>
@@ -245,12 +245,12 @@ const Custom = () => {
                     
                     {/* Stone Preference */}
                     <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-charcoal">Stone preference</Label>
+                      <Label className="text-lg font-medium text-luxury-text">Stone preference</Label>
                       <Select onValueChange={(value) => setFormData({...formData, stone: value})}>
-                        <SelectTrigger className="h-14 border-gray-200 focus:border-luxury-gold text-lg">
+                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
                           <SelectValue placeholder="Select stone" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-luxury-bg border-luxury-divider">
                           <SelectItem value="diamond">Diamond</SelectItem>
                           <SelectItem value="moissanite">Moissanite</SelectItem>
                           <SelectItem value="gemstones">Gemstones</SelectItem>
@@ -262,12 +262,12 @@ const Custom = () => {
                     
                     {/* Budget */}
                     <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-charcoal">Budget range</Label>
+                      <Label className="text-lg font-medium text-luxury-text">Budget range</Label>
                       <Select onValueChange={(value) => setFormData({...formData, budget: value})}>
-                        <SelectTrigger className="h-14 border-gray-200 focus:border-luxury-gold text-lg">
+                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
                           <SelectValue placeholder="Select budget" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-luxury-bg border-luxury-divider">
                           <SelectItem value="500-1000">$500 – $1,000</SelectItem>
                           <SelectItem value="1000-2500">$1,000 – $2,500</SelectItem>
                           <SelectItem value="2500-5000">$2,500 – $5,000</SelectItem>
@@ -278,8 +278,8 @@ const Custom = () => {
                     
                     {/* Image Upload */}
                     <div className="space-y-4">
-                      <Label className="text-lg font-medium text-luxury-charcoal">Upload inspiration images (up to 6)</Label>
-                      <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center hover:border-luxury-gold/50 transition-colors">
+                      <Label className="text-lg font-medium text-luxury-text">Upload inspiration images (up to 6)</Label>
+                      <div className="border-2 border-dashed border-luxury-divider rounded-xl p-8 text-center hover:border-luxury-champagne/50 transition-colors">
                         <input
                           type="file"
                           accept="image/*"
@@ -289,9 +289,9 @@ const Custom = () => {
                           id="image-upload"
                         />
                         <label htmlFor="image-upload" className="cursor-pointer">
-                          <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-                          <p className="text-gray-600">Click to upload or drag and drop</p>
-                          <p className="text-sm text-gray-400 mt-1">PNG, JPG up to 10MB each</p>
+                          <Upload className="w-10 h-10 text-luxury-text-muted mx-auto mb-3" />
+                          <p className="text-luxury-text-muted font-body">Click to upload or drag and drop</p>
+                          <p className="text-sm text-luxury-text-muted/70 mt-1">PNG, JPG up to 10MB each</p>
                         </label>
                       </div>
                       
@@ -299,7 +299,7 @@ const Custom = () => {
                         <div className="flex flex-wrap gap-3">
                           {uploadedImages.map((file, index) => (
                             <div key={index} className="relative group">
-                              <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                              <div className="w-20 h-20 bg-luxury-bg-warm rounded-lg flex items-center justify-center overflow-hidden">
                                 <img 
                                   src={URL.createObjectURL(file)} 
                                   alt={`Upload ${index + 1}`}
@@ -321,20 +321,20 @@ const Custom = () => {
                     
                     {/* Description */}
                     <div className="space-y-2">
-                      <Label className="text-lg font-medium text-luxury-charcoal">Describe your idea</Label>
+                      <Label className="text-lg font-medium text-luxury-text">Describe your idea</Label>
                       <Textarea
                         value={formData.description}
                         onChange={(e) => setFormData({...formData, description: e.target.value})}
                         placeholder="Tell us about your dream piece — the style, meaning, details you envision..."
                         rows={5}
-                        className="border-gray-200 focus:border-luxury-gold text-lg resize-none"
+                        className="border-luxury-divider focus:border-luxury-champagne text-lg resize-none bg-luxury-bg rounded-lg font-body"
                         required
                       />
                     </div>
                     
                     <Button 
                       type="submit" 
-                      className="w-full bg-luxury-gold text-white hover:bg-luxury-gold-light py-6 text-lg font-semibold shadow-lg"
+                      className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover py-6 text-lg font-semibold rounded-lg shadow-luxury"
                     >
                       <Sparkles className="w-5 h-5 mr-2" />
                       Generate My AI Designs
@@ -348,13 +348,13 @@ const Custom = () => {
       </section>
 
       {/* SECTION 4 — WHY RAMESSÉS CUSTOM */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             {/* Image */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200 aspect-square">
+            <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-luxury-bg aspect-square">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-400">
+                <div className="text-center text-luxury-text-muted">
                   <PenTool className="w-16 h-16 mx-auto mb-4 opacity-50" />
                   <p className="text-lg">Master Craftsman at Work</p>
                   <p className="text-sm">Image placeholder</p>
@@ -364,17 +364,17 @@ const Custom = () => {
             
             {/* Content */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-6">
+              <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-6">
                 Designed With You. Crafted By Masters.
               </h2>
-              <div className="w-24 h-1 bg-luxury-gold mb-8"></div>
+              <div className="w-24 h-1 bg-luxury-champagne mb-8"></div>
               
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-luxury-text-muted mb-8 leading-relaxed font-body">
                 Every custom piece goes through our signature hybrid process:<br />
-                <span className="font-semibold text-luxury-charcoal">AI-assisted creativity → Human expert refinement → Handcrafting on 47th Street.</span>
+                <span className="font-semibold text-luxury-text">AI-assisted creativity → Human expert refinement → Handcrafting on 47th Street.</span>
               </p>
               
-              <p className="text-lg text-gray-600 mb-10">
+              <p className="text-lg text-luxury-text-muted mb-10 font-body">
                 Our master jeweler brings 30+ years of craftsmanship to every ring, pendant, chain, and bracelet.
               </p>
               
@@ -387,10 +387,10 @@ const Custom = () => {
                   { icon: DollarSign, text: "Transparent pricing and updates" },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-luxury-gold/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-6 h-6 text-luxury-gold" />
+                    <div className="w-12 h-12 bg-luxury-champagne/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-6 h-6 text-luxury-champagne" />
                     </div>
-                    <span className="text-lg text-gray-700">{item.text}</span>
+                    <span className="text-lg text-luxury-text font-body">{item.text}</span>
                   </div>
                 ))}
               </div>
@@ -400,22 +400,22 @@ const Custom = () => {
       </section>
 
       {/* SECTION 5 — SHOWCASE GALLERY */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-4">
+            <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-4">
               Recent Custom Pieces
             </h2>
-            <div className="w-24 h-1 bg-luxury-gold mx-auto"></div>
+            <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {[...Array(8)].map((_, index) => (
               <div 
                 key={index} 
-                className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
+                className="aspect-square bg-luxury-bg-warm rounded-xl overflow-hidden shadow-soft hover:shadow-luxury transition-shadow flex items-center justify-center"
               >
-                <div className="text-center text-gray-400">
+                <div className="text-center text-luxury-text-muted">
                   <Gem className="w-8 h-8 mx-auto mb-2 opacity-50" />
                   <p className="text-xs">Custom piece {index + 1}</p>
                 </div>
@@ -426,27 +426,27 @@ const Custom = () => {
       </section>
 
       {/* SECTION 6 — CREATOR MARKETPLACE TEASER */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="border-2 border-luxury-gold/20 shadow-xl overflow-hidden">
+            <Card className="border-2 border-luxury-champagne/20 shadow-luxury overflow-hidden rounded-xl">
               <CardContent className="p-0">
                 <div className="grid lg:grid-cols-2">
                   {/* Content */}
                   <div className="p-10 lg:p-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-luxury-gold/10 rounded-full mb-6">
-                      <span className="text-xs font-semibold text-luxury-gold uppercase tracking-wide">Coming Soon</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-luxury-champagne/20 rounded-full mb-6">
+                      <span className="text-xs font-semibold text-luxury-text uppercase tracking-wide">Coming Soon</span>
                     </div>
                     
-                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-charcoal mb-4">
+                    <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-luxury-text mb-4">
                       The Ramessés Creator Marketplace
                     </h2>
                     
-                    <p className="text-xl text-gray-600 mb-6">
+                    <p className="text-xl text-luxury-text-muted mb-6 font-body">
                       Turn your custom jewelry design into a piece the world can order — and earn commissions every time someone buys it.
                     </p>
                     
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-luxury-text-muted mb-6 font-body">
                       Soon, every customer whose custom piece we create will be able to:
                     </p>
                     
@@ -458,21 +458,21 @@ const Custom = () => {
                         "Track earnings inside their account"
                       ].map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <div className="w-5 h-5 bg-luxury-gold/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-luxury-gold text-xs">✓</span>
+                          <div className="w-5 h-5 bg-luxury-champagne/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-luxury-champagne text-xs">✓</span>
                           </div>
-                          <span className="text-gray-700">{item}</span>
+                          <span className="text-luxury-text font-body">{item}</span>
                         </li>
                       ))}
                     </ul>
                     
-                    <p className="text-sm text-gray-500 italic mb-8">
+                    <p className="text-sm text-luxury-text-muted italic mb-8 font-body">
                       This creates the first-ever crowdsourced fine jewelry catalog built by customers, powered by Ramessés craftsmanship.
                     </p>
                     
                     <Button 
                       disabled
-                      className="bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-5"
+                      className="bg-luxury-divider text-luxury-text-muted cursor-not-allowed px-6 py-5 rounded-lg"
                     >
                       <Users className="w-4 h-4 mr-2" />
                       Creator Marketplace Launching Soon
@@ -480,8 +480,8 @@ const Custom = () => {
                   </div>
                   
                   {/* Image */}
-                  <div className="bg-gradient-to-br from-luxury-gold/10 to-luxury-gold/5 flex items-center justify-center p-12">
-                    <div className="text-center text-gray-400">
+                  <div className="bg-luxury-champagne/10 flex items-center justify-center p-12">
+                    <div className="text-center text-luxury-text-muted">
                       <Users className="w-16 h-16 mx-auto mb-4 opacity-50" />
                       <p className="text-lg">Marketplace Grid Mockup</p>
                       <p className="text-sm">Image placeholder</p>
@@ -495,14 +495,14 @@ const Custom = () => {
       </section>
 
       {/* SECTION 7 — FAQ */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-4">
+              <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-4">
                 Frequently Asked Questions
               </h2>
-              <div className="w-24 h-1 bg-luxury-gold mx-auto"></div>
+              <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
             </div>
             
             <Accordion type="single" collapsible className="space-y-4">
@@ -535,12 +535,12 @@ const Custom = () => {
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
-                  className="border border-gray-200 rounded-xl px-6 data-[state=open]:border-luxury-gold/30 data-[state=open]:shadow-lg transition-all"
+                  className="border border-luxury-divider rounded-xl px-6 data-[state=open]:border-luxury-champagne/50 data-[state=open]:shadow-soft transition-all bg-luxury-bg"
                 >
-                  <AccordionTrigger className="text-lg font-semibold text-luxury-charcoal hover:text-luxury-gold py-6">
+                  <AccordionTrigger className="text-lg font-semibold text-luxury-text hover:text-luxury-champagne py-6 font-sans">
                     {faq.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 text-lg pb-6">
+                  <AccordionContent className="text-luxury-text-muted text-lg pb-6 font-body">
                     {faq.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -551,18 +551,18 @@ const Custom = () => {
       </section>
 
       {/* SECTION 8 — FINAL CTA */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-luxury-charcoal mb-6">
+            <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-6">
               Ready to Design Your Jewelry?
             </h2>
-            <p className="text-xl text-gray-600 mb-10">
+            <p className="text-xl text-luxury-text-muted mb-10 font-body">
               Upload your idea and let our AI + master jewelers bring it to life.
             </p>
             <Button 
               onClick={scrollToForm}
-              className="bg-luxury-gold text-white hover:bg-luxury-gold-light px-10 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-10 py-6 text-lg font-semibold rounded-lg shadow-luxury hover:shadow-xl transition-all"
             >
               Start Your Custom Design
             </Button>

@@ -21,12 +21,18 @@ export const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Determine if current page is a luxury page (Custom Lab, Shop galleries)
+  const isLuxuryPage = location.pathname === '/custom';
+  
+  // Determine if current page is a service page
+  const isServicePage = ['/repairs', '/contact'].includes(location.pathname);
+
   const navLinks = [
     { to: "/", label: t('nav.home') },
-    { to: "/repairs", label: t('nav.repairs') },
-    { to: "/custom", label: t('nav.custom') },
+    { to: "/repairs", label: t('nav.repairs'), isService: true },
+    { to: "/custom", label: t('nav.custom'), isLuxury: true },
     { to: "/shop", label: t('nav.shop') },
-    { to: "/contact", label: t('nav.contact') },
+    { to: "/contact", label: t('nav.contact'), isService: true },
   ];
 
   const toggleLanguage = () => {
@@ -35,7 +41,9 @@ export const Navigation = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-luxury-charcoal/90 backdrop-blur-sm'
+      isScrolled 
+        ? 'bg-white shadow-lg' 
+        : 'bg-white/95 backdrop-blur-sm'
     }`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
@@ -49,7 +57,7 @@ export const Navigation = () => {
             <img 
               src={logoText} 
               alt="Ramesses Jewelry" 
-              className={`h-6 w-auto hidden sm:block ${isScrolled ? '' : 'brightness-0 invert'}`}
+              className="h-6 w-auto hidden sm:block"
             />
           </Link>
 
@@ -59,13 +67,20 @@ export const Navigation = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-sm font-medium transition-colors relative group ${
                   location.pathname === link.to 
-                    ? 'text-primary' 
-                    : isScrolled ? 'text-foreground' : 'text-white'
+                    ? link.isLuxury 
+                      ? 'text-luxury-champagne' 
+                      : link.isService 
+                        ? 'text-service-gold' 
+                        : 'text-luxury-text'
+                    : 'text-luxury-text hover:text-luxury-text/70'
                 }`}
               >
                 {link.label}
+                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                  link.isLuxury ? 'bg-luxury-champagne' : link.isService ? 'bg-service-gold' : 'bg-luxury-text'
+                }`} />
               </Link>
             ))}
           </nav>
@@ -77,13 +92,13 @@ export const Navigation = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className={`hidden sm:flex font-medium ${isScrolled ? 'text-foreground hover:text-primary' : 'text-white hover:text-primary'}`}
+              className="hidden sm:flex font-medium text-luxury-text hover:text-luxury-text/70"
             >
               {t('nav.language')}
             </Button>
 
             {/* Cart */}
-            <CartDrawer isScrolled={isScrolled} />
+            <CartDrawer isScrolled={true} />
 
             {/* Mobile Menu Button */}
             <Button
@@ -93,9 +108,9 @@ export const Navigation = () => {
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <X className={`h-6 w-6 ${isScrolled ? 'text-foreground' : 'text-white'}`} />
+                <X className="h-6 w-6 text-luxury-text" />
               ) : (
-                <Menu className={`h-6 w-6 ${isScrolled ? 'text-foreground' : 'text-white'}`} />
+                <Menu className="h-6 w-6 text-luxury-text" />
               )}
             </Button>
           </div>
@@ -103,14 +118,20 @@ export const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden bg-background border-t border-border">
+          <div className="lg:hidden bg-white border-t border-luxury-divider">
             <nav className="flex flex-col py-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`px-4 py-3 text-sm font-medium transition-colors hover:bg-muted ${
-                    location.pathname === link.to ? 'text-primary' : 'text-foreground'
+                  className={`px-4 py-3 text-sm font-medium transition-colors hover:bg-luxury-bg-warm ${
+                    location.pathname === link.to 
+                      ? link.isLuxury 
+                        ? 'text-luxury-champagne' 
+                        : link.isService 
+                          ? 'text-service-gold' 
+                          : 'text-luxury-text'
+                      : 'text-luxury-text'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -122,7 +143,7 @@ export const Navigation = () => {
                   toggleLanguage();
                   setIsOpen(false);
                 }}
-                className="px-4 py-3 text-sm font-medium text-left transition-colors hover:bg-muted text-foreground"
+                className="px-4 py-3 text-sm font-medium text-left transition-colors hover:bg-luxury-bg-warm text-luxury-text"
               >
                 {t('nav.language')}
               </button>
