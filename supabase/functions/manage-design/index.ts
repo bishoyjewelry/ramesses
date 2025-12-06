@@ -1,5 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { Resend } from "https://esm.sh/resend@2.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -151,6 +154,20 @@ serve(async (req: Request) => {
 
       const { design_id } = body;
 
+      // Fetch design with creator info for email
+      const { data: designData } = await supabase
+        .from("designs")
+        .select(`
+          *,
+          creator_profiles(
+            id,
+            user_id,
+            display_name
+          )
+        `)
+        .eq("id", design_id)
+        .single();
+
       const { data: design, error: updateError } = await supabase
         .from("designs")
         .update({ 
@@ -167,6 +184,78 @@ serve(async (req: Request) => {
           JSON.stringify({ error: "Failed to publish design" }),
           { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
+      }
+
+      // Send "Design Published" email to creator
+      if (designData?.creator_profiles) {
+        const creatorUserId = designData.creator_profiles.user_id;
+        const { data: creatorUser } = await supabase.auth.admin.getUserById(creatorUserId);
+        
+        if (creatorUser?.user?.email) {
+          try {
+            await resend.emails.send({
+              from: "Ramessés Jewelry <onboarding@resend.dev>",
+              to: [creatorUser.user.email],
+              subject: "Your design is now live on the Ramessés Marketplace",
+              html: `
+                <div style="font-family: 'Montserrat', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+                  <div style="text-align: center; margin-bottom: 40px;">
+                    <h1 style="color: #D4AF37; font-size: 28px; margin-bottom: 10px;">Your Design Is Live! 🎉</h1>
+                    <div style="width: 60px; height: 2px; background: #D4AF37; margin: 0 auto;"></div>
+                  </div>
+                  
+                  <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                    Dear ${designData.creator_profiles.display_name},
+                  </p>
+                  
+                  <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                    Great news! Your design <strong>"${designData.title}"</strong> has been approved and is now 
+                    live on the Ramessés Creator Marketplace.
+                  </p>
+                  
+                  <div style="background: linear-gradient(135deg, #0B1B36 0%, #15233E 100%); padding: 30px; border-radius: 12px; margin: 30px 0; text-align: center;">
+                    <img src="${designData.main_image_url}" alt="${designData.title}" style="max-width: 200px; border-radius: 8px; margin-bottom: 15px;" />
+                    <p style="color: #D4AF37; font-size: 18px; font-weight: bold; margin: 0;">
+                      ${designData.title}
+                    </p>
+                    <p style="color: white; font-size: 14px; margin: 10px 0 0 0;">
+                      Base Price: $${Number(designData.base_price).toFixed(2)}
+                    </p>
+                  </div>
+                  
+                  <div style="background: #F7F3ED; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                    <p style="color: #0B1B36; font-size: 14px; margin: 0;">
+                      <strong>💰 How You Earn:</strong><br><br>
+                      Every time a customer orders your design, you'll earn a commission of 
+                      <strong>${designData.commission_type === 'percentage' ? designData.commission_value + '%' : '$' + Number(designData.commission_value).toFixed(2)}</strong> 
+                      of the sale. Commissions are tracked in your Creator Dashboard and paid out monthly.
+                    </p>
+                  </div>
+                  
+                  <div style="text-align: center; margin: 30px 0;">
+                    <a href="https://ramesses.com/marketplace/${designData.slug}" style="background: #D4AF37; color: #0B1B36; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+                      View Your Design
+                    </a>
+                  </div>
+                  
+                  <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                    Congratulations on this milestone!<br>
+                    <strong style="color: #0B1B36;">The Ramessés Team</strong>
+                  </p>
+                  
+                  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+                    <p style="color: #888; font-size: 12px;">
+                      © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                    </p>
+                  </div>
+                </div>
+              `
+            });
+            console.log("Design published email sent to creator");
+          } catch (emailError) {
+            console.error("Error sending design published email:", emailError);
+          }
+        }
       }
 
       return new Response(
