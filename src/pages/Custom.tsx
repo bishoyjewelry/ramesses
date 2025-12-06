@@ -7,6 +7,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Package } from "lucide-react";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 const Custom = () => {
   const { t } = useLanguage();
@@ -34,7 +36,7 @@ const Custom = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
+      <Navigation />
       <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
@@ -156,6 +158,7 @@ const Custom = () => {
           </Card>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

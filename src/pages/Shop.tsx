@@ -7,6 +7,8 @@ import { Loader2, ShoppingCart, Package } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 const Shop = () => {
   const { t } = useLanguage();
@@ -50,6 +52,7 @@ const Shop = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
+        <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <Loader2 className="h-12 w-12 animate-spin text-luxury-gold" />
         </div>
@@ -59,7 +62,7 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      
+      <Navigation />
       <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
@@ -132,6 +135,7 @@ const Shop = () => {
           )}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

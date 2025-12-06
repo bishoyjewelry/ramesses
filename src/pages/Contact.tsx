@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Instagram, MessageCircle, Clock } from "lucide-react";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
-      
+      <Navigation />
       <section className="pt-32 pb-16 bg-gradient-to-b from-luxury-charcoal via-luxury-charcoal to-luxury-warm text-foreground">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">
@@ -99,6 +101,7 @@ const Contact = () => {
           </Card>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
