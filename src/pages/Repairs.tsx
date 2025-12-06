@@ -6,18 +6,22 @@ import { Label } from "@/components/ui/label";
 import { 
   Wrench, Shield, DollarSign, Package, Video, FileText, 
   Sparkles, Lock, CheckCircle, ArrowRight, Star, Quote,
-  Upload, ChevronDown
+  Upload, UserPlus, LogIn
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { SimpleSelect } from "@/components/SimpleSelect";
 import { SimpleAccordion } from "@/components/SimpleAccordion";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const Repairs = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,6 +31,8 @@ const Repairs = () => {
     notes: "",
   });
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -43,11 +49,51 @@ const Repairs = () => {
     setUploadedImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Your repair request has been submitted! We'll send your insured shipping label shortly.");
-    setFormData({ name: "", email: "", phone: "", jewelryType: "", repairNeeded: "", notes: "" });
-    setUploadedImages([]);
+    setIsSubmitting(true);
+    
+    try {
+      // Build the repair quote data
+      const repairData: {
+        name: string;
+        email: string;
+        phone: string;
+        item_type: string;
+        repair_type: string;
+        description: string;
+        status: string;
+        user_id?: string;
+      } = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        item_type: formData.jewelryType,
+        repair_type: formData.repairNeeded,
+        description: formData.notes || formData.repairNeeded,
+        status: 'pending',
+      };
+      
+      // Attach user_id if authenticated
+      if (user) {
+        repairData.user_id = user.id;
+      }
+      
+      const { error } = await supabase
+        .from('repair_quotes')
+        .insert([repairData]);
+      
+      if (error) throw error;
+      
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", jewelryType: "", repairNeeded: "", notes: "" });
+      setUploadedImages([]);
+    } catch (error) {
+      console.error('Error submitting repair quote:', error);
+      toast.error("Failed to submit your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -57,6 +103,69 @@ const Repairs = () => {
   const scrollToHowItWorks = () => {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Success confirmation component
+  const SuccessConfirmation = () => (
+    <Card className="border-2 border-service-gold/30 shadow-service rounded-lg">
+      <CardContent className="p-8 md:p-10 text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <CheckCircle className="w-8 h-8 text-green-600" />
+        </div>
+        <h3 className="text-2xl font-sans font-bold text-luxury-text mb-4">
+          Your Repair Request Has Been Submitted!
+        </h3>
+        
+        {user ? (
+          // Logged-in user confirmation
+          <>
+            <p className="text-luxury-text-muted mb-8 font-body">
+              We'll send your insured shipping label shortly. You can track your repair status anytime in your account.
+            </p>
+            <Link to="/my-repairs">
+              <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded">
+                View My Repairs
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </>
+        ) : (
+          // Guest user confirmation
+          <>
+            <p className="text-luxury-text-muted mb-4 font-body">
+              We'll send your insured shipping label to your email shortly.
+            </p>
+            <p className="text-luxury-text mb-6 font-body font-medium">
+              Want to track your repair status?
+            </p>
+            <p className="text-luxury-text-muted mb-8 font-body text-sm">
+              Create a free Ramessés account to see updates, shipping instructions, and repair history.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/auth?mode=signup&redirect=/my-repairs">
+                <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-6 py-5 font-semibold rounded w-full sm:w-auto">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Create Account
+                </Button>
+              </Link>
+              <Link to="/auth?mode=login&redirect=/my-repairs">
+                <Button variant="outline" className="border-2 border-service-gold text-service-gold hover:bg-service-gold/10 px-6 py-5 font-semibold rounded w-full sm:w-auto">
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
+        
+        <button 
+          onClick={() => setIsSubmitted(false)}
+          className="mt-8 text-sm text-luxury-text-muted hover:text-service-gold transition-colors"
+        >
+          Submit Another Repair Request
+        </button>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-service-bg">
@@ -360,136 +469,144 @@ const Repairs = () => {
             </h2>
             <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
             
-            <Card className="border-2 border-service-gold/20 shadow-service rounded-lg">
-              <CardContent className="p-8 md:p-10">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-luxury-text font-medium">Full Name</Label>
-                      <Input
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
-                        className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
-                        placeholder="Your name"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-luxury-text font-medium">Email</Label>
-                      <Input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                        className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
-                        placeholder="your@email.com"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-luxury-text font-medium">Phone</Label>
-                      <Input
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        required
-                        className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-luxury-text font-medium">Type of Jewelry</Label>
-                      <SimpleSelect
-                        value={formData.jewelryType}
-                        onValueChange={(value) => setFormData({...formData, jewelryType: value})}
-                        placeholder="Select type"
-                        options={[
-                          { value: "ring", label: "Ring" },
-                          { value: "necklace", label: "Necklace" },
-                          { value: "chain", label: "Chain" },
-                          { value: "bracelet", label: "Bracelet" },
-                          { value: "earrings", label: "Earrings" },
-                          { value: "pendant", label: "Pendant" },
-                          { value: "watch", label: "Watch" },
-                          { value: "other", label: "Other" },
-                        ]}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-luxury-text font-medium">What repair is needed?</Label>
-                    <Textarea
-                      value={formData.repairNeeded}
-                      onChange={(e) => setFormData({ ...formData, repairNeeded: e.target.value })}
-                      placeholder="Describe what's wrong and what repair you need..."
-                      rows={3}
-                      required
-                      className="border-luxury-divider focus:border-service-gold bg-white rounded"
-                    />
-                  </div>
-                  
-                  {/* Image Upload */}
-                  <div className="space-y-4">
-                    <Label className="text-luxury-text font-medium">Upload photos (up to 6)</Label>
-                    <div className="border-2 border-dashed border-luxury-divider rounded-lg p-6 text-center hover:border-service-gold/50 transition-colors">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleImageUpload}
-                        className="hidden"
-                        id="repair-image-upload"
-                      />
-                      <label htmlFor="repair-image-upload" className="cursor-pointer">
-                        <Upload className="w-8 h-8 text-luxury-text-muted mx-auto mb-2" />
-                        <p className="text-luxury-text-muted font-body text-sm">Click to upload photos</p>
-                      </label>
+            {isSubmitted ? (
+              <SuccessConfirmation />
+            ) : (
+              <Card className="border-2 border-service-gold/20 shadow-service rounded-lg">
+                <CardContent className="p-8 md:p-10">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text font-medium">Full Name</Label>
+                        <Input
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          required
+                          className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+                          placeholder="Your name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text font-medium">Email</Label>
+                        <Input
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          required
+                          className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+                          placeholder="your@email.com"
+                        />
+                      </div>
                     </div>
                     
-                    {uploadedImages.length > 0 && (
-                      <div className="flex flex-wrap gap-3">
-                        {uploadedImages.map((file, index) => (
-                          <div key={index} className="relative group">
-                            <div className="w-16 h-16 bg-service-neutral rounded-lg flex items-center justify-center overflow-hidden">
-                              <img 
-                                src={URL.createObjectURL(file)} 
-                                alt={`Upload ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => removeImage(index)}
-                              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              ×
-                            </button>
-                          </div>
-                        ))}
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text font-medium">Phone</Label>
+                        <Input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          required
+                          className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+                          placeholder="(555) 123-4567"
+                        />
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-luxury-text font-medium">Additional Notes (optional)</Label>
-                    <Textarea
-                      value={formData.notes}
-                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Any other details we should know..."
-                      rows={2}
-                      className="border-luxury-divider focus:border-service-gold bg-white rounded"
-                    />
-                  </div>
-                  
-                  <Button type="submit" className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold py-6 text-lg rounded">
-                    Get My Insured Shipping Label
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text font-medium">Type of Jewelry</Label>
+                        <SimpleSelect
+                          value={formData.jewelryType}
+                          onValueChange={(value) => setFormData({...formData, jewelryType: value})}
+                          placeholder="Select type"
+                          options={[
+                            { value: "ring", label: "Ring" },
+                            { value: "necklace", label: "Necklace" },
+                            { value: "chain", label: "Chain" },
+                            { value: "bracelet", label: "Bracelet" },
+                            { value: "earrings", label: "Earrings" },
+                            { value: "pendant", label: "Pendant" },
+                            { value: "watch", label: "Watch" },
+                            { value: "other", label: "Other" },
+                          ]}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label className="text-luxury-text font-medium">What repair is needed?</Label>
+                      <Textarea
+                        value={formData.repairNeeded}
+                        onChange={(e) => setFormData({ ...formData, repairNeeded: e.target.value })}
+                        placeholder="Describe what's wrong and what repair you need..."
+                        rows={3}
+                        required
+                        className="border-luxury-divider focus:border-service-gold bg-white rounded"
+                      />
+                    </div>
+                    
+                    {/* Image Upload */}
+                    <div className="space-y-4">
+                      <Label className="text-luxury-text font-medium">Upload photos (up to 6)</Label>
+                      <div className="border-2 border-dashed border-luxury-divider rounded-lg p-6 text-center hover:border-service-gold/50 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleImageUpload}
+                          className="hidden"
+                          id="repair-image-upload"
+                        />
+                        <label htmlFor="repair-image-upload" className="cursor-pointer">
+                          <Upload className="w-8 h-8 text-luxury-text-muted mx-auto mb-2" />
+                          <p className="text-luxury-text-muted font-body text-sm">Click to upload photos</p>
+                        </label>
+                      </div>
+                      
+                      {uploadedImages.length > 0 && (
+                        <div className="flex flex-wrap gap-3">
+                          {uploadedImages.map((file, index) => (
+                            <div key={index} className="relative group">
+                              <div className="w-16 h-16 bg-service-neutral rounded-lg flex items-center justify-center overflow-hidden">
+                                <img 
+                                  src={URL.createObjectURL(file)} 
+                                  alt={`Upload ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => removeImage(index)}
+                                className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label className="text-luxury-text font-medium">Additional Notes (optional)</Label>
+                      <Textarea
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        placeholder="Any other details we should know..."
+                        rows={2}
+                        className="border-luxury-divider focus:border-service-gold bg-white rounded"
+                      />
+                    </div>
+                    
+                    <Button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold py-6 text-lg rounded"
+                    >
+                      {isSubmitting ? "Submitting..." : "Get My Insured Shipping Label"}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </section>
@@ -558,7 +675,7 @@ const Repairs = () => {
                 { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
                 { question: "Do you work with diamonds and gemstones?", answer: "Yes. We tighten, secure, replace, and restore stones of all types." },
                 { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
-                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping." }
+                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping. Create an account to view your repair history anytime." }
               ]}
             />
           </div>

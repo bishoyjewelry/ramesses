@@ -285,37 +285,58 @@ export type Database = {
       }
       repair_quotes: {
         Row: {
+          approved: boolean | null
           created_at: string
           description: string
           email: string
           id: string
           image_urls: string[] | null
+          item_type: string | null
           name: string
           phone: string | null
           preferred_contact: string | null
+          quoted_price: number | null
+          repair_type: string | null
           status: string | null
+          tracking_number: string | null
+          updated_at: string | null
+          user_id: string | null
         }
         Insert: {
+          approved?: boolean | null
           created_at?: string
           description: string
           email: string
           id?: string
           image_urls?: string[] | null
+          item_type?: string | null
           name: string
           phone?: string | null
           preferred_contact?: string | null
+          quoted_price?: number | null
+          repair_type?: string | null
           status?: string | null
+          tracking_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
+          approved?: boolean | null
           created_at?: string
           description?: string
           email?: string
           id?: string
           image_urls?: string[] | null
+          item_type?: string | null
           name?: string
           phone?: string | null
           preferred_contact?: string | null
+          quoted_price?: number | null
+          repair_type?: string | null
           status?: string | null
+          tracking_number?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

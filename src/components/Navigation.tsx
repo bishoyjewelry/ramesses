@@ -159,11 +159,18 @@ export const Navigation = () => {
                       My Account
                     </Link>
                     <Link
+                      to="/my-repairs"
+                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      My Repairs
+                    </Link>
+                    <Link
                       to="/orders"
                       className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
                       onClick={() => setIsOpen(false)}
                     >
-                      My Orders / Repairs
+                      My Orders
                     </Link>
                     <Link
                       to="/my-designs"
