@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 // Lazy load pages with heavy Radix UI dependencies
 const Repairs = React.lazy(() => import("./pages/Repairs"));
 const Custom = React.lazy(() => import("./pages/Custom"));
+const Admin = React.lazy(() => import("./pages/Admin"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<Suspense fallback={<PageLoader />}><Admin /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
