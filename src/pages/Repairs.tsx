@@ -13,19 +13,8 @@ import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { SimpleSelect } from "@/components/SimpleSelect";
+import { SimpleAccordion } from "@/components/SimpleAccordion";
 
 const Repairs = () => {
   const { t } = useLanguage();
@@ -412,21 +401,21 @@ const Repairs = () => {
                     </div>
                     <div className="space-y-2">
                       <Label className="text-luxury-text font-medium">Type of Jewelry</Label>
-                      <Select onValueChange={(value) => setFormData({...formData, jewelryType: value})}>
-                        <SelectTrigger className="h-12 border-luxury-divider focus:border-service-gold bg-white rounded">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-luxury-divider">
-                          <SelectItem value="ring">Ring</SelectItem>
-                          <SelectItem value="necklace">Necklace</SelectItem>
-                          <SelectItem value="chain">Chain</SelectItem>
-                          <SelectItem value="bracelet">Bracelet</SelectItem>
-                          <SelectItem value="earrings">Earrings</SelectItem>
-                          <SelectItem value="pendant">Pendant</SelectItem>
-                          <SelectItem value="watch">Watch</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect
+                        value={formData.jewelryType}
+                        onValueChange={(value) => setFormData({...formData, jewelryType: value})}
+                        placeholder="Select type"
+                        options={[
+                          { value: "ring", label: "Ring" },
+                          { value: "necklace", label: "Necklace" },
+                          { value: "chain", label: "Chain" },
+                          { value: "bracelet", label: "Bracelet" },
+                          { value: "earrings", label: "Earrings" },
+                          { value: "pendant", label: "Pendant" },
+                          { value: "watch", label: "Watch" },
+                          { value: "other", label: "Other" },
+                        ]}
+                      />
                     </div>
                   </div>
                   
@@ -562,47 +551,16 @@ const Repairs = () => {
             </h2>
             <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
             
-            <Accordion type="single" collapsible className="space-y-4">
-              {[
-                {
-                  q: "How long do repairs take?",
-                  a: "Most repairs are completed in 3–5 business days once approved."
-                },
-                {
-                  q: "Is shipping insured?",
-                  a: "Yes. Every shipment is insured both ways."
-                },
-                {
-                  q: "What if I decline the repair quote?",
-                  a: "We ship your jewelry back at no cost."
-                },
-                {
-                  q: "Do you work with diamonds and gemstones?",
-                  a: "Yes. We tighten, secure, replace, and restore stones of all types."
-                },
-                {
-                  q: "Do you repair luxury jewelry?",
-                  a: "Yes. We handle high-end and sentimental pieces with extreme care."
-                },
-                {
-                  q: "How do I track my repair?",
-                  a: "You'll receive email updates at every stage, from intake to shipping."
-                }
-              ].map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-luxury-divider rounded-lg px-6 data-[state=open]:border-service-gold/50 data-[state=open]:shadow-service transition-all bg-white"
-                >
-                  <AccordionTrigger className="text-lg font-semibold text-luxury-text hover:text-service-gold py-5 font-sans">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-luxury-text-muted text-base pb-5 font-body">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <SimpleAccordion
+              items={[
+                { question: "How long do repairs take?", answer: "Most repairs are completed in 3–5 business days once approved." },
+                { question: "Is shipping insured?", answer: "Yes. Every shipment is insured both ways." },
+                { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
+                { question: "Do you work with diamonds and gemstones?", answer: "Yes. We tighten, secure, replace, and restore stones of all types." },
+                { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
+                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping." }
+              ]}
+            />
           </div>
         </div>
       </section>

@@ -8,19 +8,8 @@ import { toast } from "sonner";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Upload, Sparkles, PenTool, Gem, Shield, Truck, DollarSign, Crown, Users } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { SimpleSelect } from "@/components/SimpleSelect";
+import { SimpleAccordion } from "@/components/SimpleAccordion";
 
 const Custom = () => {
   const [formData, setFormData] = useState({
@@ -210,70 +199,70 @@ const Custom = () => {
                     {/* Piece Type */}
                     <div className="space-y-2">
                       <Label className="text-lg font-medium text-luxury-text">What do you want to create?</Label>
-                      <Select onValueChange={(value) => setFormData({...formData, pieceType: value})} required>
-                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
-                          <SelectValue placeholder="Select piece type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-luxury-bg border-luxury-divider">
-                          <SelectItem value="ring">Ring</SelectItem>
-                          <SelectItem value="pendant">Pendant</SelectItem>
-                          <SelectItem value="necklace">Necklace</SelectItem>
-                          <SelectItem value="bracelet">Bracelet</SelectItem>
-                          <SelectItem value="earrings">Earrings</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect
+                        value={formData.pieceType}
+                        onValueChange={(value) => setFormData({...formData, pieceType: value})}
+                        placeholder="Select piece type"
+                        options={[
+                          { value: "ring", label: "Ring" },
+                          { value: "pendant", label: "Pendant" },
+                          { value: "necklace", label: "Necklace" },
+                          { value: "bracelet", label: "Bracelet" },
+                          { value: "earrings", label: "Earrings" },
+                          { value: "other", label: "Other" },
+                        ]}
+                      />
                     </div>
                     
                     {/* Metal Preference */}
                     <div className="space-y-2">
                       <Label className="text-lg font-medium text-luxury-text">Metal preference</Label>
-                      <Select onValueChange={(value) => setFormData({...formData, metal: value})}>
-                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
-                          <SelectValue placeholder="Select metal" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-luxury-bg border-luxury-divider">
-                          <SelectItem value="14k-yellow">14k Yellow Gold</SelectItem>
-                          <SelectItem value="14k-white">14k White Gold</SelectItem>
-                          <SelectItem value="14k-rose">14k Rose Gold</SelectItem>
-                          <SelectItem value="18k">18k Gold</SelectItem>
-                          <SelectItem value="platinum">Platinum</SelectItem>
-                          <SelectItem value="not-sure">Not Sure Yet</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect
+                        value={formData.metal}
+                        onValueChange={(value) => setFormData({...formData, metal: value})}
+                        placeholder="Select metal"
+                        options={[
+                          { value: "14k-yellow", label: "14k Yellow Gold" },
+                          { value: "14k-white", label: "14k White Gold" },
+                          { value: "14k-rose", label: "14k Rose Gold" },
+                          { value: "18k", label: "18k Gold" },
+                          { value: "platinum", label: "Platinum" },
+                          { value: "not-sure", label: "Not Sure Yet" },
+                        ]}
+                      />
                     </div>
                     
                     {/* Stone Preference */}
                     <div className="space-y-2">
                       <Label className="text-lg font-medium text-luxury-text">Stone preference</Label>
-                      <Select onValueChange={(value) => setFormData({...formData, stone: value})}>
-                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
-                          <SelectValue placeholder="Select stone" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-luxury-bg border-luxury-divider">
-                          <SelectItem value="diamond">Diamond</SelectItem>
-                          <SelectItem value="moissanite">Moissanite</SelectItem>
-                          <SelectItem value="gemstones">Gemstones</SelectItem>
-                          <SelectItem value="no-stones">No Stones</SelectItem>
-                          <SelectItem value="not-sure">Not Sure</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect
+                        value={formData.stone}
+                        onValueChange={(value) => setFormData({...formData, stone: value})}
+                        placeholder="Select stone"
+                        options={[
+                          { value: "diamond", label: "Diamond" },
+                          { value: "moissanite", label: "Moissanite" },
+                          { value: "gemstones", label: "Gemstones" },
+                          { value: "no-stones", label: "No Stones" },
+                          { value: "not-sure", label: "Not Sure" },
+                        ]}
+                      />
                     </div>
                     
                     {/* Budget */}
                     <div className="space-y-2">
                       <Label className="text-lg font-medium text-luxury-text">Budget range</Label>
-                      <Select onValueChange={(value) => setFormData({...formData, budget: value})}>
-                        <SelectTrigger className="h-14 border-luxury-divider focus:border-luxury-champagne text-lg bg-luxury-bg rounded-lg">
-                          <SelectValue placeholder="Select budget" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-luxury-bg border-luxury-divider">
-                          <SelectItem value="500-1000">$500 – $1,000</SelectItem>
-                          <SelectItem value="1000-2500">$1,000 – $2,500</SelectItem>
-                          <SelectItem value="2500-5000">$2,500 – $5,000</SelectItem>
-                          <SelectItem value="5000+">$5,000+</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <SimpleSelect
+                        value={formData.budget}
+                        onValueChange={(value) => setFormData({...formData, budget: value})}
+                        placeholder="Select budget"
+                        options={[
+                          { value: "500-1000", label: "$500 – $1,000" },
+                          { value: "1000-2500", label: "$1,000 – $2,500" },
+                          { value: "2500-5000", label: "$2,500 – $5,000" },
+                          { value: "5000+", label: "$5,000+" },
+                        ]}
+                      />
                     </div>
                     
                     {/* Image Upload */}
@@ -505,47 +494,16 @@ const Custom = () => {
               <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
             </div>
             
-            <Accordion type="single" collapsible className="space-y-4">
-              {[
-                {
-                  q: "How does the AI design process work?",
-                  a: "AI generates concepts from your inspiration. Our master jeweler then refines them into a real, manufacturable design."
-                },
-                {
-                  q: "Is the final design AI-made or human-made?",
-                  a: "AI provides inspiration. The final CAD and finished piece are created by real jewelers with 30+ years of NYC bench experience."
-                },
-                {
-                  q: "How long does the process take?",
-                  a: "Most projects take 3–5 weeks from final approval to delivery."
-                },
-                {
-                  q: "What if I don't like the AI concepts?",
-                  a: "We regenerate new ideas or adjust concepts until you're satisfied."
-                },
-                {
-                  q: "Does this work for engagement rings?",
-                  a: "Yes — our Custom Lab creates engagement rings, wedding bands, pendants, and more."
-                },
-                {
-                  q: "When will the Creator Marketplace launch?",
-                  a: "We expect to open creator publishing in 2025."
-                }
-              ].map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border border-luxury-divider rounded-xl px-6 data-[state=open]:border-luxury-champagne/50 data-[state=open]:shadow-soft transition-all bg-luxury-bg"
-                >
-                  <AccordionTrigger className="text-lg font-semibold text-luxury-text hover:text-luxury-champagne py-6 font-sans">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-luxury-text-muted text-lg pb-6 font-body">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <SimpleAccordion
+              items={[
+                { question: "How does the AI design process work?", answer: "AI generates concepts from your inspiration. Our master jeweler then refines them into a real, manufacturable design." },
+                { question: "Is the final design AI-made or human-made?", answer: "AI provides inspiration. The final CAD and finished piece are created by real jewelers with 30+ years of NYC bench experience." },
+                { question: "How long does the process take?", answer: "Most projects take 3–5 weeks from final approval to delivery." },
+                { question: "What if I don't like the AI concepts?", answer: "We regenerate new ideas or adjust concepts until you're satisfied." },
+                { question: "Does this work for engagement rings?", answer: "Yes — our Custom Lab creates engagement rings, wedding bands, pendants, and more." },
+                { question: "When will the Creator Marketplace launch?", answer: "We expect to open creator publishing in 2025." }
+              ]}
+            />
           </div>
         </div>
       </section>
