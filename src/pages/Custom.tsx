@@ -20,7 +20,7 @@ type DesignFlow = "any" | "engagement";
 
 const Custom = () => {
   const { user, isCreator } = useAuth();
-  const [activeFlow, setActiveFlow] = useState<DesignFlow>("any");
+  const [activeFlow, setActiveFlow] = useState<DesignFlow>("engagement");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -269,27 +269,6 @@ const Custom = () => {
                 {/* Flow Selector Tabs */}
                 <div className="grid md:grid-cols-2 gap-4 mb-8">
                   <button
-                    onClick={() => setActiveFlow("any")}
-                    className={`p-6 rounded-xl border-2 transition-all text-left ${
-                      activeFlow === "any"
-                        ? "border-luxury-champagne bg-luxury-champagne/10 shadow-luxury"
-                        : "border-luxury-divider bg-luxury-bg hover:border-luxury-champagne/50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-4 mb-3">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        activeFlow === "any" ? "bg-luxury-champagne" : "bg-luxury-divider"
-                      }`}>
-                        <Gem className={`w-6 h-6 ${activeFlow === "any" ? "text-luxury-text" : "text-luxury-text-muted"}`} />
-                      </div>
-                      <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design Any Jewelry</h3>
-                    </div>
-                    <p className="text-luxury-text-muted font-body text-sm">
-                      Rings, pendants, chains, bracelets, earrings, and more
-                    </p>
-                  </button>
-                  
-                  <button
                     onClick={() => setActiveFlow("engagement")}
                     className={`p-6 rounded-xl border-2 transition-all text-left ${
                       activeFlow === "engagement"
@@ -307,6 +286,27 @@ const Custom = () => {
                     </div>
                     <p className="text-luxury-text-muted font-body text-sm">
                       Custom engagement rings with specific stone and style options
+                    </p>
+                  </button>
+                  
+                  <button
+                    onClick={() => setActiveFlow("any")}
+                    className={`p-6 rounded-xl border-2 transition-all text-left ${
+                      activeFlow === "any"
+                        ? "border-luxury-champagne bg-luxury-champagne/10 shadow-luxury"
+                        : "border-luxury-divider bg-luxury-bg hover:border-luxury-champagne/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                        activeFlow === "any" ? "bg-luxury-champagne" : "bg-luxury-divider"
+                      }`}>
+                        <Gem className={`w-6 h-6 ${activeFlow === "any" ? "text-luxury-text" : "text-luxury-text-muted"}`} />
+                      </div>
+                      <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design Any Jewelry</h3>
+                    </div>
+                    <p className="text-luxury-text-muted font-body text-sm">
+                      Rings, pendants, chains, bracelets, earrings, and more
                     </p>
                   </button>
                 </div>
