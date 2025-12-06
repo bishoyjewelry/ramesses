@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import bannerRing from "@/assets/banner-ring.png";
 
@@ -34,13 +34,14 @@ export const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Link to="/repairs">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-6 text-lg group">
-                {t('hero.cta.quote')}
+                {t('hero.cta.primary')}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link to="/shop">
+            <Link to="/contact">
               <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-8 py-6 text-lg">
-                {t('hero.cta.shop')}
+                <MapPin className="mr-2 h-5 w-5" />
+                {t('hero.cta.secondary')}
               </Button>
             </Link>
           </div>
@@ -51,12 +52,12 @@ export const Hero = () => {
               <div className="text-sm text-white/70 uppercase tracking-wide">Years</div>
             </div>
             <div className="text-center border-x border-primary/30">
-              <div className="text-3xl font-bold text-primary mb-2">In-House</div>
-              <div className="text-sm text-white/70 uppercase tracking-wide">All Repairs</div>
+              <div className="text-3xl font-bold text-primary mb-2">Nationwide</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Mail-In</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">Same-Day</div>
-              <div className="text-sm text-white/70 uppercase tracking-wide">Available</div>
+              <div className="text-3xl font-bold text-primary mb-2">Insured</div>
+              <div className="text-sm text-white/70 uppercase tracking-wide">Shipping</div>
             </div>
           </div>
         </div>
