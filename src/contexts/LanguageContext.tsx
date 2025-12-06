@@ -22,6 +22,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.title': 'Nationwide Mail-In Jewelry Repair by a 47th Street Master Jeweler',
     'hero.subtitle': 'Ship your jewelry from anywhere in the U.S. 30+ years of experience on NYC\'s Diamond District.',
     'hero.cta.primary': 'Start Mail-In Repair',
+    'hero.cta.custom': 'Custom Jewelry',
+    'hero.cta.shop': 'Shop Jewelry',
     'hero.cta.secondary': 'NYC In-Person Appointments',
     
     // Mail-In Steps
@@ -163,6 +165,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.title': 'Reparación de Joyas por Correo en Todo EE.UU.',
     'hero.subtitle': 'Puedes enviarnos tus joyas desde cualquier parte de Estados Unidos para reparación profesional. 30+ años de experiencia en el Distrito de Diamantes de NYC.',
     'hero.cta.primary': 'Iniciar Reparación por Correo',
+    'hero.cta.custom': 'Joyería Personalizada',
+    'hero.cta.shop': 'Comprar Joyería',
     'hero.cta.secondary': 'Cita en Persona en NYC',
     
     // Mail-In Steps

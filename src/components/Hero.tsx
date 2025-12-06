@@ -31,15 +31,25 @@ export const Hero = () => {
             {t('hero.subtitle')}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <Link to="/repairs">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-6 text-lg group">
+              <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-6 text-lg group">
                 {t('hero.cta.primary')}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
+            <Link to="/custom">
+              <Button size="lg" variant="outline" className="w-full border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
+                {t('hero.cta.custom')}
+              </Button>
+            </Link>
+            <Link to="/shop">
+              <Button size="lg" variant="outline" className="w-full border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
+                {t('hero.cta.shop')}
+              </Button>
+            </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-8 py-6 text-lg">
+              <Button size="lg" variant="outline" className="w-full border-2 border-white/70 text-white/90 hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
                 <MapPin className="mr-2 h-5 w-5" />
                 {t('hero.cta.secondary')}
               </Button>
