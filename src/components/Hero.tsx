@@ -39,17 +39,17 @@ export const Hero = () => {
               </Button>
             </Link>
             <Link to="/custom">
-              <Button size="lg" variant="outline" className="w-full border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
+              <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-6 text-lg">
                 {t('hero.cta.custom')}
               </Button>
             </Link>
             <Link to="/shop">
-              <Button size="lg" variant="outline" className="w-full border-2 border-white text-white hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
+              <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-6 text-lg">
                 {t('hero.cta.shop')}
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="w-full border-2 border-white/70 text-white/90 hover:bg-white hover:text-luxury-charcoal font-semibold px-6 py-6 text-lg">
+              <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-6 text-lg">
                 <MapPin className="mr-2 h-5 w-5" />
                 {t('hero.cta.secondary')}
               </Button>
