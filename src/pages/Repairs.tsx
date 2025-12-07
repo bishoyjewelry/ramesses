@@ -3,10 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
   Wrench, Shield, DollarSign, Package, Video, FileText, 
   Sparkles, Lock, CheckCircle, ArrowRight, Star, Quote,
-  Upload, UserPlus, LogIn
+  Upload, UserPlus, LogIn, MapPin, Truck, Clock, Building
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,20 +20,55 @@ import { SimpleAccordion } from "@/components/SimpleAccordion";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
+type FulfillmentMethod = "mail_in" | "drop_off" | "courier";
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  jewelryType: string;
+  repairNeeded: string;
+  notes: string;
+  // Fulfillment
+  fulfillmentMethod: FulfillmentMethod;
+  // Drop-off specific
+  preferredDropoffDate: string;
+  preferredDropoffTime: string;
+  dropoffNotes: string;
+  // Courier specific
+  streetAddress: string;
+  city: string;
+  state: string;
+  zip: string;
+  pickupWindow: string;
+  courierNotes: string;
+}
+
 const Repairs = () => {
   const { t } = useLanguage();
   const { user } = useAuth();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
     jewelryType: "",
     repairNeeded: "",
     notes: "",
+    fulfillmentMethod: "mail_in",
+    preferredDropoffDate: "",
+    preferredDropoffTime: "",
+    dropoffNotes: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    zip: "",
+    pickupWindow: "",
+    courierNotes: "",
   });
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -54,30 +90,31 @@ const Repairs = () => {
     setIsSubmitting(true);
     
     try {
-      // Build the repair quote data
-      const repairData: {
-        name: string;
-        email: string;
-        phone: string;
-        item_type: string;
-        repair_type: string;
-        description: string;
-        status: string;
-        user_id?: string;
-      } = {
+      // Build the repair quote data based on fulfillment method
+      const repairData = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         item_type: formData.jewelryType,
         repair_type: formData.repairNeeded,
         description: formData.notes || formData.repairNeeded,
-        status: 'pending',
+        status: 'pending' as const,
+        fulfillment_method: formData.fulfillmentMethod,
+        preferred_dropoff_time: formData.fulfillmentMethod === "drop_off" 
+          ? (formData.preferredDropoffDate ? `${formData.preferredDropoffDate} - ${formData.preferredDropoffTime || 'Any time'}` : formData.preferredDropoffTime) 
+          : null,
+        logistics_notes: formData.fulfillmentMethod === "drop_off" 
+          ? formData.dropoffNotes 
+          : formData.fulfillmentMethod === "courier" 
+            ? formData.courierNotes 
+            : null,
+        street_address: formData.fulfillmentMethod === "courier" ? formData.streetAddress : null,
+        city: formData.fulfillmentMethod === "courier" ? formData.city : null,
+        state: formData.fulfillmentMethod === "courier" ? formData.state : null,
+        zip: formData.fulfillmentMethod === "courier" ? formData.zip : null,
+        pickup_window: formData.fulfillmentMethod === "courier" ? formData.pickupWindow : null,
+        user_id: user?.id || null,
       };
-      
-      // Attach user_id if authenticated
-      if (user) {
-        repairData.user_id = user.id;
-      }
       
       const { data: insertedRepair, error } = await supabase
         .from('repair_quotes')
@@ -98,12 +135,16 @@ const Repairs = () => {
         });
         console.log('Repair confirmation email sent');
       } catch (emailError) {
-        // Don't fail the submission if email fails
         console.error('Failed to send confirmation email:', emailError);
       }
       
+      setSubmittedData(formData);
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", jewelryType: "", repairNeeded: "", notes: "" });
+      setFormData({ 
+        name: "", email: "", phone: "", jewelryType: "", repairNeeded: "", notes: "",
+        fulfillmentMethod: "mail_in", preferredDropoffDate: "", preferredDropoffTime: "",
+        dropoffNotes: "", streetAddress: "", city: "", state: "", zip: "", pickupWindow: "", courierNotes: ""
+      });
       setUploadedImages([]);
     } catch (error) {
       console.error('Error submitting repair quote:', error);
@@ -121,67 +162,332 @@ const Repairs = () => {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Success confirmation component
-  const SuccessConfirmation = () => (
-    <Card className="border-2 border-service-gold/30 shadow-service rounded-lg">
-      <CardContent className="p-8 md:p-10 text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-8 h-8 text-green-600" />
-        </div>
-        <h3 className="text-2xl font-sans font-bold text-luxury-text mb-4">
-          Your Repair Request Has Been Submitted!
-        </h3>
-        
-        {user ? (
-          // Logged-in user confirmation
-          <>
-            <p className="text-luxury-text-muted mb-8 font-body">
-              We'll send your insured shipping label shortly. You can track your repair status anytime in your account.
-            </p>
+  // Success confirmation component with method-specific messaging
+  const SuccessConfirmation = () => {
+    const method = submittedData?.fulfillmentMethod || "mail_in";
+    
+    return (
+      <Card className="border-2 border-service-gold/30 shadow-service rounded-lg">
+        <CardContent className="p-8 md:p-10 text-center">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-8 h-8 text-green-600" />
+          </div>
+          
+          {method === "mail_in" && (
+            <>
+              <h3 className="text-2xl font-sans font-bold text-luxury-text mb-4">
+                Your Mail-In Repair Request Has Been Submitted!
+              </h3>
+              <p className="text-luxury-text-muted mb-6 font-body">
+                We'll email you an insured shipping label and packing instructions shortly.
+              </p>
+            </>
+          )}
+          
+          {method === "drop_off" && (
+            <>
+              <h3 className="text-2xl font-sans font-bold text-luxury-text mb-4">
+                Your In-Person Drop Off Has Been Scheduled!
+              </h3>
+              <div className="bg-luxury-bg-warm rounded-lg p-6 mb-6 text-left">
+                <h4 className="font-semibold text-luxury-text mb-4 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-service-gold" />
+                  Drop-Off Details
+                </h4>
+                <div className="space-y-2 text-luxury-text-muted">
+                  <p><strong>Location:</strong> 47th Street, NYC (Diamond District)</p>
+                  <p><strong>Hours:</strong> Mon–Sat, 10am – 6pm</p>
+                  {submittedData?.preferredDropoffDate && (
+                    <p><strong>Your Preferred Date:</strong> {submittedData.preferredDropoffDate}</p>
+                  )}
+                  {submittedData?.preferredDropoffTime && (
+                    <p><strong>Preferred Time:</strong> {submittedData.preferredDropoffTime}</p>
+                  )}
+                </div>
+              </div>
+              <p className="text-sm text-luxury-text-muted mb-6 font-body">
+                We'll confirm your drop-off time by email if needed.
+              </p>
+            </>
+          )}
+          
+          {method === "courier" && (
+            <>
+              <h3 className="text-2xl font-sans font-bold text-luxury-text mb-4">
+                Your Courier Pickup Request Has Been Submitted!
+              </h3>
+              <div className="bg-luxury-bg-warm rounded-lg p-6 mb-6 text-left">
+                <h4 className="font-semibold text-luxury-text mb-4 flex items-center gap-2">
+                  <Truck className="w-5 h-5 text-service-gold" />
+                  Pickup Details
+                </h4>
+                <div className="space-y-2 text-luxury-text-muted">
+                  <p><strong>Address:</strong> {submittedData?.streetAddress}</p>
+                  <p>{submittedData?.city}, {submittedData?.state} {submittedData?.zip}</p>
+                  {submittedData?.pickupWindow && (
+                    <p><strong>Preferred Window:</strong> {submittedData.pickupWindow}</p>
+                  )}
+                </div>
+              </div>
+              <p className="text-sm text-luxury-text-muted mb-6 font-body">
+                We'll review your request and confirm your pickup time by email or SMS.
+              </p>
+            </>
+          )}
+          
+          {user ? (
             <Link to="/my-repairs">
               <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded">
                 View My Repairs
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-          </>
-        ) : (
-          // Guest user confirmation
-          <>
-            <p className="text-luxury-text-muted mb-4 font-body">
-              We'll send your insured shipping label to your email shortly.
-            </p>
-            <p className="text-luxury-text mb-6 font-body font-medium">
-              Want to track your repair status?
-            </p>
-            <p className="text-luxury-text-muted mb-8 font-body text-sm">
-              Create a free Ramessés account to see updates, shipping instructions, and repair history.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/auth?mode=signup&redirect=/my-repairs">
-                <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-6 py-5 font-semibold rounded w-full sm:w-auto">
-                  <UserPlus className="w-4 h-4 mr-2" />
-                  Create Account
-                </Button>
-              </Link>
-              <Link to="/auth?mode=login&redirect=/my-repairs">
-                <Button variant="outline" className="border-2 border-service-gold text-service-gold hover:bg-service-gold/10 px-6 py-5 font-semibold rounded w-full sm:w-auto">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Sign In
-                </Button>
-              </Link>
-            </div>
-          </>
-        )}
-        
-        <button 
-          onClick={() => setIsSubmitted(false)}
-          className="mt-8 text-sm text-luxury-text-muted hover:text-service-gold transition-colors"
+          ) : (
+            <>
+              <p className="text-luxury-text mb-6 font-body font-medium">
+                Want to track your repair status?
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/auth?mode=signup&redirect=/my-repairs">
+                  <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-6 py-5 font-semibold rounded w-full sm:w-auto">
+                    <UserPlus className="w-4 h-4 mr-2" />
+                    Create Account
+                  </Button>
+                </Link>
+                <Link to="/auth?mode=login&redirect=/my-repairs">
+                  <Button variant="outline" className="border-2 border-service-gold text-service-gold hover:bg-service-gold/10 px-6 py-5 font-semibold rounded w-full sm:w-auto">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
+          
+          <button 
+            onClick={() => { setIsSubmitted(false); setSubmittedData(null); }}
+            className="mt-8 text-sm text-luxury-text-muted hover:text-service-gold transition-colors"
+          >
+            Submit Another Repair Request
+          </button>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  // Fulfillment method selector component
+  const FulfillmentMethodSelector = () => (
+    <div className="mb-8 p-6 bg-service-neutral rounded-lg">
+      <h3 className="text-lg font-sans font-bold text-luxury-text mb-4 flex items-center gap-2">
+        <Truck className="w-5 h-5 text-service-gold" />
+        How would you like to get your jewelry to us?
+      </h3>
+      
+      <RadioGroup 
+        value={formData.fulfillmentMethod} 
+        onValueChange={(value) => setFormData({...formData, fulfillmentMethod: value as FulfillmentMethod})}
+        className="space-y-3"
+      >
+        <label 
+          className={`flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+            formData.fulfillmentMethod === "mail_in" 
+              ? "border-service-gold bg-service-gold/5" 
+              : "border-luxury-divider hover:border-service-gold/50 bg-white"
+          }`}
         >
-          Submit Another Repair Request
-        </button>
-      </CardContent>
-    </Card>
+          <RadioGroupItem value="mail_in" id="mail_in" className="mt-1" />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Package className="w-5 h-5 text-service-gold" />
+              <span className="font-semibold text-luxury-text">Mail-In Kit (Nationwide)</span>
+            </div>
+            <p className="text-sm text-luxury-text-muted">
+              We'll send you an insured shipping label and secure packaging.
+            </p>
+          </div>
+        </label>
+        
+        <label 
+          className={`flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+            formData.fulfillmentMethod === "drop_off" 
+              ? "border-service-gold bg-service-gold/5" 
+              : "border-luxury-divider hover:border-service-gold/50 bg-white"
+          }`}
+        >
+          <RadioGroupItem value="drop_off" id="drop_off" className="mt-1" />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <MapPin className="w-5 h-5 text-service-gold" />
+              <span className="font-semibold text-luxury-text">Drop Off In Person (NYC)</span>
+            </div>
+            <p className="text-sm text-luxury-text-muted">
+              Visit our 47th Street location in the Diamond District.
+            </p>
+          </div>
+        </label>
+        
+        <label 
+          className={`flex items-start gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+            formData.fulfillmentMethod === "courier" 
+              ? "border-service-gold bg-service-gold/5" 
+              : "border-luxury-divider hover:border-service-gold/50 bg-white"
+          }`}
+        >
+          <RadioGroupItem value="courier" id="courier" className="mt-1" />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Truck className="w-5 h-5 text-service-gold" />
+              <span className="font-semibold text-luxury-text">Local Courier Pickup (Manhattan & North Jersey)</span>
+            </div>
+            <p className="text-sm text-luxury-text-muted">
+              We'll send a courier to pick up your jewelry from your location.
+            </p>
+          </div>
+        </label>
+      </RadioGroup>
+    </div>
+  );
+
+  // Drop-off specific fields
+  const DropOffFields = () => (
+    <div className="space-y-6 p-6 bg-luxury-bg-warm rounded-lg mb-6">
+      <h4 className="font-semibold text-luxury-text flex items-center gap-2">
+        <Clock className="w-5 h-5 text-service-gold" />
+        Drop-Off Preferences
+      </h4>
+      
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label className="text-luxury-text font-medium">Preferred Drop-Off Date</Label>
+          <Input
+            type="date"
+            value={formData.preferredDropoffDate}
+            onChange={(e) => setFormData({ ...formData, preferredDropoffDate: e.target.value })}
+            className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+            min={new Date().toISOString().split('T')[0]}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-luxury-text font-medium">Preferred Time Window</Label>
+          <SimpleSelect
+            value={formData.preferredDropoffTime}
+            onValueChange={(value) => setFormData({...formData, preferredDropoffTime: value})}
+            placeholder="Select time"
+            options={[
+              { value: "morning", label: "Morning (10am - 12pm)" },
+              { value: "afternoon", label: "Afternoon (12pm - 4pm)" },
+              { value: "evening", label: "Evening (4pm - 6pm)" },
+            ]}
+          />
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <Label className="text-luxury-text font-medium">Notes for Drop-Off (optional)</Label>
+        <Textarea
+          value={formData.dropoffNotes}
+          onChange={(e) => setFormData({ ...formData, dropoffNotes: e.target.value })}
+          placeholder="Any special instructions for your visit..."
+          rows={2}
+          className="border-luxury-divider focus:border-service-gold bg-white rounded"
+        />
+      </div>
+      
+      <div className="p-4 bg-white rounded-lg border border-luxury-divider">
+        <p className="text-sm text-luxury-text font-medium mb-2">📍 Drop-Off Location</p>
+        <p className="text-sm text-luxury-text-muted">47th Street, NYC (Diamond District)</p>
+        <p className="text-sm text-luxury-text-muted">Hours: Mon–Sat, 10am – 6pm</p>
+      </div>
+    </div>
+  );
+
+  // Courier specific fields
+  const CourierFields = () => (
+    <div className="space-y-6 p-6 bg-luxury-bg-warm rounded-lg mb-6">
+      <h4 className="font-semibold text-luxury-text flex items-center gap-2">
+        <Building className="w-5 h-5 text-service-gold" />
+        Pickup Address
+      </h4>
+      
+      <div className="space-y-2">
+        <Label className="text-luxury-text font-medium">Street Address *</Label>
+        <Input
+          value={formData.streetAddress}
+          onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
+          required
+          className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+          placeholder="123 Main Street, Apt 4B"
+        />
+      </div>
+      
+      <div className="grid sm:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label className="text-luxury-text font-medium">City *</Label>
+          <Input
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            required
+            className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+            placeholder="New York"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-luxury-text font-medium">State *</Label>
+          <SimpleSelect
+            value={formData.state}
+            onValueChange={(value) => setFormData({...formData, state: value})}
+            placeholder="State"
+            options={[
+              { value: "NY", label: "New York" },
+              { value: "NJ", label: "New Jersey" },
+            ]}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-luxury-text font-medium">ZIP Code *</Label>
+          <Input
+            value={formData.zip}
+            onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
+            required
+            className="border-luxury-divider focus:border-service-gold bg-white rounded h-12"
+            placeholder="10001"
+          />
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <Label className="text-luxury-text font-medium">Preferred Pickup Window *</Label>
+        <SimpleSelect
+          value={formData.pickupWindow}
+          onValueChange={(value) => setFormData({...formData, pickupWindow: value})}
+          placeholder="Select a time window"
+          options={[
+            { value: "weekday_morning", label: "Weekday Morning (9am - 12pm)" },
+            { value: "weekday_afternoon", label: "Weekday Afternoon (12pm - 5pm)" },
+            { value: "weekday_evening", label: "Weekday Evening (5pm - 8pm)" },
+            { value: "saturday", label: "Saturday (10am - 4pm)" },
+          ]}
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label className="text-luxury-text font-medium">Building Access Notes (optional)</Label>
+        <Textarea
+          value={formData.courierNotes}
+          onChange={(e) => setFormData({ ...formData, courierNotes: e.target.value })}
+          placeholder="Apartment number, doorman, gate code, office name, etc."
+          rows={2}
+          className="border-luxury-divider focus:border-service-gold bg-white rounded"
+        />
+      </div>
+      
+      <div className="p-4 bg-service-gold/10 rounded-lg border border-service-gold/20">
+        <p className="text-sm text-luxury-text">
+          🚚 <strong>Available in Manhattan and select North Jersey areas.</strong><br/>
+          We will confirm your pickup time by email or SMS.
+        </p>
+      </div>
+    </div>
   );
 
   return (
@@ -190,19 +496,18 @@ const Repairs = () => {
       
       {/* ==================== SECTION 1 — HERO ==================== */}
       <section className="pt-32 pb-24 bg-service-bg relative overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-service-gold/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-service-gold/5 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans service-heading font-bold mb-6 text-white leading-tight">
-              Nationwide Mail-In Jewelry Repairs.<br />
-              <span className="text-service-gold">Trusted by 47th Street.</span>
+              Professional Jewelry Repairs.<br />
+              <span className="text-service-gold">Your Way.</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-service-text-muted mb-10 max-w-3xl mx-auto leading-relaxed font-body">
-              Professional repairs, polishing, sizing, stone tightening, prong work, and restorations — expertly completed by a master jeweler with 30+ years experience.
+              Mail-in nationwide, drop off in NYC, or request local courier pickup in Manhattan & North Jersey.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -210,7 +515,7 @@ const Repairs = () => {
                 onClick={scrollToForm}
                 className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded"
               >
-                Start Your Mail-In Repair
+                Start Your Repair Request
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
@@ -222,7 +527,6 @@ const Repairs = () => {
               </Button>
             </div>
             
-            {/* Hero Image Placeholder */}
             <div className="relative rounded-xl overflow-hidden bg-service-bg-secondary aspect-[16/9] max-w-4xl mx-auto border border-service-gold/20">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-service-text-muted">
@@ -280,7 +584,7 @@ const Repairs = () => {
       <section id="how-it-works" className="py-20 bg-service-bg-secondary">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-white">
-            How Mail-In Repairs Work
+            How It Works
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-16"></div>
           
@@ -290,13 +594,13 @@ const Repairs = () => {
                 {
                   step: 1,
                   title: "Tell Us About Your Repair",
-                  text: "Submit a short form and upload photos.",
+                  text: "Submit a short form and upload photos. Choose mail-in, drop-off, or courier.",
                   icon: FileText
                 },
                 {
                   step: 2,
-                  title: "Get Your Insured Shipping Label",
-                  text: "We send a prepaid, insured label + packing instructions.",
+                  title: "Get Your Jewelry to Us",
+                  text: "Mail it with our insured label, drop off in NYC, or schedule a local pickup.",
                   icon: Package
                 },
                 {
@@ -319,8 +623,8 @@ const Repairs = () => {
                 },
                 {
                   step: 6,
-                  title: "We Ship It Back Securely",
-                  text: "Your repaired jewelry is cleaned, polished, and shipped back insured.",
+                  title: "We Return It Securely",
+                  text: "Your repaired jewelry is cleaned, polished, and returned to you insured.",
                   icon: Shield
                 }
               ].map((item, index) => (
@@ -360,36 +664,12 @@ const Repairs = () => {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
             {[
-              {
-                title: "Ring Sizing",
-                price: "From $45–$95",
-                description: "Up or down; gold, silver, platinum options"
-              },
-              {
-                title: "Stone Tightening / Prong Work",
-                price: "From $35–$120",
-                description: "Prong tightening, re-tipping, securing loose stones"
-              },
-              {
-                title: "Chain / Bracelet Repair",
-                price: "From $25–$75",
-                description: "Solder breaks, clasp repair, jump ring fixes"
-              },
-              {
-                title: "Polishing & Deep Cleaning",
-                price: "From $35–$65",
-                description: "Restore shine, remove scratches, ultrasonic clean"
-              },
-              {
-                title: "Restoration / Heavy Damage",
-                price: "Custom Quote",
-                description: "Reshaping, rebuilding channels, replacing stones"
-              },
-              {
-                title: "Laser Welding",
-                price: "From $55–$150",
-                description: "Precision repairs for delicate or complex pieces"
-              }
+              { title: "Ring Sizing", price: "From $45–$95", description: "Up or down; gold, silver, platinum options" },
+              { title: "Stone Tightening / Prong Work", price: "From $35–$120", description: "Prong tightening, re-tipping, securing loose stones" },
+              { title: "Chain / Bracelet Repair", price: "From $25–$75", description: "Solder breaks, clasp repair, jump ring fixes" },
+              { title: "Polishing & Deep Cleaning", price: "From $35–$65", description: "Restore shine, remove scratches, ultrasonic clean" },
+              { title: "Restoration / Heavy Damage", price: "Custom Quote", description: "Reshaping, rebuilding channels, replacing stones" },
+              { title: "Laser Welding", price: "From $55–$150", description: "Precision repairs for delicate or complex pieces" }
             ].map((item, index) => (
               <Card key={index} className="bg-white border-0 shadow-service hover:shadow-lg transition-all hover:translate-y-[-2px] rounded-lg">
                 <CardContent className="p-6">
@@ -471,7 +751,7 @@ const Repairs = () => {
               onClick={scrollToForm}
               className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded"
             >
-              Start Your Mail-In Repair
+              Start Your Repair Request
             </Button>
           </div>
         </div>
@@ -482,7 +762,7 @@ const Repairs = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
-              Start Your Mail-In Repair
+              Start Your Repair Request
             </h2>
             <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
             
@@ -492,9 +772,17 @@ const Repairs = () => {
               <Card className="border-2 border-service-gold/20 shadow-service rounded-lg">
                 <CardContent className="p-8 md:p-10">
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Fulfillment Method Selector */}
+                    <FulfillmentMethodSelector />
+                    
+                    {/* Method-specific fields */}
+                    {formData.fulfillmentMethod === "drop_off" && <DropOffFields />}
+                    {formData.fulfillmentMethod === "courier" && <CourierFields />}
+                    
+                    {/* Standard fields */}
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label className="text-luxury-text font-medium">Full Name</Label>
+                        <Label className="text-luxury-text font-medium">Full Name *</Label>
                         <Input
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -504,7 +792,7 @@ const Repairs = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-luxury-text font-medium">Email</Label>
+                        <Label className="text-luxury-text font-medium">Email *</Label>
                         <Input
                           type="email"
                           value={formData.email}
@@ -518,7 +806,7 @@ const Repairs = () => {
                     
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label className="text-luxury-text font-medium">Phone</Label>
+                        <Label className="text-luxury-text font-medium">Phone *</Label>
                         <Input
                           type="tel"
                           value={formData.phone}
@@ -529,7 +817,7 @@ const Repairs = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-luxury-text font-medium">Type of Jewelry</Label>
+                        <Label className="text-luxury-text font-medium">Type of Jewelry *</Label>
                         <SimpleSelect
                           value={formData.jewelryType}
                           onValueChange={(value) => setFormData({...formData, jewelryType: value})}
@@ -549,7 +837,7 @@ const Repairs = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label className="text-luxury-text font-medium">What repair is needed?</Label>
+                      <Label className="text-luxury-text font-medium">What repair is needed? *</Label>
                       <Textarea
                         value={formData.repairNeeded}
                         onChange={(e) => setFormData({ ...formData, repairNeeded: e.target.value })}
@@ -618,7 +906,11 @@ const Repairs = () => {
                       disabled={isSubmitting}
                       className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold py-6 text-lg rounded"
                     >
-                      {isSubmitting ? "Submitting..." : "Get My Insured Shipping Label"}
+                      {isSubmitting ? "Submitting..." : (
+                        formData.fulfillmentMethod === "mail_in" ? "Get My Insured Shipping Label" :
+                        formData.fulfillmentMethod === "drop_off" ? "Schedule My Drop-Off" :
+                        "Request Courier Pickup"
+                      )}
                     </Button>
                   </form>
                 </CardContent>
@@ -638,26 +930,11 @@ const Repairs = () => {
           
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              {
-                text: "Perfect work. They resized my ring and polished it like new. Fast and safe shipping!",
-                author: "Sarah M."
-              },
-              {
-                text: "My chain was snapped in half. They repaired it and you can't even see the break.",
-                author: "Emily R."
-              },
-              {
-                text: "Sent in my grandmother's vintage ring. They restored it beautifully and kept me updated the whole time.",
-                author: "Michael T."
-              },
-              {
-                text: "The video unboxing gave me so much peace of mind. Truly professional service.",
-                author: "Jessica L."
-              },
-              {
-                text: "Fair pricing and exceptional quality. My bracelet looks brand new!",
-                author: "David K."
-              }
+              { text: "Perfect work. They resized my ring and polished it like new. Fast and safe shipping!", author: "Sarah M." },
+              { text: "My chain was snapped in half. They repaired it and you can't even see the break.", author: "Emily R." },
+              { text: "Sent in my grandmother's vintage ring. They restored it beautifully and kept me updated the whole time.", author: "Michael T." },
+              { text: "The video unboxing gave me so much peace of mind. Truly professional service.", author: "Jessica L." },
+              { text: "Fair pricing and exceptional quality. My bracelet looks brand new!", author: "David K." }
             ].map((review, index) => (
               <Card key={index} className="bg-white border-0 shadow-service rounded-lg">
                 <CardContent className="p-6">
@@ -692,7 +969,9 @@ const Repairs = () => {
                 { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
                 { question: "Do you work with diamonds and gemstones?", answer: "Yes. We tighten, secure, replace, and restore stones of all types." },
                 { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
-                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping. Create an account to view your repair history anytime." }
+                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping. Create an account to view your repair history anytime." },
+                { question: "Where can I drop off my jewelry in person?", answer: "Our NYC location is on 47th Street in the Diamond District. Hours are Mon–Sat, 10am – 6pm." },
+                { question: "What areas are covered by courier pickup?", answer: "We offer courier pickup in Manhattan and select North Jersey areas. We'll confirm availability when you submit your request." }
               ]}
             />
           </div>
@@ -707,13 +986,13 @@ const Repairs = () => {
               Ready to Repair Your Jewelry?
             </h2>
             <p className="text-xl text-service-text-muted mb-10 font-body">
-              Insured. Professional. 47th Street quality you can trust.
+              Mail it in, drop it off, or schedule a pickup — we've got you covered.
             </p>
             <Button 
               onClick={scrollToForm}
               className="bg-service-gold text-white hover:bg-service-gold-hover px-10 py-6 text-lg font-semibold rounded"
             >
-              Start Your Mail-In Repair
+              Start Your Repair Request
             </Button>
           </div>
         </div>

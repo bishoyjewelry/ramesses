@@ -41,7 +41,10 @@ import {
   Pencil,
   X,
   Image as ImageIcon,
-  StickyNote
+  StickyNote,
+  Package,
+  MapPin,
+  Building
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -64,6 +67,15 @@ interface RepairQuote {
   user_id: string | null;
   internal_notes: string | null;
   admin_image_urls: string[] | null;
+  // Fulfillment fields
+  fulfillment_method: string | null;
+  preferred_dropoff_time: string | null;
+  pickup_window: string | null;
+  street_address: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  logistics_notes: string | null;
 }
 
 const statusOptions = [
@@ -79,6 +91,13 @@ const statusOptions = [
 const filterStatusOptions = [
   { value: "all", label: "All Statuses" },
   ...statusOptions,
+];
+
+const fulfillmentOptions = [
+  { value: "all", label: "All Methods" },
+  { value: "mail_in", label: "Mail-In" },
+  { value: "drop_off", label: "Drop Off" },
+  { value: "courier", label: "Courier" },
 ];
 
 type SortField = "created_at" | "status";
@@ -100,8 +119,19 @@ export const AdminRepairsTab = () => {
   const [newRepairType, setNewRepairType] = useState<string>("");
   const [newInternalNotes, setNewInternalNotes] = useState<string>("");
   
+  // Fulfillment form state
+  const [newFulfillmentMethod, setNewFulfillmentMethod] = useState<string>("");
+  const [newStreetAddress, setNewStreetAddress] = useState<string>("");
+  const [newCity, setNewCity] = useState<string>("");
+  const [newState, setNewState] = useState<string>("");
+  const [newZip, setNewZip] = useState<string>("");
+  const [newPreferredDropoffTime, setNewPreferredDropoffTime] = useState<string>("");
+  const [newPickupWindow, setNewPickupWindow] = useState<string>("");
+  const [newLogisticsNotes, setNewLogisticsNotes] = useState<string>("");
+  
   // Filters and sorting
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [fulfillmentFilter, setFulfillmentFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
@@ -119,7 +149,7 @@ export const AdminRepairsTab = () => {
 
   useEffect(() => {
     applyFiltersAndSort();
-  }, [repairs, statusFilter, searchQuery, sortField, sortOrder]);
+  }, [repairs, statusFilter, fulfillmentFilter, searchQuery, sortField, sortOrder]);
 
   const fetchRepairs = async () => {
     setLoading(true);
@@ -145,6 +175,11 @@ export const AdminRepairsTab = () => {
     // Apply status filter
     if (statusFilter !== "all") {
       result = result.filter(r => r.status === statusFilter);
+    }
+    
+    // Apply fulfillment filter
+    if (fulfillmentFilter !== "all") {
+      result = result.filter(r => r.fulfillment_method === fulfillmentFilter);
     }
     
     // Apply search filter
@@ -198,6 +233,15 @@ export const AdminRepairsTab = () => {
     setNewRepairType(repair.repair_type || "");
     setNewInternalNotes(repair.internal_notes || "");
     setAdminImages(repair.admin_image_urls || []);
+    // Fulfillment fields
+    setNewFulfillmentMethod(repair.fulfillment_method || "mail_in");
+    setNewStreetAddress(repair.street_address || "");
+    setNewCity(repair.city || "");
+    setNewState(repair.state || "");
+    setNewZip(repair.zip || "");
+    setNewPreferredDropoffTime(repair.preferred_dropoff_time || "");
+    setNewPickupWindow(repair.pickup_window || "");
+    setNewLogisticsNotes(repair.logistics_notes || "");
   };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,7 +296,7 @@ export const AdminRepairsTab = () => {
         updated_at: new Date().toISOString()
       };
       
-      // Check for non-status changes
+      // Check for changes
       if (newQuotedPrice !== (selectedRepair.quoted_price?.toString() || "")) {
         updates.quoted_price = newQuotedPrice ? parseFloat(newQuotedPrice) : null;
       }
@@ -270,6 +314,31 @@ export const AdminRepairsTab = () => {
       }
       if (newTrackingNumber !== (selectedRepair.tracking_number || "")) {
         updates.tracking_number = newTrackingNumber || null;
+      }
+      // Fulfillment updates
+      if (newFulfillmentMethod !== (selectedRepair.fulfillment_method || "mail_in")) {
+        updates.fulfillment_method = newFulfillmentMethod;
+      }
+      if (newStreetAddress !== (selectedRepair.street_address || "")) {
+        updates.street_address = newStreetAddress || null;
+      }
+      if (newCity !== (selectedRepair.city || "")) {
+        updates.city = newCity || null;
+      }
+      if (newState !== (selectedRepair.state || "")) {
+        updates.state = newState || null;
+      }
+      if (newZip !== (selectedRepair.zip || "")) {
+        updates.zip = newZip || null;
+      }
+      if (newPreferredDropoffTime !== (selectedRepair.preferred_dropoff_time || "")) {
+        updates.preferred_dropoff_time = newPreferredDropoffTime || null;
+      }
+      if (newPickupWindow !== (selectedRepair.pickup_window || "")) {
+        updates.pickup_window = newPickupWindow || null;
+      }
+      if (newLogisticsNotes !== (selectedRepair.logistics_notes || "")) {
+        updates.logistics_notes = newLogisticsNotes || null;
       }
 
       // Apply non-status updates
@@ -323,6 +392,24 @@ export const AdminRepairsTab = () => {
     );
   };
 
+  const getFulfillmentBadge = (method: string | null) => {
+    const styles: Record<string, { bg: string; text: string; label: string; icon: React.ElementType }> = {
+      mail_in: { bg: "bg-blue-50", text: "text-blue-600", label: "Mail-In", icon: Package },
+      drop_off: { bg: "bg-green-50", text: "text-green-600", label: "Drop Off", icon: MapPin },
+      courier: { bg: "bg-purple-50", text: "text-purple-600", label: "Courier", icon: Truck },
+    };
+    
+    const style = styles[method || "mail_in"] || styles.mail_in;
+    const Icon = style.icon;
+    
+    return (
+      <Badge className={`${style.bg} ${style.text} border-0 flex items-center gap-1`}>
+        <Icon className="w-3 h-3" />
+        {style.label}
+      </Badge>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -359,8 +446,8 @@ export const AdminRepairsTab = () => {
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-48 border-luxury-divider">
-                <SelectValue placeholder="Filter by status" />
+              <SelectTrigger className="w-full sm:w-40 border-luxury-divider">
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 {filterStatusOptions.map((option) => (
@@ -370,16 +457,28 @@ export const AdminRepairsTab = () => {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={fulfillmentFilter} onValueChange={setFulfillmentFilter}>
+              <SelectTrigger className="w-full sm:w-40 border-luxury-divider">
+                <SelectValue placeholder="Method" />
+              </SelectTrigger>
+              <SelectContent>
+                {fulfillmentOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="rounded-md border border-luxury-divider overflow-hidden">
+          <div className="rounded-md border border-luxury-divider overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-luxury-bg-warm">
                   <TableHead className="text-luxury-text text-xs">ID</TableHead>
                   <TableHead className="text-luxury-text">Customer</TableHead>
-                  <TableHead className="text-luxury-text">Item</TableHead>
-                  <TableHead className="text-luxury-text">Repair</TableHead>
+                  <TableHead className="text-luxury-text">Method</TableHead>
+                  <TableHead className="text-luxury-text">Location</TableHead>
                   <TableHead 
                     className="text-luxury-text cursor-pointer hover:text-luxury-champagne"
                     onClick={() => toggleSort("status")}
@@ -399,7 +498,6 @@ export const AdminRepairsTab = () => {
                       <ArrowUpDown className="w-3 h-3" />
                     </div>
                   </TableHead>
-                  <TableHead className="text-luxury-text">Updated</TableHead>
                   <TableHead className="text-luxury-text">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -415,11 +513,15 @@ export const AdminRepairsTab = () => {
                         <p className="text-sm text-luxury-text-muted">{repair.email}</p>
                       </div>
                     </TableCell>
-                    <TableCell className="capitalize text-luxury-text">
-                      {repair.item_type || "—"}
-                    </TableCell>
-                    <TableCell className="text-luxury-text">
-                      {repair.repair_type || "—"}
+                    <TableCell>{getFulfillmentBadge(repair.fulfillment_method)}</TableCell>
+                    <TableCell className="text-luxury-text text-sm">
+                      {repair.fulfillment_method === "courier" && repair.city && repair.state ? (
+                        <span>{repair.city}, {repair.state} {repair.zip}</span>
+                      ) : repair.fulfillment_method === "drop_off" ? (
+                        <span className="text-luxury-text-muted">NYC</span>
+                      ) : (
+                        <span className="text-luxury-text-muted">—</span>
+                      )}
                     </TableCell>
                     <TableCell>{getStatusBadge(repair.status)}</TableCell>
                     <TableCell className="text-luxury-text">
@@ -429,11 +531,6 @@ export const AdminRepairsTab = () => {
                     </TableCell>
                     <TableCell className="text-luxury-text-muted text-sm">
                       {format(new Date(repair.created_at), "MMM d, yyyy")}
-                    </TableCell>
-                    <TableCell className="text-luxury-text-muted text-sm">
-                      {repair.updated_at 
-                        ? format(new Date(repair.updated_at), "MMM d, yyyy")
-                        : "—"}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
@@ -459,7 +556,7 @@ export const AdminRepairsTab = () => {
                 ))}
                 {filteredRepairs.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center py-8 text-luxury-text-muted">
+                    <TableCell colSpan={8} className="text-center py-8 text-luxury-text-muted">
                       No repair quotes found
                     </TableCell>
                   </TableRow>
@@ -514,10 +611,13 @@ export const AdminRepairsTab = () => {
               </SheetHeader>
 
               <div className="space-y-6 py-6">
-                {/* Repair ID */}
-                <div className="p-3 bg-luxury-bg-warm rounded-lg">
-                  <p className="text-xs text-luxury-text-muted">Repair ID</p>
-                  <p className="font-mono text-sm text-luxury-text">{selectedRepair.id}</p>
+                {/* Repair ID & Fulfillment Method */}
+                <div className="flex items-center justify-between p-3 bg-luxury-bg-warm rounded-lg">
+                  <div>
+                    <p className="text-xs text-luxury-text-muted">Repair ID</p>
+                    <p className="font-mono text-sm text-luxury-text">{selectedRepair.id}</p>
+                  </div>
+                  {getFulfillmentBadge(selectedRepair.fulfillment_method)}
                 </div>
 
                 {/* Customer Info */}
@@ -545,6 +645,99 @@ export const AdminRepairsTab = () => {
                 {/* Editable Fields */}
                 {viewMode === "edit" ? (
                   <>
+                    {/* Fulfillment Section */}
+                    <div className="p-4 border border-luxury-divider rounded-lg space-y-4">
+                      <h4 className="font-semibold text-luxury-text flex items-center gap-2">
+                        <Truck className="w-4 h-4 text-luxury-champagne" />
+                        Fulfillment Details
+                      </h4>
+                      
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text">Fulfillment Method</Label>
+                        <Select value={newFulfillmentMethod} onValueChange={setNewFulfillmentMethod}>
+                          <SelectTrigger className="border-luxury-divider">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="mail_in">Mail-In</SelectItem>
+                            <SelectItem value="drop_off">Drop Off</SelectItem>
+                            <SelectItem value="courier">Courier</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {newFulfillmentMethod === "drop_off" && (
+                        <div className="space-y-2">
+                          <Label className="text-luxury-text">Preferred Drop-Off Time</Label>
+                          <Input
+                            value={newPreferredDropoffTime}
+                            onChange={(e) => setNewPreferredDropoffTime(e.target.value)}
+                            placeholder="e.g., 2025-01-15 - Afternoon"
+                            className="border-luxury-divider"
+                          />
+                        </div>
+                      )}
+
+                      {newFulfillmentMethod === "courier" && (
+                        <>
+                          <div className="space-y-2">
+                            <Label className="text-luxury-text">Street Address</Label>
+                            <Input
+                              value={newStreetAddress}
+                              onChange={(e) => setNewStreetAddress(e.target.value)}
+                              className="border-luxury-divider"
+                            />
+                          </div>
+                          <div className="grid grid-cols-3 gap-2">
+                            <div className="space-y-2">
+                              <Label className="text-luxury-text">City</Label>
+                              <Input
+                                value={newCity}
+                                onChange={(e) => setNewCity(e.target.value)}
+                                className="border-luxury-divider"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-luxury-text">State</Label>
+                              <Input
+                                value={newState}
+                                onChange={(e) => setNewState(e.target.value)}
+                                className="border-luxury-divider"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-luxury-text">ZIP</Label>
+                              <Input
+                                value={newZip}
+                                onChange={(e) => setNewZip(e.target.value)}
+                                className="border-luxury-divider"
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-luxury-text">Pickup Window</Label>
+                            <Input
+                              value={newPickupWindow}
+                              onChange={(e) => setNewPickupWindow(e.target.value)}
+                              placeholder="e.g., weekday_morning"
+                              className="border-luxury-divider"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      <div className="space-y-2">
+                        <Label className="text-luxury-text">Logistics Notes</Label>
+                        <Textarea
+                          value={newLogisticsNotes}
+                          onChange={(e) => setNewLogisticsNotes(e.target.value)}
+                          placeholder="Access notes, special instructions..."
+                          rows={2}
+                          className="border-luxury-divider"
+                        />
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="itemType" className="text-luxury-text">Item Type</Label>
@@ -711,6 +904,34 @@ export const AdminRepairsTab = () => {
                 ) : (
                   /* Customer View */
                   <>
+                    {/* Fulfillment Info */}
+                    <div className="p-4 bg-luxury-bg-warm rounded-lg space-y-3">
+                      <h4 className="font-semibold text-luxury-text">Fulfillment Method</h4>
+                      {getFulfillmentBadge(selectedRepair.fulfillment_method)}
+                      
+                      {selectedRepair.fulfillment_method === "courier" && (
+                        <div className="mt-3 text-sm text-luxury-text-muted">
+                          <p><strong>Address:</strong> {selectedRepair.street_address}</p>
+                          <p>{selectedRepair.city}, {selectedRepair.state} {selectedRepair.zip}</p>
+                          {selectedRepair.pickup_window && (
+                            <p><strong>Pickup Window:</strong> {selectedRepair.pickup_window}</p>
+                          )}
+                        </div>
+                      )}
+                      
+                      {selectedRepair.fulfillment_method === "drop_off" && selectedRepair.preferred_dropoff_time && (
+                        <div className="mt-3 text-sm text-luxury-text-muted">
+                          <p><strong>Preferred Time:</strong> {selectedRepair.preferred_dropoff_time}</p>
+                        </div>
+                      )}
+                      
+                      {selectedRepair.logistics_notes && (
+                        <div className="mt-3 text-sm text-luxury-text-muted">
+                          <p><strong>Notes:</strong> {selectedRepair.logistics_notes}</p>
+                        </div>
+                      )}
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-sm text-luxury-text-muted">Item Type</p>
