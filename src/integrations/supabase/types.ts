@@ -287,62 +287,86 @@ export type Database = {
         Row: {
           admin_image_urls: string[] | null
           approved: boolean | null
+          city: string | null
           created_at: string
           description: string
           email: string
+          fulfillment_method: string | null
           id: string
           image_urls: string[] | null
           internal_notes: string | null
           item_type: string | null
+          logistics_notes: string | null
           name: string
           phone: string | null
+          pickup_window: string | null
           preferred_contact: string | null
+          preferred_dropoff_time: string | null
           quoted_price: number | null
           repair_type: string | null
+          state: string | null
           status: string | null
+          street_address: string | null
           tracking_number: string | null
           updated_at: string | null
           user_id: string | null
+          zip: string | null
         }
         Insert: {
           admin_image_urls?: string[] | null
           approved?: boolean | null
+          city?: string | null
           created_at?: string
           description: string
           email: string
+          fulfillment_method?: string | null
           id?: string
           image_urls?: string[] | null
           internal_notes?: string | null
           item_type?: string | null
+          logistics_notes?: string | null
           name: string
           phone?: string | null
+          pickup_window?: string | null
           preferred_contact?: string | null
+          preferred_dropoff_time?: string | null
           quoted_price?: number | null
           repair_type?: string | null
+          state?: string | null
           status?: string | null
+          street_address?: string | null
           tracking_number?: string | null
           updated_at?: string | null
           user_id?: string | null
+          zip?: string | null
         }
         Update: {
           admin_image_urls?: string[] | null
           approved?: boolean | null
+          city?: string | null
           created_at?: string
           description?: string
           email?: string
+          fulfillment_method?: string | null
           id?: string
           image_urls?: string[] | null
           internal_notes?: string | null
           item_type?: string | null
+          logistics_notes?: string | null
           name?: string
           phone?: string | null
+          pickup_window?: string | null
           preferred_contact?: string | null
+          preferred_dropoff_time?: string | null
           quoted_price?: number | null
           repair_type?: string | null
+          state?: string | null
           status?: string | null
+          street_address?: string | null
           tracking_number?: string | null
           updated_at?: string | null
           user_id?: string | null
+          zip?: string | null
         }
         Relationships: []
       }
