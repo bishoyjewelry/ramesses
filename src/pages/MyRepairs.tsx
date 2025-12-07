@@ -6,24 +6,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { 
   Loader2, 
   Wrench, 
-  Package, 
   Eye,
   LogIn,
   UserPlus,
   Calendar,
   DollarSign,
   Truck,
-  CheckCircle
+  CheckCircle,
+  Clock,
+  Package,
+  Sparkles,
+  AlertCircle,
+  Mail,
+  X,
+  Check
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -75,6 +82,42 @@ const MyRepairs = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleApproveQuote = async (repairId: string) => {
+    try {
+      const { error } = await supabase
+        .from('repair_quotes')
+        .update({ approved: true })
+        .eq('id', repairId);
+      
+      if (error) throw error;
+      
+      toast.success("Quote approved successfully!");
+      loadRepairs();
+      if (selectedRepair?.id === repairId) {
+        setSelectedRepair({ ...selectedRepair, approved: true });
+      }
+    } catch (error) {
+      console.error('Error approving quote:', error);
+      toast.error("Failed to approve quote. Please try again.");
+    }
+  };
+
+  // Status timeline configuration
+  const statusSteps = [
+    { key: 'pending', label: 'Submitted', icon: Clock, description: 'Your request is being reviewed' },
+    { key: 'received', label: 'Received', icon: Package, description: 'We have your item in our workshop' },
+    { key: 'in_progress', label: 'In Progress', icon: Wrench, description: 'Repair work is underway' },
+    { key: 'polishing', label: 'Polishing', icon: Sparkles, description: 'Final finishing touches' },
+    { key: 'awaiting_parts', label: 'Awaiting Parts', icon: AlertCircle, description: 'Waiting for required materials' },
+    { key: 'completed', label: 'Completed', icon: CheckCircle, description: 'Repair is complete' },
+    { key: 'shipped', label: 'Shipped', icon: Truck, description: 'On its way back to you' },
+  ];
+
+  const getStatusIndex = (status: string | null) => {
+    const idx = statusSteps.findIndex(s => s.key === (status || 'pending'));
+    return idx >= 0 ? idx : 0;
   };
 
   const getStatusBadge = (status: string | null) => {
@@ -256,102 +299,226 @@ const MyRepairs = () => {
         </div>
       </main>
 
-      {/* Repair Detail Dialog */}
-      <Dialog open={!!selectedRepair} onOpenChange={() => setSelectedRepair(null)}>
-        <DialogContent className="max-w-2xl bg-white border-luxury-divider max-h-[90vh] overflow-y-auto">
+      {/* Repair Detail Drawer */}
+      <Sheet open={!!selectedRepair} onOpenChange={() => setSelectedRepair(null)}>
+        <SheetContent className="w-full sm:max-w-xl bg-white border-luxury-divider overflow-y-auto">
           {selectedRepair && (
             <>
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-sans service-heading font-bold text-luxury-text flex items-center gap-3">
-                  <span className="capitalize">{selectedRepair.item_type || 'Jewelry'} Repair</span>
+              <SheetHeader className="pb-6 border-b border-luxury-divider">
+                <SheetTitle className="text-2xl font-sans font-bold text-luxury-text">
+                  Repair Details
+                </SheetTitle>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-lg capitalize text-luxury-text-muted">
+                    {selectedRepair.item_type || 'Jewelry'} Repair
+                  </span>
                   {getStatusBadge(selectedRepair.status)}
-                </DialogTitle>
-              </DialogHeader>
+                </div>
+              </SheetHeader>
               
-              <div className="space-y-6 pt-4">
-                {/* Status Timeline */}
-                <div className="bg-service-neutral/50 rounded-lg p-4">
-                  <h4 className="font-medium text-luxury-text mb-3">Repair Status</h4>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${selectedRepair.status === 'pending' ? 'bg-service-gold' : 'bg-green-500'}`}></div>
-                    <span className="text-sm text-luxury-text-muted">
-                      {selectedRepair.status === 'pending' ? 'Awaiting review' : 
-                       selectedRepair.status === 'received' ? 'We have received your item' :
-                       selectedRepair.status === 'in_progress' ? 'Repair in progress' :
-                       selectedRepair.status === 'completed' ? 'Repair complete' :
-                       selectedRepair.status === 'shipped' ? 'On its way back to you' :
-                       'Processing'}
-                    </span>
+              <div className="space-y-8 py-6">
+                {/* Repair ID & Dates */}
+                <div className="bg-service-neutral/30 rounded-lg p-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-luxury-text-muted">Repair ID</span>
+                      <p className="font-mono text-luxury-text text-xs mt-1">{selectedRepair.id.slice(0, 8)}...</p>
+                    </div>
+                    <div>
+                      <span className="text-luxury-text-muted">Submitted</span>
+                      <p className="text-luxury-text mt-1">{format(new Date(selectedRepair.created_at), 'MMM d, yyyy')}</p>
+                    </div>
+                    <div>
+                      <span className="text-luxury-text-muted">Last Updated</span>
+                      <p className="text-luxury-text mt-1">
+                        {selectedRepair.updated_at 
+                          ? format(new Date(selectedRepair.updated_at), 'MMM d, yyyy h:mm a')
+                          : 'Not yet updated'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-luxury-text-muted">Repair Type</span>
+                      <p className="text-luxury-text mt-1 capitalize">{selectedRepair.repair_type || 'General'}</p>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Images */}
+
+                {/* Status Timeline */}
+                <div>
+                  <h4 className="font-semibold text-luxury-text mb-4 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-service-gold" />
+                    Status Timeline
+                  </h4>
+                  <div className="relative">
+                    {statusSteps.map((step, index) => {
+                      const currentIndex = getStatusIndex(selectedRepair.status);
+                      const isCompleted = index < currentIndex;
+                      const isCurrent = index === currentIndex;
+                      const isFuture = index > currentIndex;
+                      const StepIcon = step.icon;
+                      
+                      return (
+                        <div key={step.key} className="flex items-start gap-4 pb-6 last:pb-0">
+                          {/* Timeline Line */}
+                          <div className="flex flex-col items-center">
+                            <div className={`
+                              w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all
+                              ${isCompleted 
+                                ? 'bg-green-500 border-green-500 text-white' 
+                                : isCurrent 
+                                  ? 'bg-service-gold border-service-gold text-white animate-pulse' 
+                                  : 'bg-white border-luxury-divider text-luxury-text-muted'}
+                            `}>
+                              {isCompleted ? (
+                                <Check className="w-5 h-5" />
+                              ) : (
+                                <StepIcon className="w-5 h-5" />
+                              )}
+                            </div>
+                            {index < statusSteps.length - 1 && (
+                              <div className={`w-0.5 h-12 mt-2 ${
+                                isCompleted ? 'bg-green-500' : 'bg-luxury-divider'
+                              }`} />
+                            )}
+                          </div>
+                          
+                          {/* Step Content */}
+                          <div className={`pt-2 ${isFuture ? 'opacity-40' : ''}`}>
+                            <p className={`font-medium ${isCurrent ? 'text-service-gold' : 'text-luxury-text'}`}>
+                              {step.label}
+                            </p>
+                            <p className="text-sm text-luxury-text-muted mt-0.5">
+                              {step.description}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div>
+                  <h4 className="font-semibold text-luxury-text mb-2">Description</h4>
+                  <p className="text-luxury-text-muted bg-service-neutral/30 rounded-lg p-4">
+                    {selectedRepair.description || 'No description provided'}
+                  </p>
+                </div>
+
+                {/* Uploaded Images */}
                 {selectedRepair.image_urls && selectedRepair.image_urls.length > 0 && (
                   <div>
-                    <h4 className="font-medium text-luxury-text mb-2">Submitted Photos</h4>
-                    <div className="flex gap-2 overflow-x-auto pb-2">
+                    <h4 className="font-semibold text-luxury-text mb-3">Submitted Photos</h4>
+                    <div className="grid grid-cols-3 gap-3">
                       {selectedRepair.image_urls.map((url, index) => (
-                        <img 
+                        <a 
                           key={index}
-                          src={url} 
-                          alt={`Repair photo ${index + 1}`}
-                          className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
-                        />
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="aspect-square rounded-lg overflow-hidden border border-luxury-divider hover:border-service-gold transition-colors"
+                        >
+                          <img 
+                            src={url} 
+                            alt={`Repair photo ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </a>
                       ))}
                     </div>
                   </div>
                 )}
-                
-                {/* Description */}
-                <div>
-                  <h4 className="font-medium text-luxury-text mb-2">Repair Description</h4>
-                  <p className="text-luxury-text-muted">{selectedRepair.description || selectedRepair.repair_type}</p>
-                </div>
-                
-                {/* Details Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-medium text-luxury-text mb-1">Item Type</h4>
-                    <p className="text-luxury-text-muted capitalize">{selectedRepair.item_type || 'Not specified'}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-luxury-text mb-1">Submitted</h4>
-                    <p className="text-luxury-text-muted">{format(new Date(selectedRepair.created_at), 'MMMM d, yyyy')}</p>
-                  </div>
-                  {selectedRepair.quoted_price && (
-                    <div>
-                      <h4 className="font-medium text-luxury-text mb-1">Quoted Price</h4>
-                      <p className="text-service-gold font-bold">${Number(selectedRepair.quoted_price).toFixed(2)}</p>
+
+                {/* Quote & Approval */}
+                {selectedRepair.quoted_price && (
+                  <div className="bg-service-gold/10 border border-service-gold/30 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-luxury-text flex items-center gap-2">
+                        <DollarSign className="w-5 h-5 text-service-gold" />
+                        Quote Details
+                      </h4>
+                      <span className="text-2xl font-bold text-service-gold">
+                        ${Number(selectedRepair.quoted_price).toFixed(2)}
+                      </span>
                     </div>
-                  )}
-                  {selectedRepair.approved !== null && (
-                    <div>
-                      <h4 className="font-medium text-luxury-text mb-1">Quote Approved</h4>
-                      <p className="text-luxury-text-muted">{selectedRepair.approved ? 'Yes' : 'Pending'}</p>
+                    
+                    {selectedRepair.approved ? (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="w-5 h-5" />
+                        <span className="font-medium">Quote Approved</span>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <p className="text-sm text-luxury-text-muted">
+                          Please review and approve this quote to proceed with the repair.
+                        </p>
+                        <Button 
+                          onClick={() => handleApproveQuote(selectedRepair.id)}
+                          className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold"
+                        >
+                          <Check className="w-4 h-4 mr-2" />
+                          Approve Quote
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Tracking Information */}
+                {selectedRepair.tracking_number && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-luxury-text flex items-center gap-2 mb-2">
+                      <Truck className="w-5 h-5 text-blue-600" />
+                      Shipping Information
+                    </h4>
+                    <div className="text-sm">
+                      <span className="text-luxury-text-muted">Tracking Number:</span>
+                      <p className="font-mono text-blue-600 mt-1">{selectedRepair.tracking_number}</p>
                     </div>
-                  )}
-                  {selectedRepair.tracking_number && (
-                    <div className="col-span-2">
-                      <h4 className="font-medium text-luxury-text mb-1">Tracking Number</h4>
-                      <p className="text-luxury-text-muted font-mono">{selectedRepair.tracking_number}</p>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Contact Info */}
-                <div className="border-t border-luxury-divider pt-4">
-                  <h4 className="font-medium text-luxury-text mb-2">Contact Information</h4>
-                  <div className="text-sm text-luxury-text-muted space-y-1">
-                    <p>{selectedRepair.name}</p>
-                    <p>{selectedRepair.email}</p>
-                    {selectedRepair.phone && <p>{selectedRepair.phone}</p>}
+                  </div>
+                )}
+
+                {/* Contact Information */}
+                <div className="border-t border-luxury-divider pt-6">
+                  <h4 className="font-semibold text-luxury-text mb-3">Your Contact Info</h4>
+                  <div className="text-sm text-luxury-text-muted space-y-2 bg-service-neutral/30 rounded-lg p-4">
+                    <p><span className="font-medium text-luxury-text">Name:</span> {selectedRepair.name}</p>
+                    <p><span className="font-medium text-luxury-text">Email:</span> {selectedRepair.email}</p>
+                    {selectedRepair.phone && (
+                      <p><span className="font-medium text-luxury-text">Phone:</span> {selectedRepair.phone}</p>
+                    )}
                   </div>
                 </div>
+
+                {/* Help & Support */}
+                <div className="border-t border-luxury-divider pt-6">
+                  <h4 className="font-semibold text-luxury-text mb-2">Need Help?</h4>
+                  <p className="text-sm text-luxury-text-muted mb-4">
+                    Have questions about this repair? Our support team is here to help.
+                  </p>
+                  <a 
+                    href="mailto:support@ramessesjewelry.com?subject=Repair%20Inquiry%20-%20" 
+                    className="inline-flex items-center gap-2 text-service-gold hover:text-service-gold-hover font-medium transition-colors"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Contact Support About This Repair
+                  </a>
+                </div>
+
+                {/* Close Button */}
+                <Button 
+                  variant="outline"
+                  onClick={() => setSelectedRepair(null)}
+                  className="w-full border-luxury-divider text-luxury-text hover:bg-service-neutral/50"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Close
+                </Button>
               </div>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+        </SheetContent>
+      </Sheet>
 
       <Footer />
     </div>
