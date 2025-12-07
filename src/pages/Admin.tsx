@@ -7,6 +7,7 @@ import { AdminApplicationsTab } from "@/components/admin/AdminApplicationsTab";
 import { AdminProfilesTab } from "@/components/admin/AdminProfilesTab";
 import { AdminDesignsTab } from "@/components/admin/AdminDesignsTab";
 import { AdminEarningsTab } from "@/components/admin/AdminEarningsTab";
+import { AdminRepairsTab } from "@/components/admin/AdminRepairsTab";
 
 const Admin = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -91,8 +92,14 @@ const Admin = () => {
 
       {/* Main Content */}
       <div className="p-6">
-        <Tabs defaultValue="applications" className="w-full">
+        <Tabs defaultValue="repairs" className="w-full">
           <TabsList className="mb-6 bg-luxury-bg-warm border border-luxury-divider">
+            <TabsTrigger 
+              value="repairs"
+              className="data-[state=active]:bg-luxury-champagne data-[state=active]:text-luxury-text"
+            >
+              Repairs
+            </TabsTrigger>
             <TabsTrigger 
               value="applications"
               className="data-[state=active]:bg-luxury-champagne data-[state=active]:text-luxury-text"
@@ -118,6 +125,10 @@ const Admin = () => {
               Earnings
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="repairs">
+            <AdminRepairsTab />
+          </TabsContent>
 
           <TabsContent value="applications">
             <AdminApplicationsTab />
