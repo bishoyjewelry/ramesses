@@ -285,12 +285,14 @@ export type Database = {
       }
       repair_quotes: {
         Row: {
+          admin_image_urls: string[] | null
           approved: boolean | null
           created_at: string
           description: string
           email: string
           id: string
           image_urls: string[] | null
+          internal_notes: string | null
           item_type: string | null
           name: string
           phone: string | null
@@ -303,12 +305,14 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          admin_image_urls?: string[] | null
           approved?: boolean | null
           created_at?: string
           description: string
           email: string
           id?: string
           image_urls?: string[] | null
+          internal_notes?: string | null
           item_type?: string | null
           name: string
           phone?: string | null
@@ -321,12 +325,14 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          admin_image_urls?: string[] | null
           approved?: boolean | null
           created_at?: string
           description?: string
           email?: string
           id?: string
           image_urls?: string[] | null
+          internal_notes?: string | null
           item_type?: string | null
           name?: string
           phone?: string | null
