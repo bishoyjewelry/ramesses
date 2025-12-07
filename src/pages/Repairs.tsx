@@ -79,11 +79,28 @@ const Repairs = () => {
         repairData.user_id = user.id;
       }
       
-      const { error } = await supabase
+      const { data: insertedRepair, error } = await supabase
         .from('repair_quotes')
-        .insert([repairData]);
+        .insert([repairData])
+        .select()
+        .single();
       
       if (error) throw error;
+      
+      // Send confirmation email via edge function
+      try {
+        await supabase.functions.invoke('send-repair-status-email', {
+          body: {
+            repair_id: insertedRepair.id,
+            previous_status: null,
+            new_status: 'pending'
+          }
+        });
+        console.log('Repair confirmation email sent');
+      } catch (emailError) {
+        // Don't fail the submission if email fails
+        console.error('Failed to send confirmation email:', emailError);
+      }
       
       setIsSubmitted(true);
       setFormData({ name: "", email: "", phone: "", jewelryType: "", repairNeeded: "", notes: "" });
