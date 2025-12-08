@@ -160,10 +160,6 @@ const Repairs = () => {
     document.getElementById('repair-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToHowItWorks = () => {
-    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   // Success confirmation component with method-specific messaging
   const SuccessConfirmation = () => {
     const method = submittedData?.fulfillmentMethod || "mail_in";
@@ -497,53 +493,164 @@ const Repairs = () => {
       <Navigation />
       
       {/* ==================== SECTION 1 — HERO ==================== */}
-      <section className="pt-32 pb-24 bg-service-bg relative overflow-hidden">
+      <section className="pt-32 pb-20 bg-service-bg relative overflow-hidden">
         <div className="absolute top-20 left-10 w-64 h-64 bg-service-gold/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-service-gold/5 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans service-heading font-bold mb-6 text-white leading-tight">
-              Professional Jewelry Repairs.<br />
-              <span className="text-service-gold">Your Way.</span>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-sans service-heading font-bold mb-6 text-white leading-tight">
+              Nationwide Mail-In Jewelry Repair, Backed by{" "}
+              <span className="text-service-gold">47th Street Craftsmanship</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-service-text-muted mb-10 max-w-3xl mx-auto leading-relaxed font-body">
-              Mail-in nationwide, drop off in NYC, or request local courier pickup in Manhattan & North Jersey.
+            <p className="text-lg md:text-xl text-service-text-muted mb-10 max-w-3xl mx-auto leading-relaxed font-body">
+              Ship your jewelry to our NYC workshop for expert repair, restoration, and polishing. Every piece is fully documented, insured, and handled by a master jeweler.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <Button 
-                onClick={scrollToForm}
-                className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded"
-              >
-                Start Your Repair Request
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button 
-                onClick={scrollToHowItWorks}
-                variant="outline"
-                className="border-2 border-service-gold text-service-gold hover:bg-service-gold/10 px-8 py-6 text-lg font-semibold rounded"
-              >
-                How It Works
-              </Button>
-            </div>
-            
-            <div className="relative rounded-xl overflow-hidden bg-service-bg-secondary aspect-[16/9] max-w-4xl mx-auto border border-service-gold/20">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-service-text-muted">
-                  <Wrench className="w-16 h-16 mx-auto mb-4 opacity-50 text-service-gold" />
-                  <p className="text-lg">Master Jeweler at Work</p>
-                  <p className="text-sm">Hero image placeholder</p>
+            <Button 
+              onClick={scrollToForm}
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-10 py-6 text-lg font-semibold rounded"
+            >
+              Start Your Repair
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== SECTION 2 — HOW IT WORKS (4 STEPS) ==================== */}
+      <section id="how-it-works" className="py-16 bg-service-neutral">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+            How Mail-In Jewelry Repair Works
+          </h2>
+          <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                step: 1,
+                title: "Tell Us About Your Jewelry",
+                text: "Fill out the repair form and upload photos so we can understand the problem.",
+                icon: FileText
+              },
+              {
+                step: 2,
+                title: "Choose How to Send It",
+                text: "Select Mail-In Kit, NYC Drop-Off, or Local Courier Pickup (Manhattan and North Jersey).",
+                icon: Package
+              },
+              {
+                step: 3,
+                title: "We Inspect and Send a Digital Quote",
+                text: "We record video intake, photograph your piece, and send a clear quote for your approval.",
+                icon: Video
+              },
+              {
+                step: 4,
+                title: "Approve Online, We Repair and Return",
+                text: "You approve and pay online. We complete the repair in 3–5 business days and return it insured.",
+                icon: Shield
+              }
+            ].map((item, index) => (
+              <div key={index} className="text-center">
+                <div className="relative inline-block mb-4">
+                  <div className="w-16 h-16 bg-service-gold rounded-full flex items-center justify-center mx-auto">
+                    <item.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-7 h-7 bg-luxury-text rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    {item.step}
+                  </div>
                 </div>
+                <h3 className="text-lg font-sans font-bold text-luxury-text mb-2">{item.title}</h3>
+                <p className="text-luxury-text-muted font-body text-sm leading-relaxed">{item.text}</p>
               </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-10">
+            <Button 
+              onClick={scrollToForm}
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-semibold rounded"
+            >
+              Start Your Repair
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== SECTION 3 — TRUST & SAFETY ==================== */}
+      <section className="py-16 bg-service-bg-secondary">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-white">
+            Safe, Documented, and Insured
+          </h2>
+          <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
+          
+          <div className="max-w-3xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { icon: Video, text: "Video unboxing and inspection of every piece on arrival" },
+                { icon: Sparkles, text: "High-resolution photos of stones, settings, and any existing damage" },
+                { icon: Shield, text: "Insured, trackable shipping both ways" },
+                { icon: Lock, text: "Chain-of-custody tracking from intake to final quality check" },
+                { icon: Wrench, text: "All work overseen by a 47th Street master jeweler" },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-4 bg-service-bg/50 rounded-lg p-4">
+                  <div className="w-10 h-10 bg-service-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-service-gold" />
+                  </div>
+                  <span className="text-white font-body">{item.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== SECTION 2 — WHY CHOOSE RAMESSÉS ==================== */}
-      <section className="py-20 bg-service-neutral">
+      {/* ==================== SECTION 4 — WHAT WE REPAIR ==================== */}
+      <section className="py-16 bg-service-neutral">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+            Common Repairs We Handle
+          </h2>
+          <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                "Ring resizing (up or down)",
+                "Prong tightening, retipping, and rebuilding",
+                "Stone tightening and replacement",
+                "Chain and bracelet soldering",
+                "Clasp repair and replacement",
+                "Polishing, refinishing, and rhodium plating",
+                "Shank repair or replacement",
+                "Engagement ring overhauls and restoration",
+                "Vintage and heirloom restoration",
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm border border-luxury-divider">
+                  <CheckCircle className="w-5 h-5 text-service-gold flex-shrink-0" />
+                  <span className="text-luxury-text font-body">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="text-center mt-10">
+            <Button 
+              onClick={scrollToForm}
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-semibold rounded"
+            >
+              Start Your Repair
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== SECTION 5 — WHY CHOOSE RAMESSÉS ==================== */}
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
             Why People Trust Us With Their Jewelry
@@ -568,7 +675,7 @@ const Repairs = () => {
                 text: "No surprises. You approve the quote before any work begins."
               }
             ].map((item, index) => (
-              <Card key={index} className="bg-white border-0 shadow-service hover:shadow-lg transition-shadow rounded-lg text-center">
+              <Card key={index} className="bg-luxury-bg-warm border-0 shadow-service hover:shadow-lg transition-shadow rounded-lg text-center">
                 <CardContent className="p-8">
                   <div className="w-16 h-16 bg-service-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <item.icon className="w-8 h-8 text-service-gold" />
@@ -578,80 +685,6 @@ const Repairs = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== SECTION 3 — HOW IT WORKS TIMELINE ==================== */}
-      <section id="how-it-works" className="py-20 bg-service-bg-secondary">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-white">
-            How It Works
-          </h2>
-          <div className="w-24 h-1 bg-service-gold mx-auto mb-16"></div>
-          
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  step: 1,
-                  title: "Tell Us About Your Repair",
-                  text: "Submit a short form and upload photos. Choose mail-in, drop-off, or courier.",
-                  icon: FileText
-                },
-                {
-                  step: 2,
-                  title: "Get Your Jewelry to Us",
-                  text: "Mail it with our insured label, drop off in NYC, or schedule a local pickup.",
-                  icon: Package
-                },
-                {
-                  step: 3,
-                  title: "We Record a Video Unboxing",
-                  text: "Your item is opened under camera and logged into our system.",
-                  icon: Video
-                },
-                {
-                  step: 4,
-                  title: "Receive a Transparent Quote",
-                  text: "You get a detailed repair plan + cost before we begin.",
-                  icon: DollarSign
-                },
-                {
-                  step: 5,
-                  title: "Our Master Jeweler Completes the Repair",
-                  text: "Stone tightening, polishing, soldering, restoration — all done professionally.",
-                  icon: Wrench
-                },
-                {
-                  step: 6,
-                  title: "We Return It Securely",
-                  text: "Your repaired jewelry is cleaned, polished, and returned to you insured.",
-                  icon: Shield
-                }
-              ].map((item, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-14 h-14 bg-service-gold rounded-full flex items-center justify-center">
-                      <span className="text-xl font-bold text-white">{item.step}</span>
-                    </div>
-                  </div>
-                  <div className="pt-2">
-                    <h3 className="text-lg font-sans font-bold text-white mb-2">{item.title}</h3>
-                    <p className="text-service-text-muted font-body">{item.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button 
-              onClick={scrollToForm}
-              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded"
-            >
-              Start Your Repair
-            </Button>
           </div>
         </div>
       </section>
@@ -955,17 +988,13 @@ const Repairs = () => {
         </div>
       </section>
 
-      {/* ==================== SECTION 9 — FAQ ==================== */}
       <FAQSection 
+        title="Frequently Asked Questions"
         faqs={[
-          { question: "Is mailing jewelry safe?", answer: "Yes. We use insured labels, tamper-evident packaging, and full video intake before work begins." },
-          { question: "How long does a repair take?", answer: "Most repairs are completed within 3–5 business days after quote approval." },
-          { question: "Who performs the repairs?", answer: "A master jeweler with 30+ years of experience on NYC's Diamond District." },
-          { question: "Do you offer drop-off or pickup?", answer: "Yes. We offer Manhattan + North Jersey courier pickup and NYC in-person drop-off." },
-          { question: "How do I pay for the repair?", answer: "You approve your quote online and pay securely through Shopify Checkout." },
-          { question: "Can I track my repair?", answer: "Yes. Your account shows real-time status: received, inspected, quoted, in progress, completed, shipped." },
-          { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
-          { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
+          { question: "Is mailing jewelry safe?", answer: "Yes. We use insured labels, tamper-evident packaging, and full video/photo documentation on arrival." },
+          { question: "How long does a repair take?", answer: "Most repairs are completed within 3–5 business days after you approve the quote." },
+          { question: "Who performs the repairs?", answer: "All work is overseen by a master jeweler with over 30 years on NYC's Diamond District." },
+          { question: "Can I drop off or use a courier instead?", answer: "Yes. You can drop off in NYC or request a local courier pickup in Manhattan and North Jersey, when available." },
         ]}
       />
 
