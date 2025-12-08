@@ -20,6 +20,7 @@ const CreatorDashboard = React.lazy(() => import("./pages/CreatorDashboard"));
 const MyRepairs = React.lazy(() => import("./pages/MyRepairs"));
 const Auth = React.lazy(() => import("./pages/Auth"));
 const Account = React.lazy(() => import("./pages/Account"));
+const AdminDataExplorer = React.lazy(() => import("./pages/AdminDataExplorer"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/product/:handle" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<Suspense fallback={<PageLoader />}><Admin /></Suspense>} />
+            <Route path="/admin/data" element={<Suspense fallback={<PageLoader />}><AdminDataExplorer /></Suspense>} />
             <Route path="/auth" element={<Suspense fallback={<PageLoader />}><Auth /></Suspense>} />
             <Route path="/creator" element={<Suspense fallback={<PageLoader />}><CreatorDashboard /></Suspense>} />
             <Route path="/my-repairs" element={<Suspense fallback={<PageLoader />}><MyRepairs /></Suspense>} />
