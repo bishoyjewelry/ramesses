@@ -287,6 +287,7 @@ export type Database = {
         Row: {
           admin_image_urls: string[] | null
           approved: boolean | null
+          approved_at: string | null
           city: string | null
           created_at: string
           description: string
@@ -298,12 +299,16 @@ export type Database = {
           item_type: string | null
           logistics_notes: string | null
           name: string
+          payment_link_url: string | null
+          payment_status: string | null
           phone: string | null
           pickup_window: string | null
           preferred_contact: string | null
           preferred_dropoff_time: string | null
           quoted_price: number | null
           repair_type: string | null
+          shopify_order_id: string | null
+          shopify_reference: string | null
           state: string | null
           status: string | null
           street_address: string | null
@@ -315,6 +320,7 @@ export type Database = {
         Insert: {
           admin_image_urls?: string[] | null
           approved?: boolean | null
+          approved_at?: string | null
           city?: string | null
           created_at?: string
           description: string
@@ -326,12 +332,16 @@ export type Database = {
           item_type?: string | null
           logistics_notes?: string | null
           name: string
+          payment_link_url?: string | null
+          payment_status?: string | null
           phone?: string | null
           pickup_window?: string | null
           preferred_contact?: string | null
           preferred_dropoff_time?: string | null
           quoted_price?: number | null
           repair_type?: string | null
+          shopify_order_id?: string | null
+          shopify_reference?: string | null
           state?: string | null
           status?: string | null
           street_address?: string | null
@@ -343,6 +353,7 @@ export type Database = {
         Update: {
           admin_image_urls?: string[] | null
           approved?: boolean | null
+          approved_at?: string | null
           city?: string | null
           created_at?: string
           description?: string
@@ -354,12 +365,16 @@ export type Database = {
           item_type?: string | null
           logistics_notes?: string | null
           name?: string
+          payment_link_url?: string | null
+          payment_status?: string | null
           phone?: string | null
           pickup_window?: string | null
           preferred_contact?: string | null
           preferred_dropoff_time?: string | null
           quoted_price?: number | null
           repair_type?: string | null
+          shopify_order_id?: string | null
+          shopify_reference?: string | null
           state?: string | null
           status?: string | null
           street_address?: string | null

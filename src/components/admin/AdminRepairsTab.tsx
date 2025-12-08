@@ -44,7 +44,9 @@ import {
   StickyNote,
   Package,
   MapPin,
-  Building
+  Building,
+  CreditCard,
+  CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -76,6 +78,11 @@ interface RepairQuote {
   state: string | null;
   zip: string | null;
   logistics_notes: string | null;
+  // Payment fields
+  payment_status: string | null;
+  payment_link_url: string | null;
+  shopify_order_id: string | null;
+  approved_at: string | null;
 }
 
 const statusOptions = [
@@ -410,6 +417,30 @@ export const AdminRepairsTab = () => {
     );
   };
 
+  const getPaymentBadge = (paymentStatus: string | null, shopifyOrderId: string | null) => {
+    const status = paymentStatus || 'unpaid';
+    const styles: Record<string, { bg: string; text: string; label: string; icon: React.ElementType }> = {
+      unpaid: { bg: "bg-gray-100", text: "text-gray-600", label: "Unpaid", icon: CreditCard },
+      pending: { bg: "bg-yellow-100", text: "text-yellow-700", label: "Pending", icon: CreditCard },
+      paid: { bg: "bg-green-100", text: "text-green-700", label: "Paid", icon: CheckCircle },
+    };
+    
+    const style = styles[status] || styles.unpaid;
+    const Icon = style.icon;
+    
+    return (
+      <div className="flex flex-col gap-1">
+        <Badge className={`${style.bg} ${style.text} border-0 flex items-center gap-1 w-fit`}>
+          <Icon className="w-3 h-3" />
+          {style.label}
+        </Badge>
+        {shopifyOrderId && (
+          <span className="text-xs text-luxury-text-muted font-mono">#{shopifyOrderId}</span>
+        )}
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -489,6 +520,7 @@ export const AdminRepairsTab = () => {
                     </div>
                   </TableHead>
                   <TableHead className="text-luxury-text">Quote</TableHead>
+                  <TableHead className="text-luxury-text">Payment</TableHead>
                   <TableHead 
                     className="text-luxury-text cursor-pointer hover:text-luxury-champagne"
                     onClick={() => toggleSort("created_at")}
@@ -529,6 +561,9 @@ export const AdminRepairsTab = () => {
                         ? `$${Number(repair.quoted_price).toFixed(2)}` 
                         : "—"}
                     </TableCell>
+                    <TableCell>
+                      {getPaymentBadge(repair.payment_status, repair.shopify_order_id)}
+                    </TableCell>
                     <TableCell className="text-luxury-text-muted text-sm">
                       {format(new Date(repair.created_at), "MMM d, yyyy")}
                     </TableCell>
@@ -556,7 +591,7 @@ export const AdminRepairsTab = () => {
                 ))}
                 {filteredRepairs.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-luxury-text-muted">
+                    <TableCell colSpan={9} className="text-center py-8 text-luxury-text-muted">
                       No repair quotes found
                     </TableCell>
                   </TableRow>
