@@ -30,7 +30,9 @@ import {
   AlertCircle,
   Mail,
   X,
-  Check
+  Check,
+  CreditCard,
+  ExternalLink
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -49,6 +51,10 @@ interface RepairQuote {
   tracking_number: string | null;
   created_at: string;
   updated_at: string | null;
+  payment_status: string | null;
+  payment_link_url: string | null;
+  shopify_order_id: string | null;
+  approved_at: string | null;
 }
 
 const MyRepairs = () => {
@@ -56,6 +62,7 @@ const MyRepairs = () => {
   const [repairs, setRepairs] = useState<RepairQuote[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRepair, setSelectedRepair] = useState<RepairQuote | null>(null);
+  const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -84,23 +91,37 @@ const MyRepairs = () => {
     }
   };
 
-  const handleApproveQuote = async (repairId: string) => {
+  const handleApproveAndPay = async (repairId: string) => {
+    setIsCreatingPaymentLink(true);
     try {
-      const { error } = await supabase
-        .from('repair_quotes')
-        .update({ approved: true })
-        .eq('id', repairId);
+      const { data, error } = await supabase.functions.invoke('create-repair-payment-link', {
+        body: { repair_id: repairId },
+      });
       
       if (error) throw error;
       
-      toast.success("Quote approved successfully!");
-      loadRepairs();
-      if (selectedRepair?.id === repairId) {
-        setSelectedRepair({ ...selectedRepair, approved: true });
+      if (data?.payment_link_url) {
+        // Open payment link in new tab
+        window.open(data.payment_link_url, '_blank');
+        toast.success("Payment page opened in new tab");
+        
+        // Update local state
+        if (selectedRepair?.id === repairId) {
+          setSelectedRepair({ 
+            ...selectedRepair, 
+            payment_status: 'pending',
+            payment_link_url: data.payment_link_url 
+          });
+        }
+        loadRepairs();
+      } else {
+        throw new Error("No payment link returned");
       }
-    } catch (error) {
-      console.error('Error approving quote:', error);
-      toast.error("Failed to approve quote. Please try again.");
+    } catch (error: any) {
+      console.error('Error creating payment link:', error);
+      toast.error(error.message || "Failed to create payment link. Please try again.");
+    } finally {
+      setIsCreatingPaymentLink(false);
     }
   };
 
@@ -249,10 +270,20 @@ const MyRepairs = () => {
                             </div>
                           )}
                           
-                          {repair.approved && (
+                          {repair.payment_status === 'paid' ? (
+                            <div className="flex items-center gap-1 text-green-600">
+                              <CheckCircle className="w-4 h-4" />
+                              <span>Paid</span>
+                            </div>
+                          ) : repair.approved ? (
                             <div className="flex items-center gap-1 text-green-600">
                               <CheckCircle className="w-4 h-4" />
                               <span>Approved</span>
+                            </div>
+                          ) : repair.quoted_price && (
+                            <div className="flex items-center gap-1 text-amber-600">
+                              <CreditCard className="w-4 h-4" />
+                              <span>Awaiting Payment</span>
                             </div>
                           )}
                           
@@ -429,7 +460,7 @@ const MyRepairs = () => {
                   </div>
                 )}
 
-                {/* Quote & Approval */}
+                {/* Quote & Payment Status */}
                 {selectedRepair.quoted_price && (
                   <div className="bg-service-gold/10 border border-service-gold/30 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
@@ -442,7 +473,24 @@ const MyRepairs = () => {
                       </span>
                     </div>
                     
-                    {selectedRepair.approved ? (
+                    {selectedRepair.payment_status === 'paid' ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-green-600">
+                          <CheckCircle className="w-5 h-5" />
+                          <span className="font-medium">Paid – Repair in queue</span>
+                        </div>
+                        {selectedRepair.approved_at && (
+                          <p className="text-sm text-luxury-text-muted">
+                            Approved on {format(new Date(selectedRepair.approved_at), 'MMM d, yyyy h:mm a')}
+                          </p>
+                        )}
+                        {selectedRepair.shopify_order_id && (
+                          <p className="text-xs text-luxury-text-muted font-mono">
+                            Order: #{selectedRepair.shopify_order_id}
+                          </p>
+                        )}
+                      </div>
+                    ) : selectedRepair.approved ? (
                       <div className="flex items-center gap-2 text-green-600">
                         <CheckCircle className="w-5 h-5" />
                         <span className="font-medium">Quote Approved</span>
@@ -450,15 +498,36 @@ const MyRepairs = () => {
                     ) : (
                       <div className="space-y-3">
                         <p className="text-sm text-luxury-text-muted">
-                          Please review and approve this quote to proceed with the repair.
+                          Review and pay to start your repair.
                         </p>
                         <Button 
-                          onClick={() => handleApproveQuote(selectedRepair.id)}
+                          onClick={() => handleApproveAndPay(selectedRepair.id)}
+                          disabled={isCreatingPaymentLink}
                           className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold"
                         >
-                          <Check className="w-4 h-4 mr-2" />
-                          Approve Quote
+                          {isCreatingPaymentLink ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Creating Payment Link...
+                            </>
+                          ) : (
+                            <>
+                              <CreditCard className="w-4 h-4 mr-2" />
+                              Approve & Pay Online
+                            </>
+                          )}
                         </Button>
+                        
+                        {selectedRepair.payment_status === 'pending' && selectedRepair.payment_link_url && (
+                          <Button
+                            variant="outline"
+                            onClick={() => window.open(selectedRepair.payment_link_url!, '_blank')}
+                            className="w-full border-service-gold text-service-gold hover:bg-service-gold/10"
+                          >
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Resume Payment
+                          </Button>
+                        )}
                       </div>
                     )}
                   </div>

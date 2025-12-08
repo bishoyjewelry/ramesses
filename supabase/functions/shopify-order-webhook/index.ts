@@ -36,6 +36,8 @@ interface ShopifyOrder {
   note: string | null;
   customer: ShopifyCustomer | null;
   line_items: ShopifyLineItem[];
+  financial_status?: string;
+  tags?: string;
   shipping_address?: {
     first_name: string;
     last_name: string;
@@ -237,6 +239,54 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     console.log(`Processed order ${order.name}: ${repairQuotesCreated.length} repair quotes created`);
+
+    // Check if this is a paid order for a repair payment link (draft order converted to order)
+    // Look for repair tag pattern: repair-{uuid}
+    const tags = order.tags || "";
+    const repairTagMatch = tags.match(/repair-([a-f0-9-]{36})/i);
+    
+    if (repairTagMatch && order.financial_status === "paid") {
+      const repairId = repairTagMatch[1];
+      console.log(`Found paid repair order for repair_id: ${repairId}`);
+      
+      // Update the repair quote as paid
+      const { error: updateError } = await supabase
+        .from("repair_quotes")
+        .update({
+          approved: true,
+          payment_status: "paid",
+          approved_at: new Date().toISOString(),
+          shopify_order_id: order.id.toString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", repairId);
+      
+      if (updateError) {
+        console.error("Error updating repair payment status:", updateError);
+      } else {
+        console.log(`Repair ${repairId} marked as paid`);
+        
+        // Trigger repair status email for payment received
+        try {
+          const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+          await fetch(`${supabaseUrl}/functions/v1/send-repair-status-email`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({
+              repair_id: repairId,
+              new_status: "payment_received",
+              previous_status: "pending",
+            }),
+          });
+          console.log("Payment received email triggered");
+        } catch (emailError) {
+          console.error("Error triggering payment email:", emailError);
+        }
+      }
+    }
 
     return new Response(
       JSON.stringify({
