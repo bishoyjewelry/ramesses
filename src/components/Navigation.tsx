@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CartDrawer } from "./CartDrawer";
 import { AccountDropdown } from "./AccountDropdown";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import logoIcon from "@/assets/logo-icon.png";
 import logoText from "@/assets/logo-text-only.png";
 
@@ -13,8 +14,20 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { language, setLanguage, t } = useLanguage();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleMobileSignOut = async () => {
+    setIsOpen(false);
+    const { error } = await signOut();
+    if (error) {
+      toast.error("Failed to sign out");
+    } else {
+      toast.success("Signed out successfully");
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -179,6 +192,12 @@ export const Navigation = () => {
                     >
                       My Custom Designs
                     </Link>
+                    <button
+                      onClick={handleMobileSignOut}
+                      className="px-4 py-3 text-sm font-medium text-red-600 hover:bg-luxury-bg-warm block w-full text-left"
+                    >
+                      Sign Out
+                    </button>
                   </>
                 ) : (
                   <>

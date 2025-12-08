@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 export const AccountDropdown = () => {
   const { user, isCreator, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -20,6 +21,7 @@ export const AccountDropdown = () => {
       toast.error("Failed to sign out");
     } else {
       toast.success("Signed out successfully");
+      navigate("/");
     }
   };
 
