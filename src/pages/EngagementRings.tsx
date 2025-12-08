@@ -110,7 +110,7 @@ export default function EngagementRings() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold px-8">
-                <Link to="/custom">Design an Engagement Ring</Link>
+                <Link to="/custom?mode=engagement">Design an Engagement Ring</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-luxury-text text-luxury-text hover:bg-luxury-text hover:text-background">
                 <Link to="/repairs">Start an Engagement Ring Repair</Link>
@@ -199,7 +199,7 @@ export default function EngagementRings() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold">
-                  <Link to="/custom">Design an Engagement Ring</Link>
+                  <Link to="/custom?mode=engagement">Design an Engagement Ring</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="border-luxury-text text-luxury-text hover:bg-luxury-text hover:text-background">
                   <Link to="/shop">See Customer-Designed Rings</Link>
