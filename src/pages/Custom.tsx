@@ -127,12 +127,12 @@ const Custom = () => {
               <span className="text-sm font-medium text-luxury-text">Ramessés Custom Lab™</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif luxury-heading text-luxury-text mb-8 leading-tight">
-              Design the Jewelry You Can't Find Anywhere Else
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-8 leading-tight">
+              Start Your Custom Jewelry Project With a 47th Street Master Jeweler
             </h1>
             
-            <p className="text-xl md:text-2xl text-luxury-text-muted mb-12 max-w-3xl mx-auto leading-relaxed font-body">
-              Welcome to the Ramessés Custom Lab™ — an AI-powered jewelry design studio where your ideas become handcrafted pieces made by master jewelers in NYC.
+            <p className="text-lg md:text-xl text-luxury-text-muted mb-12 max-w-3xl mx-auto leading-relaxed font-body">
+              Work directly with a master jeweler on NYC's Diamond District to design the exact piece you've been imagining. From engagement rings to pendants, chains, bracelets, and heirloom redesigns, our Custom Lab combines expert craftsmanship with modern tools to bring your ideas to life.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -159,81 +159,68 @@ const Custom = () => {
         </div>
       </section>
 
-      {/* Hero Image Placeholder */}
-      <section className="pb-24 bg-luxury-bg">
-        <div className="container mx-auto px-4">
-          <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-luxury-bg-warm aspect-[16/9] max-w-4xl mx-auto">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-luxury-text-muted">
-                <Gem className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-lg">CAD Model + Sketch + Final Piece</p>
-                <p className="text-sm">Studio hero image placeholder</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 2 — HOW IT WORKS */}
-      <section id="how-it-works" className="py-24 bg-luxury-bg-warm">
+      <section id="how-it-works" className="py-20 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif luxury-heading text-luxury-text mb-4">
-              How the Custom Lab Works
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-luxury-text mb-4">
+              How Our Custom Design Process Works
             </h2>
             <div className="w-24 h-1 bg-luxury-champagne mx-auto"></div>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-            {/* Step 1 */}
-            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
-              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
-                <Upload className="w-16 h-16 text-luxury-champagne/60" />
-              </div>
-              <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">1</div>
-                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">Tell Us Your Idea</h3>
-                <p className="text-luxury-text-muted leading-relaxed font-body">
-                  Upload photos, sketches, or inspiration. Describe what you're imagining — metal, stones, style, budget, and story.
-                </p>
-              </CardContent>
-            </Card>
-            
-            {/* Step 2 */}
-            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
-              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
-                <Sparkles className="w-16 h-16 text-luxury-champagne/60" />
-              </div>
-              <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">2</div>
-                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">AI Concepts + Human Refinement</h3>
-                <p className="text-luxury-text-muted leading-relaxed font-body">
-                  Our AI creates concept images based on your idea. You choose your favorites, and our master jeweler refines the design into a final CAD model.
-                </p>
-              </CardContent>
-            </Card>
-            
-            {/* Step 3 */}
-            <Card className="bg-luxury-bg border-0 shadow-soft hover:shadow-luxury transition-shadow overflow-hidden rounded-xl">
-              <div className="aspect-[4/3] bg-luxury-champagne/10 flex items-center justify-center">
-                <PenTool className="w-16 h-16 text-luxury-champagne/60" />
-              </div>
-              <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-luxury-champagne text-luxury-text font-bold mb-4">3</div>
-                <h3 className="text-2xl font-serif luxury-heading text-luxury-text mb-4">Handcrafted in NYC</h3>
-                <p className="text-luxury-text-muted leading-relaxed font-body">
-                  Once you approve the final design, our 47th Street workshops cast, set, polish, and finish your piece. Insured shipping nationwide.
-                </p>
-              </CardContent>
-            </Card>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-5 gap-6">
+              {[
+                { step: 1, text: "Share your ideas and upload inspiration images." },
+                { step: 2, text: "We propose design options and price ranges." },
+                { step: 3, text: "You select a direction and we create detailed CAD models." },
+                { step: 4, text: "Once approved, we cast, set, and finish your piece in NYC." },
+                { step: 5, text: "We ship your finished jewelry insured and ready to wear." },
+              ].map((item) => (
+                <div key={item.step} className="text-center">
+                  <div className="w-12 h-12 bg-luxury-champagne rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-lg font-bold text-luxury-text">{item.step}</span>
+                  </div>
+                  <p className="text-luxury-text-muted font-body text-sm leading-relaxed">{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
           
-          <div className="text-center">
+          <div className="text-center mt-10">
             <Button 
               onClick={scrollToForm}
-              className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-6 text-lg font-semibold rounded-lg shadow-luxury"
+              className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-5 font-semibold rounded-lg shadow-luxury"
             >
               Start Your Custom Design
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ENGAGEMENT RING SPECIALIZATION BLOCK */}
+      <section className="py-16 bg-luxury-bg">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-luxury-champagne/20 rounded-full mb-6">
+              <Diamond className="w-4 h-4 text-luxury-champagne" />
+              <span className="text-sm font-medium text-luxury-text">Specialized in Engagement Rings</span>
+            </div>
+            
+            <p className="text-lg text-luxury-text-muted font-body leading-relaxed mb-8">
+              We handle high-stakes engagement ring projects every day — from first-time designs to upgrades and complete redesigns. Every ring receives microscope-level setting work and thorough quality control.
+            </p>
+            
+            <Button 
+              onClick={() => {
+                setActiveFlow("engagement");
+                scrollToForm();
+              }}
+              className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover px-8 py-5 font-semibold rounded-lg"
+            >
+              Start a Custom Engagement Ring
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -284,8 +271,8 @@ const Custom = () => {
                       </div>
                       <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design an Engagement Ring</h3>
                     </div>
-                    <p className="text-luxury-text-muted font-body text-sm">
-                      Custom engagement rings with specific stone and style options
+                    <p className="text-luxury-text-muted font-body text-sm leading-relaxed">
+                      Build a custom engagement ring with your choice of style, stone shape, metal, and details. Use your own diamond or let us source one that fits your budget.
                     </p>
                   </button>
                   
@@ -305,8 +292,8 @@ const Custom = () => {
                       </div>
                       <h3 className="text-xl font-serif luxury-heading text-luxury-text">Design Any Jewelry</h3>
                     </div>
-                    <p className="text-luxury-text-muted font-body text-sm">
-                      Rings, pendants, chains, bracelets, earrings, and more
+                    <p className="text-luxury-text-muted font-body text-sm leading-relaxed">
+                      Create custom pendants, chains, bracelets, earrings, or redesigned heirloom pieces with expert guidance and transparent pricing.
                     </p>
                   </button>
                 </div>
