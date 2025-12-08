@@ -403,6 +403,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      link_guest_repairs: {
+        Args: { _email: string; _user_id: string }
+        Returns: number
+      }
     }
     Enums: {
       app_role: "customer" | "creator" | "admin"

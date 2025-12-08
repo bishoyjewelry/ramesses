@@ -28,9 +28,13 @@ export const useAuth = () => {
           isLoading: false,
         }));
 
-        // Check creator status after auth change
+        // After auth change, link guest repairs and check creator status
         if (session?.user) {
           setTimeout(() => {
+            // Link any guest repairs to this user
+            if (session.user.email) {
+              linkGuestRepairs(session.user.id, session.user.email);
+            }
             checkCreatorStatus(session.user.id);
           }, 0);
         } else {
@@ -49,12 +53,33 @@ export const useAuth = () => {
       }));
 
       if (session?.user) {
+        // Link any guest repairs to this user
+        if (session.user.email) {
+          linkGuestRepairs(session.user.id, session.user.email);
+        }
         checkCreatorStatus(session.user.id);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const linkGuestRepairs = async (userId: string, email: string) => {
+    try {
+      const { data, error } = await supabase.rpc('link_guest_repairs', {
+        _user_id: userId,
+        _email: email,
+      });
+      
+      if (error) {
+        console.error('Error linking guest repairs:', error);
+      } else if (data && data > 0) {
+        console.log(`Linked ${data} guest repair(s) to user account`);
+      }
+    } catch (error) {
+      console.error('Error linking guest repairs:', error);
+    }
+  };
 
   const checkCreatorStatus = async (userId: string) => {
     try {
