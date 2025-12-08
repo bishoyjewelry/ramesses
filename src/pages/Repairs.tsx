@@ -17,6 +17,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { SimpleSelect } from "@/components/SimpleSelect";
 import { SimpleAccordion } from "@/components/SimpleAccordion";
+import { FAQSection } from "@/components/FAQSection";
+import { SEOContentBlock } from "@/components/SEOContentBlock";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -954,29 +956,18 @@ const Repairs = () => {
       </section>
 
       {/* ==================== SECTION 9 — FAQ ==================== */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
-              Frequently Asked Questions
-            </h2>
-            <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
-            
-            <SimpleAccordion
-              items={[
-                { question: "How long do repairs take?", answer: "Most repairs are completed in 3–5 business days once approved." },
-                { question: "Is shipping insured?", answer: "Yes. Every shipment is insured both ways." },
-                { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
-                { question: "Do you work with diamonds and gemstones?", answer: "Yes. We tighten, secure, replace, and restore stones of all types." },
-                { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
-                { question: "How do I track my repair?", answer: "You'll receive email updates at every stage, from intake to shipping. Create an account to view your repair history anytime." },
-                { question: "Where can I drop off my jewelry in person?", answer: "Our NYC location is on 47th Street in the Diamond District. Hours are Mon–Sat, 10am – 6pm." },
-                { question: "What areas are covered by courier pickup?", answer: "We offer courier pickup in Manhattan and select North Jersey areas. We'll confirm availability when you submit your request." }
-              ]}
-            />
-          </div>
-        </div>
-      </section>
+      <FAQSection 
+        faqs={[
+          { question: "Is mailing jewelry safe?", answer: "Yes. We use insured labels, tamper-evident packaging, and full video intake before work begins." },
+          { question: "How long does a repair take?", answer: "Most repairs are completed within 3–5 business days after quote approval." },
+          { question: "Who performs the repairs?", answer: "A master jeweler with 30+ years of experience on NYC's Diamond District." },
+          { question: "Do you offer drop-off or pickup?", answer: "Yes. We offer Manhattan + North Jersey courier pickup and NYC in-person drop-off." },
+          { question: "How do I pay for the repair?", answer: "You approve your quote online and pay securely through Shopify Checkout." },
+          { question: "Can I track my repair?", answer: "Yes. Your account shows real-time status: received, inspected, quoted, in progress, completed, shipped." },
+          { question: "What if I decline the repair quote?", answer: "We ship your jewelry back at no cost." },
+          { question: "Do you repair luxury jewelry?", answer: "Yes. We handle high-end and sentimental pieces with extreme care." },
+        ]}
+      />
 
       {/* ==================== SECTION 10 — FINAL CTA ==================== */}
       <section className="py-20 bg-service-bg">
@@ -986,7 +977,7 @@ const Repairs = () => {
               Ready to Repair Your Jewelry?
             </h2>
             <p className="text-xl text-service-text-muted mb-10 font-body">
-              Mail it in, drop it off, or schedule a pickup — we've got you covered.
+              Mail it in, drop it off, or schedule a pickup — we have got you covered.
             </p>
             <Button 
               onClick={scrollToForm}
@@ -997,6 +988,9 @@ const Repairs = () => {
           </div>
         </div>
       </section>
+
+      {/* ==================== SEO CONTENT BLOCK ==================== */}
+      <SEOContentBlock />
 
       <Footer />
     </div>

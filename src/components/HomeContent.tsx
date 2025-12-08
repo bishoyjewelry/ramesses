@@ -8,6 +8,9 @@ import {
   Users, ArrowRight, Crown, Clock
 } from "lucide-react";
 import { SimpleAccordion } from "@/components/SimpleAccordion";
+import { WhyMailToUs } from "@/components/WhyMailToUs";
+import { FAQSection } from "@/components/FAQSection";
+import { SEOContentBlock } from "@/components/SEOContentBlock";
 
 export const HomeContent = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -113,6 +116,9 @@ export const HomeContent = () => {
           </div>
         </div>
       </section>
+
+      {/* ==================== SECTION 3.5 — WHY MAIL TO US (NEW) ==================== */}
+      <WhyMailToUs />
 
       {/* ==================== SECTION 4 — HOW MAIL-IN WORKS (Palette 1) ==================== */}
       <section className="py-20 bg-service-bg-secondary">
@@ -323,27 +329,8 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      {/* ==================== SECTION 9 — FAQ SNAPSHOT ==================== */}
-      <section className="py-20 bg-luxury-bg-warm">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-center mb-4 text-luxury-text">
-              Frequently Asked Questions
-            </h2>
-            <div className="w-24 h-1 bg-luxury-champagne mx-auto mb-12"></div>
-            
-            <SimpleAccordion
-              items={[
-                { question: "Do you ship repairs nationwide?", answer: "Yes — fully insured shipping both ways, anywhere in the United States." },
-                { question: "How long do repairs take?", answer: "Most repairs are completed in 3–5 business days after approval." },
-                { question: "How does the Custom Lab work?", answer: "Upload your inspiration, our AI generates concepts, then our master jeweler refines and crafts your piece." },
-                { question: "Can I design jewelry from scratch?", answer: "Absolutely! Describe your vision and we'll bring it to life with AI concepting and expert craftsmanship." },
-                { question: "What types of jewelry do you repair?", answer: "Rings, chains, bracelets, earrings, pendants, watches — gold, silver, platinum, and more." }
-              ]}
-            />
-          </div>
-        </div>
-      </section>
+      {/* ==================== SECTION 9 — FAQ SNAPSHOT (NEW COMPONENT) ==================== */}
+      <FAQSection className="bg-luxury-bg-warm" />
 
       {/* ==================== SECTION 10 — FINAL CTA (Palette 1) ==================== */}
       <section className="py-20 bg-service-bg">
@@ -370,6 +357,9 @@ export const HomeContent = () => {
           </div>
         </div>
       </section>
+
+      {/* ==================== SEO CONTENT BLOCK ==================== */}
+      <SEOContentBlock />
 
       {/* Spanish CTA */}
       {language === 'en' && (
