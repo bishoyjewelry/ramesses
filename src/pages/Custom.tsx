@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { AuthCallout } from "@/components/AuthCallout";
@@ -20,10 +20,24 @@ type DesignFlow = "any" | "engagement";
 
 const Custom = () => {
   const { user, isCreator } = useAuth();
-  const [activeFlow, setActiveFlow] = useState<DesignFlow>("engagement");
+  const [searchParams] = useSearchParams();
+  const modeParam = searchParams.get('mode');
+  
+  const [activeFlow, setActiveFlow] = useState<DesignFlow>(modeParam === 'engagement' ? 'engagement' : 'engagement');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Scroll to form and set engagement mode when mode=engagement is passed
+  useEffect(() => {
+    if (modeParam === 'engagement') {
+      setActiveFlow('engagement');
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        document.getElementById('custom-form')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [modeParam]);
   
   // General jewelry form state
   const [generalForm, setGeneralForm] = useState({
