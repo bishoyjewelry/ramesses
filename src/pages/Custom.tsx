@@ -142,27 +142,27 @@ const Custom = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-luxury-bg">
+    <div className="min-h-screen bg-luxury-bg pb-mobile-nav">
       <Navigation />
       
       {/* HERO SECTION */}
-      <section className="relative pt-28 pb-16 bg-luxury-bg overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-40 left-10 w-72 h-72 bg-luxury-champagne/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-luxury-champagne/5 rounded-full blur-3xl"></div>
+      <section className="relative pt-20 sm:pt-28 pb-10 sm:pb-16 bg-luxury-bg overflow-hidden">
+        {/* Decorative elements - hidden on small screens */}
+        <div className="absolute top-40 left-10 w-72 h-72 bg-luxury-champagne/10 rounded-full blur-3xl hidden sm:block"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-luxury-champagne/5 rounded-full blur-3xl hidden sm:block"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-luxury-champagne/15 border border-luxury-champagne/20 rounded-full mb-8">
-              <Sparkles className="w-4 h-4 text-luxury-champagne" />
-              <span className="text-sm font-medium text-luxury-text">Ramessés Custom Lab</span>
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-luxury-champagne/15 border border-luxury-champagne/20 rounded-full mb-6 sm:mb-8">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-luxury-champagne" />
+              <span className="text-xs sm:text-sm font-medium text-luxury-text">Ramessés Custom Lab</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-4 sm:mb-6 leading-tight px-2">
               Start Your Custom Jewelry Project
             </h1>
             
-            <p className="text-lg md:text-xl text-luxury-text-muted mb-12 max-w-3xl mx-auto leading-relaxed font-body">
+            <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed font-body px-2">
               Work directly with a NYC master jeweler to create a custom engagement ring, redesign an heirloom piece, or bring any idea to life.
             </p>
           </div>
@@ -170,12 +170,12 @@ const Custom = () => {
       </section>
 
       {/* SELECTION CARDS */}
-      <section className="py-12 bg-luxury-bg">
+      <section className="py-8 sm:py-12 bg-luxury-bg">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-5xl mx-auto">
             {/* Engagement Ring Card - Premium emphasized */}
             <div 
-              className={`relative group cursor-pointer rounded-2xl border-2 p-8 transition-all duration-300 ${
+              className={`relative group cursor-pointer rounded-xl sm:rounded-2xl border-2 p-5 sm:p-8 transition-all duration-300 ${
                 activeFlow === 'engagement'
                   ? 'border-luxury-champagne bg-luxury-champagne/10 shadow-xl'
                   : 'border-luxury-divider bg-white hover:border-luxury-champagne/50 hover:shadow-luxury'
@@ -183,23 +183,23 @@ const Custom = () => {
               onClick={() => handleCardSelect('engagement')}
             >
               {/* Premium badge */}
-              <div className="absolute -top-3 left-6 px-3 py-1 bg-luxury-champagne text-luxury-text text-xs font-semibold rounded-full">
+              <div className="absolute -top-2.5 sm:-top-3 left-4 sm:left-6 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-luxury-champagne text-luxury-text text-[10px] sm:text-xs font-semibold rounded-full">
                 Most Popular
               </div>
               
-              <div className="flex items-start gap-5">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+              <div className="flex items-start gap-4 sm:gap-5">
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
                   activeFlow === 'engagement' ? 'bg-luxury-champagne' : 'bg-luxury-champagne/20'
                 }`}>
-                  <Heart className={`w-8 h-8 ${activeFlow === 'engagement' ? 'text-luxury-text' : 'text-luxury-champagne'}`} />
+                  <Heart className={`w-6 h-6 sm:w-8 sm:h-8 ${activeFlow === 'engagement' ? 'text-luxury-text' : 'text-luxury-champagne'}`} />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-serif text-luxury-text mb-2">Design an Engagement Ring</h3>
-                  <p className="text-luxury-text-muted font-body mb-4 leading-relaxed">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design an Engagement Ring</h3>
+                  <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                     Custom engagement rings with stone selection, setting styles, and premium craftsmanship.
                   </p>
                   <Button 
-                    className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold"
+                    className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCardSelect('engagement');
@@ -214,27 +214,27 @@ const Custom = () => {
 
             {/* Any Jewelry Card */}
             <div 
-              className={`relative group cursor-pointer rounded-2xl border-2 p-8 transition-all duration-300 ${
+              className={`relative group cursor-pointer rounded-xl sm:rounded-2xl border-2 p-5 sm:p-8 transition-all duration-300 ${
                 activeFlow === 'general'
                   ? 'border-luxury-champagne bg-luxury-champagne/10 shadow-xl'
                   : 'border-luxury-divider bg-white hover:border-luxury-champagne/50 hover:shadow-luxury'
               }`}
               onClick={() => handleCardSelect('general')}
             >
-              <div className="flex items-start gap-5">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+              <div className="flex items-start gap-4 sm:gap-5">
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
                   activeFlow === 'general' ? 'bg-luxury-champagne' : 'bg-luxury-champagne/20'
                 }`}>
-                  <Gem className={`w-8 h-8 ${activeFlow === 'general' ? 'text-luxury-text' : 'text-luxury-champagne'}`} />
+                  <Gem className={`w-6 h-6 sm:w-8 sm:h-8 ${activeFlow === 'general' ? 'text-luxury-text' : 'text-luxury-champagne'}`} />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-serif text-luxury-text mb-2">Design Any Jewelry</h3>
-                  <p className="text-luxury-text-muted font-body mb-4 leading-relaxed">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design Any Jewelry</h3>
+                  <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                     Rings, pendants, chains, earrings, bracelets, redesigns, and more.
                   </p>
                   <Button 
                     variant="outline"
-                    className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text font-semibold"
+                    className="w-full sm:w-auto border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text font-semibold tap-target"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCardSelect('general');
@@ -251,34 +251,34 @@ const Custom = () => {
       </section>
 
       {/* FORM SECTION */}
-      <section ref={formRef} className="py-16 bg-luxury-bg-warm">
+      <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             {isSubmitted ? (
-              <Card className="border-2 border-luxury-champagne/30 shadow-luxury rounded-2xl">
-                <CardContent className="p-12 text-center">
-                  <div className="w-20 h-20 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 className="w-10 h-10 text-luxury-champagne" />
+              <Card className="border-2 border-luxury-champagne/30 shadow-luxury rounded-xl sm:rounded-2xl">
+                <CardContent className="p-6 sm:p-12 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                    <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-luxury-champagne" />
                   </div>
-                  <h3 className="text-2xl font-serif text-luxury-text mb-4">
+                  <h3 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">
                     Your custom project request has been received!
                   </h3>
-                  <p className="text-luxury-text-muted text-lg font-body">
+                  <p className="text-luxury-text-muted text-base sm:text-lg font-body">
                     A master jeweler will review your ideas and contact you shortly.
                   </p>
                 </CardContent>
               </Card>
             ) : activeFlow ? (
-              <Card className="border border-luxury-divider shadow-luxury rounded-2xl bg-white">
-                <CardContent className="p-8 md:p-10">
-                  <div className="text-center mb-8">
-                    <h2 className="text-2xl font-serif text-luxury-text mb-2">
+              <Card className="border border-luxury-divider shadow-luxury rounded-xl sm:rounded-2xl bg-white">
+                <CardContent className="p-5 sm:p-8 md:p-10">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-serif text-luxury-text mb-2">
                       {activeFlow === 'engagement' ? 'Design Your Engagement Ring' : 'Design Your Custom Piece'}
                     </h2>
-                    <p className="text-luxury-text-muted">Fill out the details below and we'll follow up with design options.</p>
+                    <p className="text-luxury-text-muted text-sm sm:text-base">Fill out the details below and we'll follow up with design options.</p>
                   </div>
                   
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
                     {activeFlow === "general" ? (
                       <>
                         <div className="space-y-2">

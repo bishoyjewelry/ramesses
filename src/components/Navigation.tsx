@@ -56,24 +56,24 @@ export const Navigation = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-area-top ${
       isScrolled 
         ? 'bg-white shadow-lg' 
         : 'bg-white/95 backdrop-blur-sm'
     }`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <img 
               src={logoIcon} 
               alt="Ramesses Jewelry" 
-              className="h-10 w-auto"
+              className="h-8 sm:h-10 w-auto"
             />
             <img 
               src={logoText} 
               alt="Ramesses Jewelry" 
-              className="h-6 w-auto hidden sm:block"
+              className="h-5 sm:h-6 w-auto hidden sm:block"
             />
           </Link>
 
@@ -125,13 +125,13 @@ export const Navigation = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="lg:hidden tap-target"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? (
-                <X className="h-6 w-6 text-luxury-text" />
+                <X className="h-5 w-5 sm:h-6 sm:w-6 text-luxury-text" />
               ) : (
-                <Menu className="h-6 w-6 text-luxury-text" />
+                <Menu className="h-5 w-5 sm:h-6 sm:w-6 text-luxury-text" />
               )}
             </Button>
           </div>
@@ -139,18 +139,18 @@ export const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="lg:hidden bg-white border-t border-luxury-divider">
-            <nav className="flex flex-col py-4">
+          <div className="lg:hidden bg-white border-t border-luxury-divider max-h-[calc(100vh-56px)] overflow-y-auto">
+            <nav className="flex flex-col py-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`px-4 py-3 text-sm font-medium transition-colors hover:bg-luxury-bg-warm ${
+                  className={`px-4 py-3.5 text-base font-medium transition-colors hover:bg-luxury-bg-warm tap-target flex items-center ${
                     location.pathname === link.to 
                       ? link.isLuxury 
-                        ? 'text-luxury-champagne' 
+                        ? 'text-luxury-champagne bg-luxury-champagne/5' 
                         : link.isService 
-                          ? 'text-service-gold' 
+                          ? 'text-service-gold bg-service-gold/5' 
                           : 'text-luxury-text'
                       : 'text-luxury-text'
                   }`}
@@ -166,35 +166,35 @@ export const Navigation = () => {
                   <>
                     <Link
                       to="/account"
-                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-text hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       My Account
                     </Link>
                     <Link
                       to="/my-repairs"
-                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-text hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       My Repairs
                     </Link>
                     <Link
                       to="/orders"
-                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-text hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       My Orders
                     </Link>
                     <Link
                       to="/my-designs"
-                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-text hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       My Custom Designs
                     </Link>
                     <button
                       onClick={handleMobileSignOut}
-                      className="px-4 py-3 text-sm font-medium text-red-600 hover:bg-luxury-bg-warm block w-full text-left"
+                      className="px-4 py-3.5 text-base font-medium text-red-600 hover:bg-luxury-bg-warm block w-full text-left tap-target"
                     >
                       Sign Out
                     </button>
@@ -203,14 +203,14 @@ export const Navigation = () => {
                   <>
                     <Link
                       to="/auth?mode=login"
-                      className="px-4 py-3 text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-text hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       Sign In
                     </Link>
                     <Link
                       to="/auth?mode=signup"
-                      className="px-4 py-3 text-sm font-medium text-luxury-champagne hover:bg-luxury-bg-warm block"
+                      className="px-4 py-3.5 text-base font-medium text-luxury-champagne hover:bg-luxury-bg-warm block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
                       Create Account
@@ -224,7 +224,7 @@ export const Navigation = () => {
                   toggleLanguage();
                   setIsOpen(false);
                 }}
-                className="px-4 py-3 text-sm font-medium text-left transition-colors hover:bg-luxury-bg-warm text-luxury-text"
+                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-luxury-bg-warm text-luxury-text tap-target"
               >
                 {t('nav.language')}
               </button>
