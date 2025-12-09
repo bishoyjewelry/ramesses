@@ -2,280 +2,411 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { FAQSection } from "@/components/FAQSection";
-import { SEOContentBlock } from "@/components/SEOContentBlock";
 import { 
   Shield, 
-  Camera, 
   Award, 
   CheckCircle2, 
-  Diamond, 
   Gem, 
   Sparkles,
+  Truck,
+  MapPin,
+  ArrowRight,
+  Heart,
+  CircleDot,
+  Hexagon,
+  Circle,
+  Triangle,
+  Square,
+  Star,
+  MessageCircle,
+  Palette,
+  FileCheck,
   Package,
-  FileText,
-  Clock,
-  Heart
+  Clock
 } from "lucide-react";
 
-const engagementRingFAQs = [
-  {
-    question: "Is it safe to send my engagement ring by mail?",
-    answer: "Yes. We use insured labels, tamper-evident packaging, and complete photo/video documentation before any work begins."
-  },
-  {
-    question: "How long do repairs take?",
-    answer: "Most repairs are completed within 3–5 days after you approve your quote."
-  },
-  {
-    question: "How do you prevent diamond switching?",
-    answer: "We photograph inclusions and unique identifiers so you can verify your stone before and after."
-  },
-  {
-    question: "Can you redesign or upgrade my ring?",
-    answer: "Yes. Our Custom Lab can create a new setting, improve structure, or completely modernize your design."
-  },
-  {
-    question: "Do you work with all stone shapes?",
-    answer: "Yes — round, oval, pear, radiant, cushion, emerald, and more."
-  },
-  {
-    question: "Can I use my existing diamond?",
-    answer: "Absolutely. We specialize in reset projects using your center stone."
-  }
+const trustItems = [
+  { icon: Award, label: "30+ Years Craftsmanship" },
+  { icon: Gem, label: "Master Jeweler Oversight" },
+  { icon: Truck, label: "Nationwide Mail-In Friendly" },
+  { icon: Shield, label: "Insured Shipping" },
+  { icon: MapPin, label: "NYC Diamond District Expertise" },
 ];
 
-const services = [
-  "Prong tightening",
-  "Prong retipping & rebuilding",
-  "Stone tightening (all shapes)",
-  "Pavé and micro-pavé repair",
-  "Halo repair and restructuring",
-  "Head replacement",
-  "Shank repair or replacement",
-  "Rhodium plating for white gold",
-  "Resizing (up or down)",
-  "Polishing and refinishing",
-  "Diamond or gemstone replacement",
-  "Full restoration for vintage rings",
-  "Custom redesign and upgrades"
+const ringStyles = [
+  { 
+    name: "Solitaire", 
+    description: "Timeless elegance with a single stunning center stone",
+    icon: CircleDot,
+    style: "solitaire"
+  },
+  { 
+    name: "Hidden Halo", 
+    description: "Subtle sparkle hidden beneath the center stone",
+    icon: Circle,
+    style: "hidden-halo"
+  },
+  { 
+    name: "Halo", 
+    description: "Maximum brilliance with diamonds surrounding the center",
+    icon: Sparkles,
+    style: "halo"
+  },
+  { 
+    name: "Three-Stone", 
+    description: "Past, present, and future in one meaningful design",
+    icon: Triangle,
+    style: "three-stone"
+  },
+  { 
+    name: "Pavé", 
+    description: "Diamonds set into the band for continuous sparkle",
+    icon: Star,
+    style: "pave"
+  },
+  { 
+    name: "Vintage", 
+    description: "Intricate details inspired by classic eras",
+    icon: Hexagon,
+    style: "vintage"
+  },
 ];
 
-const trustPoints = [
-  { icon: Camera, title: "30+ Years on NYC's Diamond District", description: "Master-level craftsmanship for delicate pavé, halo, solitaire, and vintage engagement rings." },
-  { icon: Shield, title: "Secure & Documented", description: "Every ring is photographed and video-documented before work begins for total transparency." },
-  { icon: Gem, title: "Precision Stone & Prong Work", description: "Microscope-level stone tightening, prong rebuilding, and setting repair." }
+const stoneShapes = [
+  "Round", "Oval", "Cushion", "Pear", "Radiant", "Emerald", "Princess", "Marquise"
 ];
 
-const safetyPoints = [
-  "High-resolution photography of inclusions before work",
-  "Video intake of your ring upon arrival",
-  "Insured shipping and courier pickup options",
-  "Secure chain-of-custody from intake to return",
-  "Master jeweler QC before sending back"
+const processSteps = [
+  { 
+    step: 1, 
+    title: "Share Your Inspiration", 
+    description: "Tell us your vision, share photos, or describe your dream ring",
+    icon: MessageCircle
+  },
+  { 
+    step: 2, 
+    title: "We Design 3–5 Concepts", 
+    description: "Our master jeweler creates custom design options for you",
+    icon: Palette
+  },
+  { 
+    step: 3, 
+    title: "Approve the Final CAD", 
+    description: "Review detailed 3D renderings and make revisions until perfect",
+    icon: FileCheck
+  },
+  { 
+    step: 4, 
+    title: "We Cast, Set & Polish in NYC", 
+    description: "Your ring is handcrafted on 47th Street with expert precision",
+    icon: Gem
+  },
+  { 
+    step: 5, 
+    title: "Your Ring Ships Fully Insured", 
+    description: "Delivered safely to your door with complete documentation",
+    icon: Package
+  },
 ];
 
-const howItWorks = [
-  { step: 1, title: "Tell Us About Your Ring", description: "Share details about your ring or design vision" },
-  { step: 2, title: "Choose Your Method", description: "Ship it, drop it off, or request courier pickup" },
-  { step: 3, title: "Get Your Quote", description: "Receive a digital quote or design preview" },
-  { step: 4, title: "We Complete Your Ring", description: "Approve online — we repair with precision" }
-];
-
-const customBullets = [
-  "Upload your ideas or inspiration photos",
-  "AI-assisted concept suggestions",
-  "Real-time quote estimates",
-  "CAD modeling with revisions",
-  "Casting & stone setting on 47th Street",
-  "3–5 week timeline",
-  "Option to upgrade or redesign existing rings"
+const whyChooseUs = [
+  { title: "Master Jeweler Quality Control", description: "Every ring inspected by a 30+ year Diamond District expert" },
+  { title: "Transparent Pricing", description: "Know exactly what you're paying for—no hidden fees" },
+  { title: "Unlimited Revisions", description: "We refine until you're 100% satisfied with the design" },
+  { title: "Designed & Crafted in NYC", description: "Made on 47th Street, the heart of the Diamond District" },
+  { title: "Personalized 1-on-1 Support", description: "Work directly with your dedicated jeweler throughout" },
 ];
 
 export default function EngagementRings() {
+  const scrollToStyles = () => {
+    document.getElementById('ring-styles')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative py-20 md:py-28 bg-luxury-bg-warm">
-        <div className="container mx-auto px-4">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-luxury-bg pt-20">
+        {/* Decorative elements */}
+        <div className="absolute top-40 left-10 w-72 h-72 bg-luxury-champagne/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-luxury-champagne/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-luxury-champagne/5 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto px-4 py-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Diamond className="w-12 h-12 text-service-gold mx-auto mb-6" />
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-text mb-6 leading-tight">
-              Design, Repair, or Upgrade Your Engagement Ring With a 47th Street Master Jeweler
+            {/* Premium Badge */}
+            <div className="inline-flex items-center gap-2 bg-luxury-champagne/10 border border-luxury-champagne/20 rounded-full px-4 py-2 mb-8">
+              <Gem className="w-4 h-4 text-luxury-champagne" />
+              <span className="text-sm font-medium text-luxury-text">Custom Engagement Rings</span>
+            </div>
+
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif luxury-heading text-luxury-text mb-6 leading-tight">
+              Design Your Custom Engagement Ring{" "}
+              <span className="relative inline-block">
+                With a 47th Street Master Jeweler
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-luxury-champagne"></span>
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-luxury-text-muted mb-10 max-w-3xl mx-auto">
-              From custom ring design to expert repairs, upgrades, and full restorations — your engagement ring is handled with Diamond District precision.
+            
+            <p className="text-lg md:text-xl text-luxury-text-muted mb-10 leading-relaxed font-body max-w-3xl mx-auto">
+              Personalized guidance, premium craftsmanship, and fully custom designs. Bring your vision to life with expert NYC jewelry makers.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold px-8">
-                <Link to="/custom?mode=engagement">Design an Engagement Ring</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-luxury-text text-luxury-text hover:bg-luxury-text hover:text-background">
-                <Link to="/repairs">Start an Engagement Ring Repair</Link>
+              <Link to="/custom?mode=engagement">
+                <Button size="lg" className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8 py-6 text-lg rounded-lg shadow-luxury">
+                  Start Your Engagement Ring
+                  <Sparkles className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                onClick={scrollToStyles}
+                className="w-full sm:w-auto border-2 border-luxury-text text-luxury-text hover:bg-luxury-text/5 font-semibold px-8 py-6 text-lg rounded-lg"
+              >
+                View Ring Styles
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Trust Us Section */}
-      <section className="py-16 md:py-20 bg-background">
+      {/* Trust Bar */}
+      <section className="py-6 bg-luxury-bg-warm border-y border-luxury-divider">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-text text-center mb-4">
-            Why People Trust Us With Their Engagement Rings
-          </h2>
-          <div className="w-20 h-1 bg-service-gold mx-auto mb-12"></div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {trustPoints.map((point, index) => (
-              <div key={index} className="text-center p-6">
-                <div className="w-16 h-16 bg-luxury-bg-warm rounded-full flex items-center justify-center mx-auto mb-5">
-                  <point.icon className="w-8 h-8 text-service-gold" />
-                </div>
-                <h3 className="text-xl font-semibold text-luxury-text mb-3">{point.title}</h3>
-                <p className="text-luxury-text-muted">{point.description}</p>
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+            {trustItems.map((item, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <item.icon className="w-5 h-5 text-luxury-champagne flex-shrink-0" />
+                <span className="text-sm font-medium text-luxury-text whitespace-nowrap">{item.label}</span>
               </div>
             ))}
           </div>
-          
-          <div className="text-center mt-10">
-            <Button asChild variant="outline" className="border-service-gold text-service-gold hover:bg-service-gold hover:text-foreground">
-              <Link to="/repairs">See Before & After Results</Link>
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* Services Overview Section */}
-      <section className="py-16 md:py-20 bg-luxury-bg-warm">
+      {/* Ring Styles Section */}
+      <section id="ring-styles" className="py-20 md:py-24 bg-luxury-bg">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-text text-center mb-4">
-            Everything Your Engagement Ring May Need — Done Properly
-          </h2>
-          <div className="w-20 h-1 bg-service-gold mx-auto mb-12"></div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10">
-            {services.map((service, index) => (
-              <div key={index} className="flex items-center gap-2 p-3 bg-background rounded-lg shadow-soft">
-                <CheckCircle2 className="w-5 h-5 text-service-gold flex-shrink-0" />
-                <span className="text-sm text-luxury-text">{service}</span>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center">
-            <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold">
-              <Link to="/repairs">Start an Engagement Ring Repair</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Custom Design Section */}
-      <section className="py-16 md:py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <Sparkles className="w-10 h-10 text-service-gold mx-auto mb-4" />
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-text mb-4">
-                Design Your Custom Engagement Ring
-              </h2>
-              <p className="text-lg text-luxury-text-muted">
-                Upload inspiration, choose your style, and bring your vision to life through our Custom Lab.
-              </p>
-            </div>
-            
-            <div className="bg-luxury-bg-warm rounded-2xl p-8 md:p-10">
-              <ul className="space-y-4 mb-8">
-                {customBullets.map((bullet, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-service-gold mt-0.5 flex-shrink-0" />
-                    <span className="text-luxury-text">{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold">
-                  <Link to="/custom?mode=engagement">Design an Engagement Ring</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-luxury-text text-luxury-text hover:bg-luxury-text hover:text-background">
-                  <Link to="/shop">See Customer-Designed Rings</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust & Safety Section */}
-      <section className="py-16 md:py-20 bg-service-bg">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <Shield className="w-12 h-12 text-service-gold mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-service-text mb-4">
-              Your Diamond Is Always Safe
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
+              Choose Your Ring Style
             </h2>
-            <div className="w-20 h-1 bg-service-gold mx-auto mb-10"></div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-              {safetyPoints.map((point, index) => (
-                <div key={index} className="flex items-center gap-3 p-4 bg-service-bg-secondary rounded-lg">
-                  <CheckCircle2 className="w-5 h-5 text-service-gold flex-shrink-0" />
-                  <span className="text-sm text-service-text text-left">{point}</span>
+            <p className="text-lg text-luxury-text-muted max-w-2xl mx-auto">
+              Explore the most popular engagement ring settings. Every design is custom-made and tailored to your center stone, metal preference, and budget.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {ringStyles.map((style, index) => (
+              <div 
+                key={index} 
+                className="bg-white rounded-2xl p-6 shadow-luxury border border-luxury-divider hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-16 h-16 bg-luxury-champagne/15 rounded-full flex items-center justify-center mb-5 group-hover:bg-luxury-champagne/25 transition-colors">
+                  <style.icon className="w-8 h-8 text-luxury-champagne" />
+                </div>
+                <h3 className="text-xl font-serif text-luxury-text mb-2">{style.name}</h3>
+                <p className="text-luxury-text-muted text-sm mb-5">{style.description}</p>
+                <Link to={`/custom?mode=engagement&style=${style.style}`}>
+                  <Button variant="outline" className="w-full border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text">
+                    Start This Style
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Diamond & Gemstone Options */}
+      <section className="py-20 md:py-24 bg-luxury-bg-warm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-luxury-champagne/10 border border-luxury-champagne/20 rounded-full px-4 py-2 mb-6">
+                <Gem className="w-4 h-4 text-luxury-champagne" />
+                <span className="text-sm font-medium text-luxury-text">Stones & Settings</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
+                Select the Perfect Center Stone
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-10">
+              {/* Diamond Options */}
+              <div className="bg-white rounded-2xl p-8 shadow-luxury border border-luxury-divider">
+                <h3 className="text-xl font-serif text-luxury-text mb-4 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-luxury-champagne" />
+                  Diamond Options
+                </h3>
+                <p className="text-luxury-text-muted mb-4">
+                  We offer both <strong className="text-luxury-text">natural diamonds</strong> and <strong className="text-luxury-text">lab-grown diamonds</strong>, allowing you to choose based on your preferences and budget without compromising on brilliance.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-luxury-text-muted">
+                    <CheckCircle2 className="w-4 h-4 text-luxury-champagne flex-shrink-0" />
+                    GIA & IGI certified stones available
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-luxury-text-muted">
+                    <CheckCircle2 className="w-4 h-4 text-luxury-champagne flex-shrink-0" />
+                    Expert guidance on 4Cs selection
+                  </li>
+                </ul>
+              </div>
+
+              {/* Gemstone Options */}
+              <div className="bg-white rounded-2xl p-8 shadow-luxury border border-luxury-divider">
+                <h3 className="text-xl font-serif text-luxury-text mb-4 flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-luxury-champagne" />
+                  Gemstone Options
+                </h3>
+                <p className="text-luxury-text-muted mb-4">
+                  For a unique touch, choose from stunning gemstones like <strong className="text-luxury-text">sapphire</strong>, <strong className="text-luxury-text">emerald</strong>, <strong className="text-luxury-text">ruby</strong>, and more.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-luxury-text-muted">
+                    <CheckCircle2 className="w-4 h-4 text-luxury-champagne flex-shrink-0" />
+                    Ethically sourced gemstones
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-luxury-text-muted">
+                    <CheckCircle2 className="w-4 h-4 text-luxury-champagne flex-shrink-0" />
+                    Custom color matching available
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Stone Shapes */}
+            <div className="bg-white rounded-2xl p-8 shadow-luxury border border-luxury-divider">
+              <h3 className="text-lg font-serif text-luxury-text mb-4 text-center">Available Stone Shapes</h3>
+              <div className="flex flex-wrap justify-center gap-3">
+                {stoneShapes.map((shape, index) => (
+                  <span 
+                    key={index} 
+                    className="px-4 py-2 bg-luxury-bg rounded-full text-sm font-medium text-luxury-text border border-luxury-divider"
+                  >
+                    {shape}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-center mt-10">
+              <Link to="/custom?mode=engagement">
+                <Button size="lg" className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8">
+                  Start Your Engagement Ring
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How Custom Works */}
+      <section className="py-20 md:py-24 bg-luxury-bg">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
+              How Our Custom Engagement Ring Process Works
+            </h2>
+            <p className="text-lg text-luxury-text-muted max-w-2xl mx-auto">
+              From your first idea to the final polish, we guide you every step of the way.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-5 gap-6">
+              {processSteps.map((step, index) => (
+                <div key={index} className="text-center relative">
+                  {/* Connector line */}
+                  {index < processSteps.length - 1 && (
+                    <div className="hidden md:block absolute top-8 left-[60%] w-full h-0.5 bg-luxury-divider"></div>
+                  )}
+                  <div className="relative z-10 w-16 h-16 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-luxury-champagne">
+                    <step.icon className="w-7 h-7 text-luxury-champagne" />
+                  </div>
+                  <div className="text-xs font-semibold text-luxury-champagne mb-2">Step {step.step}</div>
+                  <h3 className="text-sm font-semibold text-luxury-text mb-2">{step.title}</h3>
+                  <p className="text-xs text-luxury-text-muted leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
-            
-            <p className="text-service-text-muted italic flex items-center justify-center gap-2">
-              <Heart className="w-4 h-4 text-service-gold" />
-              "We treat every engagement ring like it belongs to our own family."
-            </p>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/custom?mode=engagement">
+              <Button size="lg" className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8">
+                Begin Your Custom Design
+                <Sparkles className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-16 md:py-20 bg-background">
+      {/* Why Choose Ramessés */}
+      <section className="py-20 md:py-24 bg-service-bg">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-text text-center mb-4">
-            How It Works
-          </h2>
-          <div className="w-20 h-1 bg-service-gold mx-auto mb-12"></div>
-          
-          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-10">
-            {howItWorks.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="w-12 h-12 bg-service-gold text-foreground rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-lg">
-                  {step.step}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              Why Choose Ramessés
+            </h2>
+            <p className="text-lg text-service-text-muted max-w-2xl mx-auto">
+              Experience the difference of working with a true master jeweler.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {whyChooseUs.map((item, index) => (
+              <div 
+                key={index} 
+                className="bg-service-bg-secondary rounded-xl p-6 border border-service-gold/20"
+              >
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-service-gold flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-white mb-1">{item.title}</h3>
+                    <p className="text-sm text-service-text-muted">{item.description}</p>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-luxury-text mb-2">{step.title}</h3>
-                <p className="text-sm text-luxury-text-muted">{step.description}</p>
               </div>
             ))}
           </div>
-          
-          <div className="text-center">
-            <Button asChild size="lg" className="bg-service-gold hover:bg-service-gold-hover text-foreground font-semibold">
-              <Link to="/repairs">Get Started</Link>
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <FAQSection 
-        title="Engagement Ring FAQ"
-        faqs={engagementRingFAQs}
-      />
-
-      {/* SEO Block */}
-      <SEOContentBlock 
-        title="Engagement Ring Repair & Custom Design | Ramessés Jewelry"
-        content="Ramessés specializes in engagement ring repair, custom design, and full restoration using over 30 years of experience on NYC's Diamond District. We handle everything from prong tightening and pavé repair to complete redesigns and custom engagement ring creation. Customers nationwide use our insured mail-in service or NYC drop-off. Every ring is documented, photographed, and handled with museum-grade care."
-      />
+      {/* Final CTA Section */}
+      <section className="py-20 md:py-24 bg-luxury-bg">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <Gem className="w-12 h-12 text-luxury-champagne mx-auto mb-6" />
+            <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
+              Ready to Create Your Ring?
+            </h2>
+            <p className="text-lg text-luxury-text-muted mb-10">
+              Start your custom engagement ring journey with a 47th Street master jeweler today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/custom?mode=engagement">
+                <Button size="lg" className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8 py-6 text-lg shadow-luxury">
+                  Start Your Engagement Ring
+                  <Sparkles className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link to="/contact">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-luxury-text text-luxury-text hover:bg-luxury-text/5 font-semibold px-8 py-6 text-lg">
+                  Schedule a Consultation
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
