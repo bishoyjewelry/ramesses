@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
@@ -57,6 +58,8 @@ const App = () => (
             <Route path="/engagement-rings" element={<Suspense fallback={<PageLoader />}><EngagementRings /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          {/* Mobile Bottom Navigation */}
+          <MobileBottomNav />
         </BrowserRouter>
       </LanguageProvider>
     </TooltipProvider>

@@ -199,32 +199,32 @@ const Account = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-mobile-nav">
       <Navigation />
       
-      <main className="pt-32 pb-24">
+      <main className="pt-20 sm:pt-32 pb-8 sm:pb-24">
         <div className="container mx-auto px-4">
           {/* Profile Header */}
-          <Card className="border-luxury-divider shadow-soft mb-8">
-            <CardContent className="p-6 md:p-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-service-gold/10 rounded-full flex items-center justify-center">
-                    <User className="w-8 h-8 text-service-gold" />
+          <Card className="border-luxury-divider shadow-soft mb-6 sm:mb-8">
+            <CardContent className="p-4 sm:p-6 md:p-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-service-gold/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <User className="w-6 h-6 sm:w-8 sm:h-8 text-service-gold" />
                   </div>
-                  <div>
-                    <h1 className="text-2xl md:text-3xl font-sans font-bold text-luxury-text">
+                  <div className="min-w-0">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-sans font-bold text-luxury-text">
                       My Account
                     </h1>
-                    <div className="flex items-center gap-2 text-luxury-text-muted mt-1">
-                      <Mail className="w-4 h-4" />
-                      <span>{user.email}</span>
+                    <div className="flex items-center gap-2 text-luxury-text-muted mt-0.5 sm:mt-1">
+                      <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                      <span className="text-sm sm:text-base truncate">{user.email}</span>
                     </div>
                   </div>
                 </div>
                 <Button 
                   variant="outline" 
-                  className="border-service-gold text-service-gold hover:bg-service-gold/10"
+                  className="border-service-gold text-service-gold hover:bg-service-gold/10 tap-target w-full sm:w-auto"
                   disabled
                 >
                   <Pencil className="w-4 h-4 mr-2" />
@@ -236,27 +236,27 @@ const Account = () => {
 
           {/* Tabs */}
           <Tabs defaultValue="repairs" className="w-full">
-            <TabsList className="w-full md:w-auto grid grid-cols-3 bg-service-neutral/50 p-1 rounded-lg mb-8">
+            <TabsList className="w-full grid grid-cols-3 bg-service-neutral/50 p-1 rounded-lg mb-6 sm:mb-8 h-auto">
               <TabsTrigger 
                 value="repairs" 
-                className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm"
+                className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm py-2.5 sm:py-2 text-xs sm:text-sm"
               >
-                <Wrench className="w-4 h-4 mr-2 hidden sm:inline" />
-                My Repairs
+                <Wrench className="w-4 h-4 mr-1.5 sm:mr-2" />
+                <span className="hidden sm:inline">My </span>Repairs
               </TabsTrigger>
               <TabsTrigger 
                 value="custom" 
-                className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm"
+                className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm py-2.5 sm:py-2 text-xs sm:text-sm"
               >
-                <Gem className="w-4 h-4 mr-2 hidden sm:inline" />
-                Custom Requests
+                <Gem className="w-4 h-4 mr-1.5 sm:mr-2" />
+                Custom<span className="hidden sm:inline"> Requests</span>
               </TabsTrigger>
               {creatorProfile && (
                 <TabsTrigger 
                   value="creator" 
-                  className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:text-service-gold data-[state=active]:shadow-sm py-2.5 sm:py-2 text-xs sm:text-sm"
                 >
-                  <Palette className="w-4 h-4 mr-2 hidden sm:inline" />
+                  <Palette className="w-4 h-4 mr-1.5 sm:mr-2" />
                   Creator
                 </TabsTrigger>
               )}
@@ -265,22 +265,22 @@ const Account = () => {
             {/* Repairs Tab */}
             <TabsContent value="repairs">
               <Card className="border-luxury-divider shadow-soft">
-                <CardHeader className="flex flex-row items-center justify-between border-b border-luxury-divider">
-                  <CardTitle className="text-xl font-sans text-luxury-text">Recent Repairs</CardTitle>
+                <CardHeader className="flex flex-row items-center justify-between border-b border-luxury-divider p-4 sm:p-6">
+                  <CardTitle className="text-lg sm:text-xl font-sans text-luxury-text">Recent Repairs</CardTitle>
                   <Link to="/my-repairs">
-                    <Button variant="ghost" size="sm" className="text-service-gold hover:text-service-gold-hover">
+                    <Button variant="ghost" size="sm" className="text-service-gold hover:text-service-gold-hover tap-target text-xs sm:text-sm">
                       View All
-                      <ExternalLink className="w-4 h-4 ml-2" />
+                      <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1.5 sm:ml-2" />
                     </Button>
                   </Link>
                 </CardHeader>
                 <CardContent className="p-0">
                   {repairs.length === 0 ? (
-                    <div className="p-8 text-center">
-                      <Wrench className="w-12 h-12 text-luxury-text-muted/50 mx-auto mb-3" />
-                      <p className="text-luxury-text-muted mb-4">No repair requests yet</p>
+                    <div className="p-6 sm:p-8 text-center">
+                      <Wrench className="w-10 h-10 sm:w-12 sm:h-12 text-luxury-text-muted/50 mx-auto mb-3" />
+                      <p className="text-luxury-text-muted mb-4 text-sm sm:text-base">No repair requests yet</p>
                       <Link to="/repairs">
-                        <Button className="bg-service-gold text-white hover:bg-service-gold-hover">
+                        <Button className="bg-service-gold text-white hover:bg-service-gold-hover tap-target w-full sm:w-auto">
                           Start a Repair
                         </Button>
                       </Link>
