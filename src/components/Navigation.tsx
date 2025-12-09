@@ -44,10 +44,9 @@ export const Navigation = () => {
   const isServicePage = ['/repairs', '/contact'].includes(location.pathname);
 
   const navLinks = [
-    { to: "/", label: t('nav.home') },
-    { to: "/repairs", label: t('nav.repairs'), isService: true },
     { to: "/custom", label: t('nav.custom'), isLuxury: true },
     { to: "/engagement-rings", label: "Engagement Rings", isLuxury: true },
+    { to: "/repairs", label: t('nav.repairs'), isService: true },
     { to: "/shop", label: t('nav.shop') },
     { to: "/contact", label: t('nav.contact'), isService: true },
   ];
