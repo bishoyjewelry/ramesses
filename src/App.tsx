@@ -24,6 +24,7 @@ const Account = React.lazy(() => import("./pages/Account"));
 const AdminDataExplorer = React.lazy(() => import("./pages/AdminDataExplorer"));
 const AdminUsers = React.lazy(() => import("./pages/AdminUsers"));
 const EngagementRings = React.lazy(() => import("./pages/EngagementRings"));
+const MyDesigns = React.lazy(() => import("./pages/MyDesigns"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/my-repairs" element={<Suspense fallback={<PageLoader />}><MyRepairs /></Suspense>} />
             <Route path="/account" element={<Suspense fallback={<PageLoader />}><Account /></Suspense>} />
             <Route path="/engagement-rings" element={<Suspense fallback={<PageLoader />}><EngagementRings /></Suspense>} />
+            <Route path="/my-designs" element={<Suspense fallback={<PageLoader />}><MyDesigns /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Mobile Bottom Navigation */}

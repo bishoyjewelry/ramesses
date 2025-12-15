@@ -388,6 +388,63 @@ export type Database = {
         }
         Relationships: []
       }
+      user_designs: {
+        Row: {
+          cad_submitted_at: string | null
+          created_at: string
+          custom_inquiry_id: string | null
+          flow_type: string
+          form_inputs: Json
+          hero_image_url: string | null
+          id: string
+          inspiration_image_urls: string[] | null
+          name: string
+          overview: string | null
+          side_image_url: string | null
+          spec_sheet: Json | null
+          status: string
+          top_image_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cad_submitted_at?: string | null
+          created_at?: string
+          custom_inquiry_id?: string | null
+          flow_type?: string
+          form_inputs?: Json
+          hero_image_url?: string | null
+          id?: string
+          inspiration_image_urls?: string[] | null
+          name: string
+          overview?: string | null
+          side_image_url?: string | null
+          spec_sheet?: Json | null
+          status?: string
+          top_image_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cad_submitted_at?: string | null
+          created_at?: string
+          custom_inquiry_id?: string | null
+          flow_type?: string
+          form_inputs?: Json
+          hero_image_url?: string | null
+          id?: string
+          inspiration_image_urls?: string[] | null
+          name?: string
+          overview?: string | null
+          side_image_url?: string | null
+          spec_sheet?: Json | null
+          status?: string
+          top_image_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

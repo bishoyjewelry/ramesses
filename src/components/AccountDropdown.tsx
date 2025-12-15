@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, Package, PenTool, Palette, LogOut, Wrench } from "lucide-react";
+import { User, Package, PenTool, Palette, LogOut, Wrench, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -89,8 +89,8 @@ export const AccountDropdown = () => {
         
         <DropdownMenuItem asChild>
           <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
-            <PenTool className="w-4 h-4" />
-            My Custom Designs
+            <Sparkles className="w-4 h-4" />
+            My Designs
           </Link>
         </DropdownMenuItem>
         
