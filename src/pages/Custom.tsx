@@ -3,18 +3,51 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { LoginModal } from "@/components/LoginModal";
+import { ConceptCard } from "@/components/ConceptCard";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, Palette, FileCheck, Package } from "lucide-react";
+import { 
+  Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, 
+  Palette, FileCheck, Package, Loader2, Wand2, ImagePlus
+} from "lucide-react";
 import { SimpleSelect } from "@/components/SimpleSelect";
 
 type DesignFlow = "general" | "engagement" | null;
+
+interface Concept {
+  id: string;
+  name: string;
+  overview: string;
+  metal: string;
+  center_stone: {
+    shape: string;
+    size_mm: string;
+    type: string;
+  };
+  setting_style: string;
+  band: {
+    width_mm: string;
+    style: string;
+    pave: string;
+    shoulders: string;
+  };
+  gallery_details: string;
+  prongs: string;
+  accent_stones: string;
+  manufacturing_notes: string;
+  images: {
+    hero: string;
+    side: string;
+    top: string;
+  };
+}
 
 const Custom = () => {
   const { user } = useAuth();
@@ -24,9 +57,25 @@ const Custom = () => {
   
   const [activeFlow, setActiveFlow] = useState<DesignFlow>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const conceptsRef = useRef<HTMLDivElement>(null);
+  
+  // AI Generation state
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [regeneratingId, setRegeneratingId] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  
+  // Direct upload state
+  const [directUploadImages, setDirectUploadImages] = useState<File[]>([]);
+  const [directUploadForm, setDirectUploadForm] = useState({
+    metal: "",
+    stoneDetails: "",
+    budget: "",
+    notes: "",
+  });
+  const [isSubmittingDirect, setIsSubmittingDirect] = useState(false);
   
   // Set mode from URL params on mount
   useEffect(() => {
@@ -85,12 +134,138 @@ const Custom = () => {
 
   const handleCardSelect = (flow: DesignFlow) => {
     setActiveFlow(flow);
+    setConcepts([]); // Clear previous concepts
     setTimeout(() => {
       formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleGenerateConcepts = async (surpriseMe = false) => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    
+    setIsGenerating(true);
+    setConcepts([]);
+    
+    try {
+      const formInputs = activeFlow === "engagement" ? {
+        flowType: "engagement",
+        ...engagementForm,
+      } : {
+        flowType: "general",
+        ...generalForm,
+      };
+
+      const { data, error } = await supabase.functions.invoke('generate-ring-concepts', {
+        body: { formInputs, surpriseMe }
+      });
+
+      if (error) throw error;
+      
+      if (data?.concepts) {
+        setConcepts(data.concepts);
+        toast.success(`Generated ${data.concepts.length} concept${data.concepts.length > 1 ? 's' : ''}!`);
+        
+        setTimeout(() => {
+          conceptsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        throw new Error("No concepts returned");
+      }
+    } catch (error) {
+      console.error('Error generating concepts:', error);
+      toast.error("Failed to generate concepts. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleRegenerateConcept = async (concept: Concept) => {
+    if (!user) return;
+    
+    setRegeneratingId(concept.id);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-ring-concepts', {
+        body: { 
+          formInputs: activeFlow === "engagement" ? { flowType: "engagement", ...engagementForm } : { flowType: "general", ...generalForm },
+          regenerateFrom: concept 
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.concepts) {
+        // Add new variations while keeping the original
+        setConcepts(prev => [...prev, ...data.concepts]);
+        toast.success(`Generated ${data.concepts.length} variation${data.concepts.length > 1 ? 's' : ''}!`);
+      }
+    } catch (error) {
+      console.error('Error regenerating:', error);
+      toast.error("Failed to regenerate. Please try again.");
+    } finally {
+      setRegeneratingId(null);
+    }
+  };
+
+  const handleChooseConcept = async (concept: Concept) => {
+    if (!user) return;
+    
+    setSavingId(concept.id);
+    
+    try {
+      const formInputs = activeFlow === "engagement" ? engagementForm : generalForm;
+      
+      const { error } = await supabase
+        .from('user_designs')
+        .insert([{
+          user_id: user.id,
+          name: concept.name,
+          overview: concept.overview,
+          flow_type: activeFlow || 'engagement',
+          form_inputs: formInputs,
+          spec_sheet: {
+            metal: concept.metal,
+            center_stone: concept.center_stone,
+            setting_style: concept.setting_style,
+            band: concept.band,
+            gallery_details: concept.gallery_details,
+            prongs: concept.prongs,
+            accent_stones: concept.accent_stones,
+            manufacturing_notes: concept.manufacturing_notes,
+          },
+          hero_image_url: concept.images.hero,
+          side_image_url: concept.images.side,
+          top_image_url: concept.images.top,
+          status: 'saved',
+        }]);
+
+      if (error) throw error;
+
+      toast.success("Design saved to your account!");
+    } catch (error) {
+      console.error('Error saving design:', error);
+      toast.error("Failed to save design. Please try again.");
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  // Direct upload handlers
+  const handleDirectImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      if (directUploadImages.length + files.length > 6) {
+        toast.error("Maximum 6 images allowed");
+        return;
+      }
+      setDirectUploadImages(prev => [...prev, ...files]);
+    }
+  };
+
+  const handleDirectSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!user) {
@@ -98,44 +273,44 @@ const Custom = () => {
       return;
     }
     
-    setIsSubmitting(true);
+    if (directUploadImages.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
+    
+    setIsSubmittingDirect(true);
     
     try {
-      const formData = activeFlow === "engagement" ? {
-        piece_type: `Engagement Ring - ${engagementForm.style || 'Custom'}`,
-        description: `Style: ${engagementForm.style}\nCenter Stone: ${engagementForm.centerStoneType} (${engagementForm.centerStoneSize})\nMetal: ${engagementForm.metal}\nRing Size: ${engagementForm.ringSize}\n\nSpecial Requests:\n${engagementForm.specialRequests}`,
-        budget_range: engagementForm.budget,
-        name: user.email?.split('@')[0] || 'Customer',
-        email: user.email || '',
-        user_id: user.id,
-      } : {
-        piece_type: generalForm.pieceType,
-        description: `Metal: ${generalForm.metal}\nStone Preferences: ${generalForm.stonePreferences}\n\nDescription:\n${generalForm.description}`,
-        budget_range: generalForm.budget,
-        name: user.email?.split('@')[0] || 'Customer',
-        email: user.email || '',
-        user_id: user.id,
-      };
-      
+      // In a real implementation, we'd upload images to storage first
+      // For now, we'll just create the inquiry
       const { error } = await supabase
         .from('custom_inquiries')
-        .insert([formData]);
-      
+        .insert([{
+          piece_type: 'Direct Upload - Quote Request',
+          description: `Metal: ${directUploadForm.metal}\nStone Details: ${directUploadForm.stoneDetails}\n\nNotes:\n${directUploadForm.notes}`,
+          budget_range: directUploadForm.budget,
+          name: user.email?.split('@')[0] || 'Customer',
+          email: user.email || '',
+          user_id: user.id,
+        }]);
+
       if (error) throw error;
-      
-      setIsSubmitted(true);
-      toast.success("Your custom project request has been received!");
+
+      toast.success("Quote request submitted! We'll contact you soon.");
+      setShowDirectUploadModal(false);
+      setDirectUploadImages([]);
+      setDirectUploadForm({ metal: "", stoneDetails: "", budget: "", notes: "" });
     } catch (error) {
-      console.error('Error submitting inquiry:', error);
-      toast.error("Failed to submit your request. Please try again.");
+      console.error('Error submitting:', error);
+      toast.error("Failed to submit. Please try again.");
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingDirect(false);
     }
   };
 
   const processSteps = [
     { step: 1, title: "Share Your Inspiration", icon: MessageCircle },
-    { step: 2, title: "We Design 3–5 Concepts", icon: Palette },
+    { step: 2, title: "AI Generates Concepts", icon: Sparkles },
     { step: 3, title: "Approve the Final CAD", icon: FileCheck },
     { step: 4, title: "Cast, Set & Polish in NYC", icon: Gem },
     { step: 5, title: "Ships Fully Insured", icon: Package },
@@ -147,7 +322,6 @@ const Custom = () => {
       
       {/* HERO SECTION */}
       <section className="relative pt-20 sm:pt-28 pb-10 sm:pb-16 bg-luxury-bg overflow-hidden">
-        {/* Decorative elements - hidden on small screens */}
         <div className="absolute top-40 left-10 w-72 h-72 bg-luxury-champagne/10 rounded-full blur-3xl hidden sm:block"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-luxury-champagne/5 rounded-full blur-3xl hidden sm:block"></div>
         
@@ -173,7 +347,7 @@ const Custom = () => {
       <section className="py-8 sm:py-12 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-            {/* Engagement Ring Card - Premium emphasized */}
+            {/* Engagement Ring Card */}
             <div 
               className={`relative group cursor-pointer rounded-xl sm:rounded-2xl border-2 p-5 sm:p-8 transition-all duration-300 ${
                 activeFlow === 'engagement'
@@ -182,7 +356,6 @@ const Custom = () => {
               }`}
               onClick={() => handleCardSelect('engagement')}
             >
-              {/* Premium badge */}
               <div className="absolute -top-2.5 sm:-top-3 left-4 sm:left-6 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-luxury-champagne text-luxury-text text-[10px] sm:text-xs font-semibold rounded-full">
                 Most Popular
               </div>
@@ -196,7 +369,7 @@ const Custom = () => {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design an Engagement Ring</h3>
                   <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                    Custom engagement rings with stone selection, setting styles, and premium craftsmanship.
+                    Custom engagement rings with AI-powered concept generation, multi-angle views, and premium craftsmanship.
                   </p>
                   <Button 
                     className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
@@ -254,31 +427,17 @@ const Custom = () => {
       <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            {isSubmitted ? (
-              <Card className="border-2 border-luxury-champagne/30 shadow-luxury rounded-xl sm:rounded-2xl">
-                <CardContent className="p-6 sm:p-12 text-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                    <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-luxury-champagne" />
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">
-                    Your custom project request has been received!
-                  </h3>
-                  <p className="text-luxury-text-muted text-base sm:text-lg font-body">
-                    A master jeweler will review your ideas and contact you shortly.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : activeFlow ? (
+            {activeFlow ? (
               <Card className="border border-luxury-divider shadow-luxury rounded-xl sm:rounded-2xl bg-white">
                 <CardContent className="p-5 sm:p-8 md:p-10">
                   <div className="text-center mb-6 sm:mb-8">
                     <h2 className="text-xl sm:text-2xl font-serif text-luxury-text mb-2">
                       {activeFlow === 'engagement' ? 'Design Your Engagement Ring' : 'Design Your Custom Piece'}
                     </h2>
-                    <p className="text-luxury-text-muted text-sm sm:text-base">Fill out the details below and we'll follow up with design options.</p>
+                    <p className="text-luxury-text-muted text-sm sm:text-base">Fill out the details and we'll generate AI concepts instantly.</p>
                   </div>
                   
-                  <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+                  <form onSubmit={(e) => { e.preventDefault(); handleGenerateConcepts(); }} className="space-y-5 sm:space-y-6">
                     {activeFlow === "general" ? (
                       <>
                         <div className="space-y-2">
@@ -508,24 +667,55 @@ const Custom = () => {
                       )}
                     </div>
                     
+                    {/* Generate Concepts Button */}
                     <Button 
                       type="submit" 
-                      disabled={isSubmitting}
+                      disabled={isGenerating}
                       className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover py-6 text-lg font-semibold rounded-lg shadow-luxury"
                     >
-                      {isSubmitting ? (
-                        <>Processing...</>
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Creating your designs…
+                        </>
                       ) : (
                         <>
                           <Sparkles className="w-5 h-5 mr-2" />
-                          Submit Project Request
+                          Generate Concepts
                         </>
                       )}
                     </Button>
                     
+                    {/* Surprise Me Button */}
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button 
+                        type="button"
+                        onClick={() => handleGenerateConcepts(true)}
+                        disabled={isGenerating}
+                        variant="outline"
+                        className="flex-1 border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text py-4"
+                      >
+                        <Wand2 className="w-4 h-4 mr-2" />
+                        Surprise Me
+                      </Button>
+                      <Button 
+                        type="button"
+                        onClick={() => setShowDirectUploadModal(true)}
+                        variant="outline"
+                        className="flex-1 border-luxury-divider text-luxury-text-muted hover:border-luxury-champagne hover:text-luxury-champagne py-4"
+                      >
+                        <ImagePlus className="w-4 h-4 mr-2" />
+                        Upload Your Design
+                      </Button>
+                    </div>
+                    
+                    <p className="text-center text-xs text-luxury-text-muted">
+                      Already have a ring design? Click "Upload Your Design" to request a direct quote.
+                    </p>
+                    
                     {!user && (
                       <p className="text-center text-sm text-luxury-text-muted">
-                        You'll be asked to sign in before submitting.
+                        You'll be asked to sign in before generating concepts.
                       </p>
                     )}
                   </form>
@@ -541,6 +731,59 @@ const Custom = () => {
           </div>
         </div>
       </section>
+
+      {/* LOADING STATE */}
+      {isGenerating && (
+        <section className="py-16 bg-luxury-bg">
+          <div className="container mx-auto px-4">
+            <div className="max-w-xl mx-auto text-center">
+              <div className="relative mb-8">
+                <div className="w-24 h-24 mx-auto rounded-full bg-luxury-champagne/20 flex items-center justify-center animate-pulse">
+                  <Sparkles className="w-12 h-12 text-luxury-champagne animate-spin" style={{ animationDuration: '3s' }} />
+                </div>
+              </div>
+              <h3 className="text-2xl font-serif text-luxury-text mb-3">Creating your designs…</h3>
+              <p className="text-luxury-text-muted">Crafted to match your preferences. This may take a moment.</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* GENERATED CONCEPTS */}
+      {concepts.length > 0 && (
+        <section ref={conceptsRef} className="py-16 bg-luxury-bg">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-3">Your Custom Concepts</h2>
+                <p className="text-luxury-text-muted">Choose your favorite or regenerate for more variations</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {concepts.map((concept) => (
+                  <ConceptCard
+                    key={concept.id}
+                    concept={concept}
+                    onChoose={handleChooseConcept}
+                    onRegenerate={handleRegenerateConcept}
+                    isRegenerating={regeneratingId === concept.id}
+                    isSaving={savingId === concept.id}
+                  />
+                ))}
+              </div>
+              
+              <div className="text-center mt-8">
+                <Link to="/my-designs">
+                  <Button variant="outline" className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text">
+                    View Saved Designs
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* HOW IT WORKS */}
       <section className="py-20 bg-luxury-bg">
@@ -582,7 +825,7 @@ const Custom = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { title: "Master Jeweler Quality", desc: "30+ years of Diamond District expertise in every piece" },
-              { title: "Transparent Pricing", desc: "Know exactly what you're paying for—no hidden fees" },
+              { title: "AI-Powered Concepts", desc: "See your ideas come to life before committing" },
               { title: "Unlimited Revisions", desc: "We refine until you're 100% satisfied with the design" },
               { title: "Made in NYC", desc: "Designed and crafted on 47th Street" },
               { title: "1-on-1 Support", desc: "Work directly with your dedicated jeweler" },
@@ -636,6 +879,126 @@ const Custom = () => {
         onClose={() => setShowLoginModal(false)}
         redirectTo="/custom"
       />
+      
+      {/* Direct Upload Modal */}
+      <Dialog open={showDirectUploadModal} onOpenChange={setShowDirectUploadModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-serif">Upload Your Design</DialogTitle>
+          </DialogHeader>
+          
+          <form onSubmit={handleDirectSubmit} className="space-y-4 mt-4">
+            <p className="text-sm text-luxury-text-muted">
+              Already have a ring design? Upload images and we'll provide a direct quote.
+            </p>
+            
+            {/* Image Upload */}
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Images (1-6 required)</Label>
+              <div className="border-2 border-dashed border-luxury-divider rounded-lg p-4 text-center hover:border-luxury-champagne/50 transition-colors">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleDirectImageUpload}
+                  className="hidden"
+                  id="direct-image-upload"
+                />
+                <label htmlFor="direct-image-upload" className="cursor-pointer">
+                  <Upload className="w-6 h-6 text-luxury-text-muted mx-auto mb-2" />
+                  <p className="text-sm text-luxury-text-muted">Click to upload</p>
+                </label>
+              </div>
+              
+              {directUploadImages.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {directUploadImages.map((file, index) => (
+                    <div key={index} className="relative">
+                      <div className="w-12 h-12 bg-luxury-bg-warm rounded overflow-hidden">
+                        <img src={URL.createObjectURL(file)} alt="" className="w-full h-full object-cover" />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setDirectUploadImages(prev => prev.filter((_, i) => i !== index))}
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Metal Preference</Label>
+              <SimpleSelect
+                value={directUploadForm.metal}
+                onValueChange={(value) => setDirectUploadForm({...directUploadForm, metal: value})}
+                placeholder="Select metal"
+                options={[
+                  { value: "14k-yellow", label: "14k Yellow Gold" },
+                  { value: "14k-white", label: "14k White Gold" },
+                  { value: "14k-rose", label: "14k Rose Gold" },
+                  { value: "18k", label: "18k Gold" },
+                  { value: "platinum", label: "Platinum" },
+                ]}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Stone Details (optional)</Label>
+              <Input
+                value={directUploadForm.stoneDetails}
+                onChange={(e) => setDirectUploadForm({...directUploadForm, stoneDetails: e.target.value})}
+                placeholder="E.g., 1ct round diamond, lab-grown"
+                className="border-luxury-divider"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Budget Range</Label>
+              <SimpleSelect
+                value={directUploadForm.budget}
+                onValueChange={(value) => setDirectUploadForm({...directUploadForm, budget: value})}
+                placeholder="Select budget"
+                options={[
+                  { value: "1000-2500", label: "$1,000 – $2,500" },
+                  { value: "2500-5000", label: "$2,500 – $5,000" },
+                  { value: "5000-10000", label: "$5,000 – $10,000" },
+                  { value: "10000+", label: "$10,000+" },
+                ]}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Additional Notes</Label>
+              <Textarea
+                value={directUploadForm.notes}
+                onChange={(e) => setDirectUploadForm({...directUploadForm, notes: e.target.value})}
+                placeholder="Any specific requirements or questions..."
+                rows={3}
+                className="border-luxury-divider"
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              disabled={isSubmittingDirect || directUploadImages.length === 0}
+              className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover"
+            >
+              {isSubmittingDirect ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                'Request Quote'
+              )}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

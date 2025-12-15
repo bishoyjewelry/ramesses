@@ -29,3 +29,6 @@ verify_jwt = true
 
 [functions.update-user-role]
 verify_jwt = true
+
+[functions.generate-ring-concepts]
+verify_jwt = true
