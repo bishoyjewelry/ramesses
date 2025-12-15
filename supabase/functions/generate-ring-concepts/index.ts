@@ -28,6 +28,7 @@ interface ConceptSpec {
     shape: string;
     size_mm: string;
     type: string;
+    approx_ct?: string;
   };
   setting_style: string;
   band: {
@@ -54,83 +55,107 @@ serve(async (req) => {
     }
 
     const { formInputs, surpriseMe = false, regenerateFrom = null } = await req.json();
+    const inputs = formInputs as FormInputs;
     
-    // Build the prompt based on inputs
-    let designPrompt = "";
-    
-    if (surpriseMe) {
-      designPrompt = `Generate a completely random but elegant and manufacturable engagement ring design. 
-Be creative but ensure the design is physically possible to manufacture. Choose any style, metal, and stone combination that would appeal to a modern buyer.`;
-    } else if (regenerateFrom) {
-      designPrompt = `Create a variation of this engagement ring design while keeping the core elements:
-Original: ${JSON.stringify(regenerateFrom)}
-Create 2 new variations that maintain the same style but with subtle differences in details like band width, prong style, or accent stone placement.`;
-    } else {
-      const inputs = formInputs as FormInputs;
-      
-      if (inputs.flowType === "engagement") {
-        designPrompt = `Design a custom engagement ring with these specifications:
-- Style: ${inputs.style || "elegant solitaire"}
-- Center Stone Type: ${inputs.centerStoneType || "natural diamond"}
-- Approximate Size: ${inputs.centerStoneSize || "1.0 carat"}
-- Metal: ${inputs.metal || "14k white gold"}
-- Ring Size: ${inputs.ringSize || "6.5"}
-- Budget Range: ${inputs.budget || "$5,000-$10,000"}
-- Special Requests: ${inputs.specialRequests || "none"}`;
-      } else {
-        designPrompt = `Design a custom piece of jewelry with these specifications:
-- Type: ${inputs.pieceType || "ring"}
-- Metal: ${inputs.metal || "14k gold"}
-- Stone Preferences: ${inputs.stonePreferences || "diamond accents"}
-- Budget Range: ${inputs.budget || "$2,500-$5,000"}
-- Description: ${inputs.description || "elegant and timeless design"}`;
-      }
-      
-      if (inputs.inspirationImages && inputs.inspirationImages.length > 0) {
-        designPrompt += `\n\nThe customer has provided inspiration images. Use these as style guidance for the overall aesthetic and design direction.`;
-      }
-    }
-
     const numConcepts = surpriseMe ? 1 : (regenerateFrom ? 2 : 3);
     
-    const systemPrompt = `You are an expert jewelry designer for a prestigious NYC Diamond District jeweler with 30+ years of experience.
-Your task is to generate ${numConcepts} distinct, manufacturable engagement ring concept(s).
+    // Build client inputs for the prompt
+    const projectType = inputs?.flowType === "engagement" ? "engagement_ring" : (inputs?.pieceType || "ring");
+    const ringStyle = inputs?.style || "solitaire";
+    const metalPreference = inputs?.metal || "14k white gold";
+    const stoneShape = inputs?.centerStoneType?.toLowerCase().includes("oval") ? "oval" : 
+                       inputs?.centerStoneType?.toLowerCase().includes("cushion") ? "cushion" :
+                       inputs?.centerStoneType?.toLowerCase().includes("princess") ? "princess" :
+                       inputs?.centerStoneType?.toLowerCase().includes("emerald") ? "emerald" :
+                       inputs?.centerStoneType?.toLowerCase().includes("pear") ? "pear" :
+                       inputs?.centerStoneType?.toLowerCase().includes("marquise") ? "marquise" : "round";
+    const stoneType = inputs?.centerStoneType || "natural diamond";
+    const centerSizeCt = inputs?.centerStoneSize || null;
+    const bandWidth = null; // Let AI infer based on style
+    const pavePreference = ringStyle.toLowerCase().includes("pave") ? "half" : "none";
+    const budgetRange = inputs?.budget || "$5,000-$10,000";
+    const freeformDescription = inputs?.specialRequests || inputs?.description || "";
+    const inspirationDescriptions = inputs?.inspirationImages?.length ? "Customer provided inspiration images" : "";
+    const mode = surpriseMe ? "Surprise" : (inputs?.flowType || "engagement");
 
-IMPORTANT RULES:
-1. All designs MUST be physically manufacturable using standard jewelry techniques
-2. Avoid impossible geometry or unrealistic proportions
-3. Be specific about measurements in millimeters
-4. Consider structural integrity and wearability
-5. Each concept should be distinct but elegant
+    // Build the system prompt
+    const systemPrompt = `You are a senior jewelry designer preparing structured design briefs for a CAD and bench jewelry team on NYC's 47th Street.
 
-For each concept, provide a JSON response with this exact structure:
+Your job is to convert client preferences into ${numConcepts} manufacturable ring concepts in a strict JSON format. These briefs will go directly to a CAD jeweler, so they must be precise, realistic, and technically feasible.
+
+Client inputs:
+- project_type: ${projectType}
+- ring_style: ${ringStyle}
+- metal_preference: ${metalPreference}
+- stone_shape: ${stoneShape}
+- stone_type: ${stoneType}
+- approx_center_size_ct: ${centerSizeCt || "not specified"}
+- band_width_preference_mm: ${bandWidth || "not specified"}
+- pave_preference: ${pavePreference}
+- budget_range: ${budgetRange}
+- description: ${freeformDescription || "none provided"}
+- inspiration_images: ${inspirationDescriptions || "none provided"}
+- mode: ${mode}
+- num_concepts: ${numConcepts}
+
+Design rules:
+- All designs must be physically manufacturable with standard casting and stone-setting techniques.
+- Proportions must be realistic: band thickness, prong sizes, stone heights, pavé coverage.
+- Designs should feel high-end but practical: avoid fragile, impossible, or gimmicky details.
+- If inspiration images are provided, use them as primary style references for overall feel and detailing.
+- If inputs are missing, infer tasteful defaults consistent with project_type and budget.
+
+Output format:
+Return a JSON object with a "concepts" array containing exactly ${numConcepts} elements. Each element must match this schema:
+
 {
   "concepts": [
     {
-      "name": "Elegant name for this design",
-      "overview": "2-3 sentence description of the design's key features and appeal",
-      "metal": "Specific metal type (e.g., 14k White Gold)",
+      "name": "Short, premium concept name, e.g. 'Hidden Halo Aurora'",
+      "overview": "1–3 sentence summary explaining the concept in client-friendly language.",
+      "metal": "e.g. 14k yellow gold, 18k white gold, platinum",
       "center_stone": {
-        "shape": "Round Brilliant, Oval, Cushion, etc.",
-        "size_mm": "e.g., 6.5mm (approximately 1 carat)",
-        "type": "Natural Diamond, Lab Diamond, Sapphire, etc."
+        "shape": "stone shape",
+        "size_mm": "approx size in millimeters",
+        "type": "stone type, e.g. lab diamond, natural diamond, sapphire",
+        "approx_ct": "approximate carat weight, if relevant"
       },
-      "setting_style": "Prong, Bezel, Tension, etc.",
+      "setting_style": "e.g. 4-prong solitaire, bezel, halo, hidden halo, three-stone with tapered baguettes, etc.",
       "band": {
-        "width_mm": "e.g., 2.0mm",
-        "style": "Knife-edge, comfort fit, cathedral, etc.",
-        "pave": "None, micro-pavé, channel-set, etc.",
-        "shoulders": "Plain, tapered, split shank, etc."
+        "width_mm": "realistic band width at the bottom (e.g. 1.8–2.4mm)",
+        "style": "e.g. plain, knife-edge, comfort fit, split shank, cathedral, vintage engraved",
+        "pave": "describe pavé coverage if any (none, half, three-quarter, full, etc.)",
+        "shoulders": "describe any special shoulder design (tapered, cathedral, bypass, twisted, etc.)"
       },
-      "gallery_details": "Description of the gallery/undercarriage design",
-      "prongs": "4-prong, 6-prong, claw, etc.",
-      "accent_stones": "Description of any side stones or accents",
-      "manufacturing_notes": "Special notes for the jeweler about crafting this piece"
+      "gallery_details": "describe gallery architecture and any under-gallery details; must be manufacturable.",
+      "prongs": "prong style and count, e.g. '4 talon prongs', '6 rounded prongs', 'double claw prongs'.",
+      "accent_stones": "description of any side stones, halos, hidden halos, or pavé details, including approximate sizes and placements.",
+      "manufacturing_notes": "1–3 bullet-style sentences with critical notes for CAD/bench, e.g. minimum thickness, stone clearance, prong protection, recommended tolerances."
     }
   ]
 }
 
+Important:
+- Follow the JSON schema exactly. Do not add extra top-level fields.
+- All numerical values must be realistic for fine jewelry (no absurd sizes).
+- Use consistent units: millimeters for dimensions, carats in approx_ct where relevant.
+- Designs should be diverse but all aligned with the client's taste and budget.
+- If mode = "Surprise" or description is very vague, propose tasteful, versatile designs that are easy to wear daily.
+
 Respond ONLY with valid JSON, no additional text.`;
+
+    // Build the user prompt based on mode
+    let userPrompt = "";
+    
+    if (surpriseMe) {
+      userPrompt = `Generate ${numConcepts} completely random but elegant and manufacturable ring design(s). Be creative but ensure the designs are physically possible to manufacture. Choose tasteful, versatile styles that would appeal to a modern buyer.`;
+    } else if (regenerateFrom) {
+      userPrompt = `Create ${numConcepts} variations of this ring design while keeping the core elements:
+Original: ${JSON.stringify(regenerateFrom)}
+Maintain the same overall style but with subtle differences in details like band width, prong style, gallery design, or accent stone placement.`;
+    } else {
+      userPrompt = `Generate ${numConcepts} distinct ring concepts based on the client inputs provided. Each design should be unique but aligned with the client's preferences.`;
+    }
 
     // Generate the specs using Lovable AI
     const specResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -143,7 +168,7 @@ Respond ONLY with valid JSON, no additional text.`;
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: designPrompt }
+          { role: "user", content: userPrompt }
         ],
       }),
     });
