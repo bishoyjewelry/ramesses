@@ -181,20 +181,58 @@ Respond ONLY with valid JSON, no additional text.`;
       throw new Error("Failed to parse design specifications");
     }
 
+    // Build detailed rendering prompts for each view
+    const buildImagePrompt = (concept: ConceptSpec, view: "hero" | "side_profile" | "top_down") => {
+      const conceptJson = JSON.stringify(concept, null, 2);
+      
+      return `You are a rendering assistant for a high-end jewelry brand.
+
+Your job is to generate a photorealistic render of a single ring design that will be used as a visual guide for a CAD jeweler and as a preview for customers. The design must look physically manufacturable and realistic, matching standard jewelry proportions and finish quality.
+
+Ring design specification (JSON):
+${conceptJson}
+
+View to render:
+${view}
+
+Rendering rules:
+- Metal type and color must follow the specification exactly (e.g., 14k yellow gold, 18k white gold, platinum).
+- Center stone shape, size, and cut must be clearly visible and accurately represented.
+- Prongs and setting style must be realistic and visible (e.g., four-prong, six-prong, bezel, halo, hidden halo).
+- Band width and style must match the spec: plain, knife-edge, split shank, cathedral, pavé, etc.
+- Accent stones and pavé (if any) must be consistent and evenly spaced.
+- Lighting should be soft studio lighting, premium jewelry photography quality.
+- Background must be clean, neutral, and uncluttered (light gradient or plain).
+
+View definitions:
+- "hero": three-quarter angle showing both the top of the stone and the band; this is the primary glamour shot.
+- "side_profile": side view that clearly shows the height of the setting, gallery, and how the stone is held.
+- "top_down": directly overhead view that shows the outline of the stone, halo (if present), and band shape.
+
+Style:
+- Photorealistic, premium, high-end jewelry shot.
+- No hands, no models, no props, no branding—just the ring on a neutral background.
+- Proportions must look physically manufacturable, not exaggerated or stylized.
+
+If the JSON is missing a minor detail, infer a tasteful, realistic choice consistent with the rest of the spec.`;
+    };
+
     // Generate images for each concept using Lovable AI image generation
     const conceptsWithImages = await Promise.all(
       specs.concepts.map(async (concept: ConceptSpec, index: number) => {
-        const imagePrompts = [
-          `Ultra high resolution professional jewelry photograph, ${concept.name} engagement ring, ${concept.metal}, ${concept.center_stone.shape} ${concept.center_stone.type} center stone approximately ${concept.center_stone.size_mm}, ${concept.setting_style} setting, ${concept.band.style} band with ${concept.band.pave} detail, three-quarter angle view showing the ring on a pure white background with soft shadows, studio lighting, 16:9 aspect ratio, photorealistic jewelry rendering`,
-          `Ultra high resolution professional jewelry photograph, ${concept.name} engagement ring, ${concept.metal}, side profile view showing the gallery and band design, ${concept.gallery_details}, on pure white background with soft shadows, studio lighting, photorealistic jewelry rendering`,
-          `Ultra high resolution professional jewelry photograph, ${concept.name} engagement ring, ${concept.metal}, top-down view showing the ${concept.center_stone.shape} center stone and ${concept.prongs} prong arrangement, on pure white background, studio lighting, photorealistic jewelry rendering`
-        ];
-
         const images = { hero: "", side: "", top: "" };
         
         // Generate all three images in parallel
         try {
-          const imagePromises = imagePrompts.map(async (prompt, imgIndex) => {
+          const views: Array<{ key: "hero" | "side" | "top"; view: "hero" | "side_profile" | "top_down" }> = [
+            { key: "hero", view: "hero" },
+            { key: "side", view: "side_profile" },
+            { key: "top", view: "top_down" }
+          ];
+
+          const imagePromises = views.map(async ({ key, view }) => {
+            const prompt = buildImagePrompt(concept, view);
+            
             const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
               method: "POST",
               headers: {
@@ -209,19 +247,19 @@ Respond ONLY with valid JSON, no additional text.`;
             });
 
             if (!imageResponse.ok) {
-              console.error(`Image generation ${imgIndex} failed:`, imageResponse.status);
-              return null;
+              console.error(`Image generation ${view} failed:`, imageResponse.status);
+              return { key, url: null };
             }
 
             const imageData = await imageResponse.json();
             const imageUrl = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-            return imageUrl || null;
+            return { key, url: imageUrl || null };
           });
 
-          const [heroImg, sideImg, topImg] = await Promise.all(imagePromises);
-          images.hero = heroImg || "";
-          images.side = sideImg || "";
-          images.top = topImg || "";
+          const results = await Promise.all(imagePromises);
+          results.forEach(({ key, url }) => {
+            if (url) images[key] = url;
+          });
         } catch (imgError) {
           console.error("Image generation error:", imgError);
         }
