@@ -44,3 +44,6 @@ verify_jwt = true
 
 [functions.ai-render-design-images]
 verify_jwt = true
+
+[functions.ai-surprise-design]
+verify_jwt = false
