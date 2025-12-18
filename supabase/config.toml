@@ -41,3 +41,6 @@ verify_jwt = true
 
 [functions.ai-generate-design-concepts]
 verify_jwt = true
+
+[functions.ai-render-design-images]
+verify_jwt = true
