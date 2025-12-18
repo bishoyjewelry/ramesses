@@ -140,40 +140,29 @@ const DesignDetail = () => {
     
     setIsGenerating(true);
     try {
-      const { data, error } = await supabase.functions.invoke('generate-ring-concepts', {
+      const { data, error } = await supabase.functions.invoke('generate-variations-from-design', {
         body: {
-          flowType: design.flow_type,
-          formInputs: design.form_inputs,
-          regenerateFrom: design.spec_sheet,
-          numConcepts: 2
+          design_id: design.id,
+          num_concepts: 2
         }
       });
 
       if (error) throw error;
 
-      if (data?.concepts && data.concepts.length > 0) {
-        // Save each variation as a new design
-        for (const concept of data.concepts) {
-          await supabase.from('user_designs').insert({
-            user_id: user.id,
-            name: concept.name,
-            overview: concept.overview,
-            flow_type: design.flow_type,
-            form_inputs: design.form_inputs,
-            spec_sheet: concept,
-            hero_image_url: concept.hero_image_url,
-            side_image_url: concept.side_image_url,
-            top_image_url: concept.top_image_url,
-            status: 'draft'
-          } as any);
-        }
-        toast.success("New variations added to My Designs");
+      if (data?.success && data.design_ids?.length > 0) {
+        toast.success(`${data.design_ids.length} new variations added to My Designs`);
       } else {
-        toast.error("No variations were generated. Please try again.");
+        toast.error(data?.error || "No variations were generated. Please try again.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating variations:', error);
-      toast.error("Failed to generate variations. Please try again.");
+      if (error?.message?.includes('429') || error?.status === 429) {
+        toast.error("Rate limit exceeded. Please try again in a moment.");
+      } else if (error?.message?.includes('402') || error?.status === 402) {
+        toast.error("AI credits exhausted. Please add credits to continue.");
+      } else {
+        toast.error("Failed to generate variations. Please try again.");
+      }
     } finally {
       setIsGenerating(false);
     }
