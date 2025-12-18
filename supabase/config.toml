@@ -32,3 +32,6 @@ verify_jwt = true
 
 [functions.generate-ring-concepts]
 verify_jwt = true
+
+[functions.generate-variations-from-design]
+verify_jwt = true
