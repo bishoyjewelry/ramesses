@@ -47,3 +47,6 @@ verify_jwt = true
 
 [functions.ai-surprise-design]
 verify_jwt = false
+
+[functions.send-cad-quote-email]
+verify_jwt = true
