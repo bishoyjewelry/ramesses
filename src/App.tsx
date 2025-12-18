@@ -23,6 +23,7 @@ const Auth = React.lazy(() => import("./pages/Auth"));
 const Account = React.lazy(() => import("./pages/Account"));
 const AdminDataExplorer = React.lazy(() => import("./pages/AdminDataExplorer"));
 const AdminUsers = React.lazy(() => import("./pages/AdminUsers"));
+const AdminCadQueue = React.lazy(() => import("./pages/AdminCadQueue"));
 const EngagementRings = React.lazy(() => import("./pages/EngagementRings"));
 const MyDesigns = React.lazy(() => import("./pages/MyDesigns"));
 const DesignDetail = React.lazy(() => import("./pages/DesignDetail"));
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/admin" element={<Suspense fallback={<PageLoader />}><Admin /></Suspense>} />
             <Route path="/admin/data" element={<Suspense fallback={<PageLoader />}><AdminDataExplorer /></Suspense>} />
             <Route path="/admin/users" element={<Suspense fallback={<PageLoader />}><AdminUsers /></Suspense>} />
+            <Route path="/admin/cad-queue" element={<Suspense fallback={<PageLoader />}><AdminCadQueue /></Suspense>} />
             <Route path="/auth" element={<Suspense fallback={<PageLoader />}><Auth /></Suspense>} />
             <Route path="/creator" element={<Suspense fallback={<PageLoader />}><CreatorDashboard /></Suspense>} />
             <Route path="/my-repairs" element={<Suspense fallback={<PageLoader />}><MyRepairs /></Suspense>} />

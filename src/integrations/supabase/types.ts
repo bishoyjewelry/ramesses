@@ -175,6 +175,9 @@ export type Database = {
       }
       custom_inquiries: {
         Row: {
+          admin_internal_notes: string | null
+          admin_quote_amount: number | null
+          assigned_to: string | null
           budget_range: string | null
           created_at: string
           description: string
@@ -188,6 +191,9 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          admin_internal_notes?: string | null
+          admin_quote_amount?: number | null
+          assigned_to?: string | null
           budget_range?: string | null
           created_at?: string
           description: string
@@ -201,6 +207,9 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          admin_internal_notes?: string | null
+          admin_quote_amount?: number | null
+          assigned_to?: string | null
           budget_range?: string | null
           created_at?: string
           description?: string
