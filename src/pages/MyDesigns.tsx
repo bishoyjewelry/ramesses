@@ -93,41 +93,22 @@ const MyDesigns = () => {
     
     setIsSubmittingCAD(true);
     try {
-      // Create a custom inquiry linked to this design
-      const { data: inquiry, error: inquiryError } = await supabase
-        .from('custom_inquiries')
-        .insert([{
-          piece_type: design.flow_type === 'engagement' ? 'Engagement Ring' : 'Custom Jewelry',
-          description: `AI Design: ${design.name}\n\n${design.overview || ''}\n\nSpec Sheet: ${JSON.stringify(design.spec_sheet, null, 2)}`,
-          budget_range: (design.form_inputs as Record<string, string>)?.budget || 'Not specified',
-          name: user.email?.split('@')[0] || 'Customer',
-          email: user.email || '',
-          user_id: user.id,
-          image_urls: [design.hero_image_url, design.side_image_url, design.top_image_url].filter(Boolean) as string[]
-        }])
-        .select()
-        .single();
+      const { data, error } = await supabase.functions.invoke('submit-design-for-cad', {
+        body: { design_id: design.id }
+      });
 
-      if (inquiryError) throw inquiryError;
+      if (error) throw error;
 
-      // Update design status
-      const { error: updateError } = await supabase
-        .from('user_designs')
-        .update({ 
-          status: 'submitted_for_cad',
-          cad_submitted_at: new Date().toISOString(),
-          custom_inquiry_id: inquiry.id
-        })
-        .eq('id', design.id);
-
-      if (updateError) throw updateError;
-
-      toast.success("Your design has been submitted for CAD review.");
-      setSelectedDesign(null);
-      fetchDesigns();
-    } catch (error) {
+      if (data?.success) {
+        toast.success("Your design has been submitted for CAD review.");
+        setSelectedDesign(null);
+        fetchDesigns();
+      } else {
+        throw new Error(data?.error || "Failed to submit design");
+      }
+    } catch (error: any) {
       console.error('Error submitting for CAD:', error);
-      toast.error("Failed to submit design. Please try again.");
+      toast.error(error?.message || "Failed to submit design. Please try again.");
     } finally {
       setIsSubmittingCAD(false);
     }
