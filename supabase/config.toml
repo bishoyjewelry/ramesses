@@ -35,3 +35,6 @@ verify_jwt = true
 
 [functions.generate-variations-from-design]
 verify_jwt = true
+
+[functions.submit-design-for-cad]
+verify_jwt = true
