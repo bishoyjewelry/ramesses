@@ -45,7 +45,11 @@ interface CustomInquiry {
   assigned_to: string | null;
   admin_internal_notes: string | null;
   admin_quote_amount: number | null;
+  admin_quote_message: string | null;
 }
+
+// Statuses that trigger customer email notifications
+const EMAIL_TRIGGER_STATUSES = ['in_cad', 'awaiting_client_approval', 'in_production', 'completed', 'cancelled'];
 
 interface UserDesign {
   id: string;
@@ -301,26 +305,31 @@ const AdminCadQueue = () => {
     setSendingQuote(true);
 
     try {
-      // First save the quote amount
+      // First save the quote amount and message
       const { error: updateError } = await supabase
         .from('custom_inquiries')
         .update({
           admin_quote_amount: parseFloat(editQuoteAmount),
+          admin_quote_message: quoteMessage || null,
           status: 'quoted',
         })
         .eq('id', selectedInquiry.id);
 
       if (updateError) throw updateError;
 
-      // Send quote email
-      const { error: emailError } = await supabase.functions.invoke('send-cad-quote-email', {
+      // Send quote email using centralized email function
+      const { error: emailError } = await supabase.functions.invoke('send-cad-workflow-email', {
         body: {
-          inquiry_id: selectedInquiry.id,
-          customer_email: selectedInquiry.email,
-          customer_name: selectedInquiry.name,
-          quote_amount: parseFloat(editQuoteAmount),
-          message: quoteMessage,
-          design_name: selectedDesign?.name || 'Custom Jewelry',
+          template: 'customer_quote_ready',
+          to_email: selectedInquiry.email,
+          data: {
+            customer_name: selectedInquiry.name,
+            quote_amount: parseFloat(editQuoteAmount),
+            design_name: selectedDesign?.name || 'Custom Jewelry',
+            message: quoteMessage,
+            account_link: `${window.location.origin}/account`,
+            inquiry_id: selectedInquiry.id,
+          },
         },
       });
 
@@ -332,6 +341,12 @@ const AdminCadQueue = () => {
       }
 
       setEditStatus('quoted');
+      setSelectedInquiry({
+        ...selectedInquiry,
+        status: 'quoted',
+        admin_quote_amount: parseFloat(editQuoteAmount),
+        admin_quote_message: quoteMessage || null,
+      });
       fetchInquiries();
     } catch (error) {
       console.error('Error sending quote:', error);
@@ -341,7 +356,33 @@ const AdminCadQueue = () => {
     }
   };
 
-  const quickStatusUpdate = async (newStatus: string) => {
+  const sendStatusEmail = async (inquiry: CustomInquiry, newStatus: string) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-cad-workflow-email', {
+        body: {
+          template: 'customer_status_update',
+          to_email: inquiry.email,
+          data: {
+            customer_name: inquiry.name,
+            new_status: newStatus,
+            design_name: selectedDesign?.name,
+            account_link: `${window.location.origin}/account`,
+            inquiry_id: inquiry.id,
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Failed to send status email:', error);
+      } else {
+        console.log(`Status update email sent for status: ${newStatus}`);
+      }
+    } catch (error) {
+      console.error('Error sending status email:', error);
+    }
+  };
+
+  const quickStatusUpdate = async (newStatus: string, sendEmail: boolean = true) => {
     if (!selectedInquiry) return;
 
     try {
@@ -352,7 +393,14 @@ const AdminCadQueue = () => {
 
       if (error) throw error;
 
-      toast.success(`Status updated to "${newStatus}"`);
+      // Send customer email for specific status changes
+      if (sendEmail && EMAIL_TRIGGER_STATUSES.includes(newStatus)) {
+        await sendStatusEmail(selectedInquiry, newStatus);
+        toast.success(`Status updated to "${newStatus}" and customer notified`);
+      } else {
+        toast.success(`Status updated to "${newStatus}"`);
+      }
+      
       setEditStatus(newStatus);
       setSelectedInquiry({ ...selectedInquiry, status: newStatus });
       fetchInquiries();
