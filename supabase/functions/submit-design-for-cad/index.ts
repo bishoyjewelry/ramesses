@@ -6,6 +6,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Admin email for notifications
+const ADMIN_EMAILS = ["admin@ramesses.com"];
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -99,7 +102,7 @@ serve(async (req) => {
         name: user.email?.split("@")[0] || "Customer",
         email: user.email || "",
         image_urls: imageUrls,
-        status: "new",
+        status: "pending",
       })
       .select("id")
       .single();
@@ -128,7 +131,56 @@ serve(async (req) => {
 
     console.log(`Design ${design_id} submitted for CAD review successfully`);
 
-    // Step 4: Return success
+    // Step 4: Send email notifications
+    const baseUrl = SUPABASE_URL.replace('.supabase.co', '.lovable.app').replace('https://mxqsqltdwqlpgeyychhk', 'https://mxqsqltdwqlpgeyychhk');
+    const siteUrl = "https://ramesses.lovable.app"; // Replace with actual site URL
+    
+    // Send admin notification
+    for (const adminEmail of ADMIN_EMAILS) {
+      try {
+        await supabaseAdmin.functions.invoke("send-cad-workflow-email", {
+          body: {
+            template: "admin_new_cad_request",
+            to_email: adminEmail,
+            data: {
+              customer_email: user.email,
+              customer_name: user.email?.split("@")[0] || "Customer",
+              inquiry_id: inquiry.id,
+              design_type: pieceType,
+              design_name: design.name,
+              design_overview: design.overview,
+              is_direct_upload: false,
+              admin_link: `${siteUrl}/admin/cad-queue?open=${inquiry.id}`,
+            },
+          },
+        });
+        console.log(`Admin notification sent to ${adminEmail}`);
+      } catch (emailError) {
+        console.error(`Failed to send admin notification to ${adminEmail}:`, emailError);
+      }
+    }
+
+    // Send customer confirmation
+    try {
+      await supabaseAdmin.functions.invoke("send-cad-workflow-email", {
+        body: {
+          template: "customer_cad_received",
+          to_email: user.email,
+          data: {
+            customer_name: user.email?.split("@")[0] || "Customer",
+            design_name: design.name,
+            has_design: true,
+            account_link: `${siteUrl}/my-designs`,
+            inquiry_id: inquiry.id,
+          },
+        },
+      });
+      console.log(`Customer confirmation sent to ${user.email}`);
+    } catch (emailError) {
+      console.error("Failed to send customer confirmation:", emailError);
+    }
+
+    // Step 5: Return success
     return new Response(JSON.stringify({
       success: true,
       message: "Design submitted for CAD review",

@@ -177,6 +177,7 @@ export type Database = {
         Row: {
           admin_internal_notes: string | null
           admin_quote_amount: number | null
+          admin_quote_message: string | null
           assigned_to: string | null
           budget_range: string | null
           created_at: string
@@ -193,6 +194,7 @@ export type Database = {
         Insert: {
           admin_internal_notes?: string | null
           admin_quote_amount?: number | null
+          admin_quote_message?: string | null
           assigned_to?: string | null
           budget_range?: string | null
           created_at?: string
@@ -209,6 +211,7 @@ export type Database = {
         Update: {
           admin_internal_notes?: string | null
           admin_quote_amount?: number | null
+          admin_quote_message?: string | null
           assigned_to?: string | null
           budget_range?: string | null
           created_at?: string
@@ -291,6 +294,60 @@ export type Database = {
             columns: ["creator_profile_id"]
             isOneToOne: false
             referencedRelation: "creator_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_logs: {
+        Row: {
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          related_design_id: string | null
+          related_inquiry_id: string | null
+          sent_at: string
+          status: string
+          subject: string | null
+          template: string
+          to_email: string
+        }
+        Insert: {
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          related_design_id?: string | null
+          related_inquiry_id?: string | null
+          sent_at?: string
+          status?: string
+          subject?: string | null
+          template: string
+          to_email: string
+        }
+        Update: {
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          related_design_id?: string | null
+          related_inquiry_id?: string | null
+          sent_at?: string
+          status?: string
+          subject?: string | null
+          template?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_logs_related_design_id_fkey"
+            columns: ["related_design_id"]
+            isOneToOne: false
+            referencedRelation: "user_designs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_logs_related_inquiry_id_fkey"
+            columns: ["related_inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "custom_inquiries"
             referencedColumns: ["id"]
           },
         ]
