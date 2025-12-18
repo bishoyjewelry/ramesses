@@ -50,6 +50,7 @@ const MyDesigns = () => {
       const { data, error } = await supabase
         .from('user_designs')
         .select('*')
+        .neq('status', 'archived')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -59,6 +60,31 @@ const MyDesigns = () => {
       toast.error("Failed to load designs");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      draft: 'Draft',
+      submitted_for_cad: 'Submitted for CAD',
+      in_cad: 'In CAD',
+      completed: 'Completed'
+    };
+    return statusMap[status] || status;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'draft':
+        return 'bg-luxury-champagne/20 text-luxury-text';
+      case 'submitted_for_cad':
+        return 'bg-blue-100 text-blue-700';
+      case 'in_cad':
+        return 'bg-amber-100 text-amber-700';
+      case 'completed':
+        return 'bg-green-100 text-green-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
     }
   };
 
@@ -96,7 +122,7 @@ const MyDesigns = () => {
 
       if (updateError) throw updateError;
 
-      toast.success("Your selected design has been sent to our 47th Street jeweler for CAD review.");
+      toast.success("Your design has been submitted for CAD review.");
       setSelectedDesign(null);
       fetchDesigns();
     } catch (error) {
@@ -158,7 +184,7 @@ const MyDesigns = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">My Designs</h1>
-                <p className="text-luxury-text-muted">Your saved AI-generated jewelry concepts</p>
+                <p className="text-luxury-text-muted">View, revise, and submit your saved concepts for CAD review.</p>
               </div>
               <Link to="/custom">
                 <Button className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover">
@@ -173,8 +199,8 @@ const MyDesigns = () => {
               <Card className="border-luxury-divider">
                 <CardContent className="py-16 text-center">
                   <Sparkles className="w-16 h-16 text-luxury-champagne/30 mx-auto mb-4" />
-                  <h3 className="text-xl font-serif text-luxury-text mb-2">No designs yet</h3>
-                  <p className="text-luxury-text-muted mb-6">Start creating AI-powered jewelry concepts</p>
+                  <h3 className="text-xl font-serif text-luxury-text mb-2">No saved designs yet.</h3>
+                  <p className="text-luxury-text-muted mb-6">Use the Custom Lab to create new concepts instantly.</p>
                   <Link to="/custom">
                     <Button className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover">
                       Start Designing
@@ -187,8 +213,7 @@ const MyDesigns = () => {
                 {designs.map((design) => (
                   <Card 
                     key={design.id}
-                    className="border-luxury-divider hover:border-luxury-champagne/50 transition-colors cursor-pointer overflow-hidden"
-                    onClick={() => setSelectedDesign(design)}
+                    className="border-luxury-divider hover:border-luxury-champagne/50 transition-colors overflow-hidden flex flex-col"
                   >
                     <div className="aspect-[4/3] bg-luxury-bg-warm">
                       {design.hero_image_url ? (
@@ -203,21 +228,41 @@ const MyDesigns = () => {
                         </div>
                       )}
                     </div>
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <h3 className="font-serif text-luxury-text truncate">{design.name}</h3>
-                          <p className="text-xs text-luxury-text-muted mt-1">
-                            {new Date(design.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span className={`text-xs px-2 py-1 rounded-full flex-shrink-0 ${
-                          design.status === 'submitted_for_cad' 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-luxury-champagne/20 text-luxury-text'
-                        }`}>
-                          {design.status === 'submitted_for_cad' ? 'Submitted' : 'Saved'}
+                    <CardContent className="p-4 flex flex-col flex-1">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-luxury-bg-warm text-luxury-text">
+                          {design.flow_type === 'engagement' ? 'Engagement Ring' : 'Custom Jewelry'}
                         </span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusColor(design.status)}`}>
+                          {getStatusLabel(design.status)}
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-luxury-text truncate mb-1">{design.name}</h3>
+                      {design.overview && (
+                        <p className="text-xs text-luxury-text-muted mb-3 line-clamp-2">
+                          {design.overview.slice(0, 80)}{design.overview.length > 80 ? '...' : ''}
+                        </p>
+                      )}
+                      <div className="mt-auto flex flex-col gap-2 pt-3 border-t border-luxury-divider">
+                        <Button 
+                          onClick={() => setSelectedDesign(design)}
+                          className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover text-sm"
+                        >
+                          View Details
+                        </Button>
+                        {design.status === 'draft' && (
+                          <Button 
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSubmitForCAD(design);
+                            }}
+                            disabled={isSubmittingCAD}
+                            className="w-full border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text text-sm"
+                          >
+                            {isSubmittingCAD ? 'Submitting...' : 'Submit for CAD Review'}
+                          </Button>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
