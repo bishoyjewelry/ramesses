@@ -245,7 +245,7 @@ const MyDesigns = () => {
                       )}
                       <div className="mt-auto flex flex-col gap-2 pt-3 border-t border-luxury-divider">
                         <Button 
-                          onClick={() => setSelectedDesign(design)}
+                          onClick={() => navigate(`/my-designs/${design.id}`)}
                           className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover text-sm"
                         >
                           View Details
