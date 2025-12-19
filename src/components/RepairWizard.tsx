@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { 
   ArrowLeft, ArrowRight, Check, CheckCircle, Upload, 
   CircleDot, Package, MapPin, Truck, UserPlus, LogIn, Home,
-  Camera
+  Camera, Shield, Video
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -329,12 +329,13 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
           <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
             What does it need?
           </h3>
-          <p className="text-muted-foreground text-sm">Select all that apply</p>
+          <p className="text-muted-foreground text-sm">Select all that apply. Not sure? That's okay — choose "Need expert review" below.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {repairTypes.map((type) => {
             const isSelected = formData.repairNeeded.includes(type.value);
+            const isNotSureOption = type.value === "not_sure";
             return (
               <button
                 key={type.value}
@@ -344,7 +345,7 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
                   isSelected
                     ? "border-service-gold bg-service-gold/5"
                     : "border-border hover:border-service-gold/50 bg-background"
-                }`}
+                } ${isNotSureOption ? "sm:col-span-2" : ""}`}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -374,17 +375,18 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
         {/* Estimate/Reassurance Panel */}
         {isNotSureSelected ? (
           <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-muted-foreground">
-              Our jeweler will review your piece and provide a quote.
+            <p className="text-foreground text-sm mb-1">No problem — we'll figure it out together.</p>
+            <p className="text-muted-foreground text-sm">
+              Send photos or ship it to us. Our jeweler will inspect it on video and send you a quote before any work begins.
             </p>
           </div>
         ) : estimateDisplay === "multiple" ? (
           <div className="p-4 bg-muted rounded-lg">
             <p className="text-muted-foreground text-sm text-center">
-              Multiple repairs selected — quote provided after inspection.
+              Multiple repairs selected — we'll send a combined quote after inspection.
             </p>
             <p className="text-xs text-muted-foreground/70 text-center mt-2">
-              Final quote provided after inspection. No work is done without your approval.
+              No work begins without your approval.
             </p>
           </div>
         ) : estimateDisplay ? (
@@ -393,7 +395,7 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
               Typical repair range: <span className="font-semibold text-service-gold">{estimateDisplay}</span>
             </p>
             <p className="text-xs text-muted-foreground text-center">
-              Final quote provided after inspection. No work is done without your approval.
+              Final quote provided after inspection. No work begins without your approval.
             </p>
           </div>
         ) : null}
@@ -406,10 +408,10 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
     <div className="space-y-8">
       <div className="text-center">
         <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
-          Add a few photos (optional)
+          Got photos? They help us quote faster.
         </h3>
         <p className="text-muted-foreground text-sm">
-          Photos help us review your jewelry faster, but they're not required.
+          A quick snapshot of the damage speeds up the process — but it's not required. We'll inspect everything when it arrives.
         </p>
       </div>
 
@@ -426,8 +428,8 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
             <Camera className="w-8 h-8 text-muted-foreground" />
           </div>
-          <p className="text-foreground font-medium mb-1">Tap to upload photos</p>
-          <p className="text-muted-foreground text-sm">Up to 6 images</p>
+          <p className="text-foreground font-medium mb-1">Tap to add photos</p>
+          <p className="text-muted-foreground text-sm">Up to 6 images — phone photos work great</p>
         </label>
       </div>
 
@@ -452,6 +454,12 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
             </div>
           ))}
         </div>
+      )}
+
+      {uploadedImages.length === 0 && (
+        <p className="text-center text-xs text-muted-foreground">
+          No camera handy? No problem — skip this step and we'll assess everything in person.
+        </p>
       )}
     </div>
   );
@@ -564,31 +572,42 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
 
   // Success Confirmation
   const SuccessConfirmation = () => (
-    <div className="text-center py-8">
-      <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+    <div className="text-center py-8 space-y-6">
+      <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
         <CheckCircle className="w-10 h-10 text-green-600" />
       </div>
+      
+      <div>
+        <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+          You're all set.
+        </h3>
+        <p className="text-muted-foreground">
+          We received your request and will email you within 24 hours.
+        </p>
+      </div>
 
-      <h3 className="text-2xl font-serif font-medium text-foreground mb-3">
-        Request received
-      </h3>
-
-      <div className="text-muted-foreground mb-8 max-w-sm mx-auto space-y-3">
-        <p className="font-medium text-foreground">What happens next:</p>
-        <ol className="text-left text-sm space-y-2">
+      <div className="bg-muted rounded-lg p-6 text-left max-w-md mx-auto">
+        <h4 className="font-semibold text-foreground mb-3">Here's what to expect:</h4>
+        <ol className="space-y-3 text-sm text-muted-foreground">
           <li className="flex gap-2">
             <span className="text-primary font-medium">1.</span>
-            <span>We email you a prepaid, insured shipping label within 24 hours.</span>
+            <span>We email you a <strong className="text-foreground">prepaid, insured shipping label</strong> within 24 hours.</span>
           </li>
           <li className="flex gap-2">
             <span className="text-primary font-medium">2.</span>
-            <span>Ship your jewelry. We record a video when it arrives.</span>
+            <span>Ship your jewelry when ready. We <strong className="text-foreground">record a video</strong> when it arrives so you see exactly what we receive.</span>
           </li>
           <li className="flex gap-2">
             <span className="text-primary font-medium">3.</span>
-            <span>You receive a quote. No work starts without your approval.</span>
+            <span>You receive a quote. <strong className="text-foreground">No work begins until you approve.</strong></span>
           </li>
         </ol>
+      </div>
+
+      <div className="bg-service-gold/5 border border-service-gold/20 rounded-lg p-4 max-w-md mx-auto">
+        <p className="text-sm text-foreground">
+          Your piece is <strong>fully insured</strong> from the moment it leaves your hands until it's returned to you.
+        </p>
       </div>
 
       {user ? (
@@ -601,7 +620,7 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
       ) : (
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Check your email for confirmation and shipping instructions.
+            Check your email for confirmation and next steps.
           </p>
           <Link to="/auth?mode=signup&redirect=/my-repairs">
             <Button variant="outline" className="px-6 w-full sm:w-auto">
@@ -654,6 +673,22 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
   return (
     <Card className="border border-border shadow-soft">
       <CardContent className="p-6 md:p-10">
+        {/* Safety reassurance strip */}
+        <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground mb-8 pb-6 border-b border-border">
+          <span className="flex items-center gap-1.5">
+            <Shield className="w-4 h-4 text-service-gold" />
+            Fully insured shipping
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Video className="w-4 h-4 text-service-gold" />
+            Video documentation
+          </span>
+          <span className="hidden sm:flex items-center gap-1.5">
+            <Check className="w-4 h-4 text-service-gold" />
+            No work without approval
+          </span>
+        </div>
+        
         <ProgressIndicator />
 
         <div className="min-h-[320px]">{renderStep()}</div>
