@@ -43,7 +43,7 @@ export const Navigation = () => {
     if (user) {
       navigate("/my-repairs");
     } else {
-      navigate("/auth?mode=login&redirect=/my-repairs");
+      navigate("/track-repair");
     }
   };
 
