@@ -29,10 +29,9 @@ export const Navigation = () => {
     }
   };
 
-  const handleStartRepair = () => {
+  const handleStartServices = () => {
     setIsOpen(false);
     navigate("/repairs");
-    // Scroll to top of page
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
@@ -55,11 +54,11 @@ export const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Simplified navigation links
+  // Primary navigation links - Custom first
   const navLinks = [
-    { to: "/custom", label: "Custom Jewelry" },
-    { to: "/engagement-rings", label: "Engagement Rings" },
-    { to: "/repairs", label: "Repairs" },
+    { to: "/custom", label: "Create Custom Jewelry" },
+    { to: "/engagement-rings", label: "Create Engagement Ring" },
+    { to: "/shop", label: "Shop" },
   ];
 
   const toggleLanguage = () => {
@@ -89,7 +88,7 @@ export const Navigation = () => {
           </Link>
 
           {/* Desktop Navigation - Primary Links */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -110,18 +109,29 @@ export const Navigation = () => {
 
           {/* Right side actions */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Start Repair CTA - Desktop Only */}
+            {/* Start Repair / Services CTA - Desktop Only */}
             <Button
-              onClick={handleStartRepair}
+              onClick={handleStartServices}
               size="sm"
               className="hidden lg:flex bg-service-gold hover:bg-service-gold/90 text-white font-medium px-4 h-9"
             >
-              Start Repair
+              Start Repair / Services
+            </Button>
+
+            {/* Track Repair - Desktop */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleTrackRepair}
+              className="hidden lg:flex text-muted-foreground hover:text-foreground font-medium items-center gap-1.5 h-9"
+            >
+              <Search className="h-4 w-4" />
+              Track Repair
             </Button>
 
             {/* Account Dropdown - Desktop */}
             <div className="hidden lg:block">
-              <AccountDropdown onTrackRepair={handleTrackRepair} />
+              <AccountDropdown />
             </div>
 
             {/* Cart */}
@@ -147,14 +157,15 @@ export const Navigation = () => {
         {isOpen && (
           <div className="lg:hidden bg-white border-t border-border max-h-[calc(100vh-56px)] overflow-y-auto">
             <nav className="flex flex-col py-2">
-              {/* Primary CTA - Mobile */}
+              {/* Primary CTA - Mobile (Sticky feel) */}
               <button
-                onClick={handleStartRepair}
+                onClick={handleStartServices}
                 className="mx-4 my-2 py-3 rounded-lg bg-service-gold text-white font-medium text-center"
               >
-                Start Repair
+                Start Repair / Services
               </button>
 
+              {/* Primary Nav Links */}
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -202,7 +213,7 @@ export const Navigation = () => {
                       className="px-4 py-3.5 text-base font-medium text-muted-foreground hover:bg-muted block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
-                      My Repairs
+                      Repairs / Services
                     </Link>
                     <button
                       onClick={handleMobileSignOut}
