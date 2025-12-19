@@ -53,8 +53,11 @@ const Repairs = () => {
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium mb-4 text-foreground">
               Mail-In Jewelry Repair
             </h1>
-            <p className="text-lg text-muted-foreground mb-14 font-body">
-              Simple, insured repairs handled by our 47th Street master jeweler.
+            <p className="text-lg text-muted-foreground mb-3 font-body">
+              Handled by a Diamond District master jeweler with 30+ years at the bench.
+            </p>
+            <p className="text-sm text-muted-foreground/70 mb-14 font-body">
+              Fully insured from pickup to delivery. No work begins until you approve.
             </p>
           </div>
           
@@ -68,7 +71,7 @@ const Repairs = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">Step 1 — Start Online</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Tell us about your jewelry and upload photos. If you're not sure what repair you need, that's okay.
+                  Tell us about your jewelry. Photos help but aren't required. Not sure what's wrong? That's okay — we'll figure it out.
                 </p>
               </div>
               
@@ -79,7 +82,7 @@ const Repairs = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">Step 2 — Ship or Drop Off</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Mail it insured, drop it off in NYC, or schedule local pickup in Manhattan or North Jersey.
+                  We send you a prepaid, insured shipping label. Your piece is covered from the moment it leaves your hands.
                 </p>
               </div>
               
@@ -88,9 +91,9 @@ const Repairs = () => {
                 <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Step 3 — Repair & Return</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">Step 3 — Approve, Then We Repair</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  You approve the quote before work begins. We repair it and ship it back safely.
+                  We inspect your piece on video and send a detailed quote. No work starts without your written approval.
                 </p>
               </div>
             </div>
@@ -152,11 +155,11 @@ const Repairs = () => {
                   <h3 className="text-lg font-semibold text-foreground">I'm Not Sure</h3>
                 </div>
                 
-                <p className="text-muted-foreground font-body mb-8 leading-relaxed flex-1">
-                  Not sure what's wrong? Upload photos and our jeweler will review it for you. No guesswork required.
+                <p className="text-muted-foreground font-body mb-6 leading-relaxed">
+                  Something's wrong but you're not sure what? No problem. Upload a few photos and describe what you're seeing. Our jeweler will inspect it and tell you exactly what's needed — no commitment until you approve.
                 </p>
                 
-                <Button 
+                <Button
                   onClick={() => scrollToForm(undefined, "not_sure")}
                   variant="outline"
                   className="w-full border-border text-foreground hover:bg-secondary py-5 font-medium"
@@ -174,25 +177,56 @@ const Repairs = () => {
       <section className="py-12 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-xl font-serif font-medium text-center mb-8 text-foreground">
+            <h3 className="text-xl font-serif font-medium text-center mb-3 text-foreground">
               How would you like to get it to us?
             </h3>
+            <p className="text-center text-sm text-muted-foreground mb-8 font-body">
+              Choose whichever is easiest for you. All options are fully insured.
+            </p>
             
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="bg-card border border-border rounded-lg p-5 text-center">
                 <Package className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h4 className="font-medium text-foreground mb-1">Mail-In</h4>
-                <p className="text-sm text-muted-foreground">Insured Shipping</p>
+                <p className="text-sm text-muted-foreground mb-2">Prepaid, Insured Label</p>
+                <p className="text-xs text-muted-foreground/70">We email it to you</p>
               </div>
               <div className="bg-card border border-border rounded-lg p-5 text-center">
                 <Wrench className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h4 className="font-medium text-foreground mb-1">In-Person</h4>
-                <p className="text-sm text-muted-foreground">Drop-Off (NYC)</p>
+                <h4 className="font-medium text-foreground mb-1">Drop-Off</h4>
+                <p className="text-sm text-muted-foreground mb-2">47th Street, NYC</p>
+                <p className="text-xs text-muted-foreground/70">By appointment</p>
               </div>
               <div className="bg-card border border-border rounded-lg p-5 text-center">
                 <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h4 className="font-medium text-foreground mb-1">Local Pickup</h4>
-                <p className="text-sm text-muted-foreground">Manhattan / North Jersey</p>
+                <p className="text-sm text-muted-foreground mb-2">Manhattan / North Jersey</p>
+                <p className="text-xs text-muted-foreground/70">We come to you</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== PRE-FORM TRUST SECTION ==================== */}
+      <section className="py-12 bg-background border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-secondary/50 rounded-xl p-6 sm:p-8 border border-border">
+              <h3 className="text-lg font-serif font-medium text-foreground mb-4 text-center">Before You Start</h3>
+              <div className="space-y-4 text-sm text-muted-foreground font-body">
+                <p className="flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Your piece is insured the entire time.</strong> From the moment you drop it in the mailbox to when it's back in your hands.</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">We don't start work until you say so.</strong> You'll receive a detailed quote with photos. Approve it or decline — no pressure either way.</span>
+                </p>
+                <p className="flex items-start gap-3">
+                  <FileText className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span><strong className="text-foreground">Everything is documented.</strong> We record a video when your piece arrives so you can see exactly what we received.</span>
+                </p>
               </div>
             </div>
           </div>
@@ -206,8 +240,11 @@ const Repairs = () => {
             <h2 className="text-2xl md:text-3xl font-serif font-medium text-center mb-3 text-foreground">
               Start Your Repair Request
             </h2>
-            <p className="text-center text-muted-foreground mb-10 font-body">
-              Answer a few quick questions and we'll take it from there.
+            <p className="text-center text-muted-foreground mb-3 font-body">
+              Answer a few quick questions. Takes about 2 minutes.
+            </p>
+            <p className="text-center text-xs text-muted-foreground/70 mb-10 font-body">
+              You're not committing to anything. We'll follow up with next steps.
             </p>
             
             <RepairWizard 
@@ -219,24 +256,29 @@ const Repairs = () => {
       </section>
 
       {/* ==================== TRUST REASSURANCE STRIP ==================== */}
-      <section className="py-8 bg-secondary border-y border-border">
+      <section className="py-10 bg-secondary border-y border-border">
         <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-6">
+            <p className="text-sm text-muted-foreground font-body">
+              Your jewelry is handled by a Diamond District master jeweler with over 30 years of experience. We treat every piece as if it were our own.
+            </p>
+          </div>
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-muted-foreground text-sm font-body">
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-primary" />
-              Insured shipping
+              Fully insured shipping
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-primary" />
-              Secure handling
+              Video documentation
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-primary" />
-              No work done without approval
+              Approval required before work
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-primary" />
-              47th Street expertise
+              Track in your account
             </span>
           </div>
         </div>
