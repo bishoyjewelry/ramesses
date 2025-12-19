@@ -92,16 +92,22 @@ export default {
         body: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
       },
       fontSize: {
-        "xs": ["0.8125rem", { lineHeight: "1.5" }],
-        "sm": ["0.875rem", { lineHeight: "1.6" }],
-        "base": ["1.0625rem", { lineHeight: "1.75" }],
-        "lg": ["1.125rem", { lineHeight: "1.7" }],
-        "xl": ["1.25rem", { lineHeight: "1.5" }],
-        "2xl": ["1.5rem", { lineHeight: "1.35" }],
-        "3xl": ["1.875rem", { lineHeight: "1.25" }],
+        // UI labels / helper text: 13-14px
+        "xs": ["0.8125rem", { lineHeight: "1.5", letterSpacing: "0.02em" }],
+        "sm": ["0.875rem", { lineHeight: "1.5", letterSpacing: "0.02em" }],
+        // Body text: 16-18px
+        "base": ["1rem", { lineHeight: "1.6" }],
+        "lg": ["1.125rem", { lineHeight: "1.6" }],
+        // H3: 22-24px
+        "xl": ["1.375rem", { lineHeight: "1.3" }],
+        "2xl": ["1.5rem", { lineHeight: "1.3" }],
+        // H2: 36-40px
+        "3xl": ["2rem", { lineHeight: "1.2" }],
         "4xl": ["2.25rem", { lineHeight: "1.2" }],
-        "5xl": ["3rem", { lineHeight: "1.15" }],
-        "6xl": ["3.75rem", { lineHeight: "1.1" }],
+        // H1: 56-64px desktop / 36-40px mobile
+        "5xl": ["2.5rem", { lineHeight: "1.1" }],
+        "6xl": ["3.5rem", { lineHeight: "1.1" }],
+        "7xl": ["4rem", { lineHeight: "1.1" }],
       },
       fontWeight: {
         normal: "400",
@@ -116,11 +122,11 @@ export default {
         wider: "0.02em",
       },
       lineHeight: {
-        tight: "1.2",
-        snug: "1.35",
-        normal: "1.5",
-        relaxed: "1.7",
-        loose: "1.8",
+        tight: "1.1",
+        snug: "1.2",
+        normal: "1.3",
+        relaxed: "1.5",
+        loose: "1.6",
       },
       spacing: {
         "18": "4.5rem",
