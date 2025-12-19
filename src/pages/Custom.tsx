@@ -384,8 +384,11 @@ const Custom = () => {
               Start Your Custom Jewelry Project
             </h1>
             
-            <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed font-body px-2">
-              Work directly with a NYC master jeweler to create a custom engagement ring, redesign an heirloom piece, or bring any idea to life.
+            <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-3 max-w-3xl mx-auto leading-relaxed font-body px-2">
+              Start with rough ideas — we'll help you shape them. No design experience required.
+            </p>
+            <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+              Every concept you generate is saved to your account. Come back anytime to continue or refine.
             </p>
           </div>
         </div>
@@ -700,7 +703,7 @@ const Custom = () => {
                     {/* Image Upload */}
                     <div className="space-y-3">
                       <Label className="text-base font-medium text-luxury-text">Have inspiration? (Optional)</Label>
-                      <p className="text-sm text-luxury-text-muted -mt-1">Upload photos if you have them — or skip this step.</p>
+                      <p className="text-sm text-luxury-text-muted -mt-1">Pinterest pins, sketches, or photos you like. Helpful but not required — you can always add them later.</p>
                       <div className="border-2 border-dashed border-luxury-divider rounded-xl p-6 text-center hover:border-luxury-champagne/50 transition-colors bg-luxury-bg/50">
                         <input
                           type="file"
@@ -783,7 +786,7 @@ const Custom = () => {
                     </div>
                     
                     <p className="text-center text-xs text-luxury-text-muted">
-                      Already have a ring design? Click "Upload Your Design" to request a direct quote.
+                      Already have a design in mind? Click "Upload Your Design" to skip AI and request a direct quote.
                     </p>
                     
                     {!user && (
@@ -815,8 +818,9 @@ const Custom = () => {
                   <Sparkles className="w-12 h-12 text-luxury-champagne animate-spin" style={{ animationDuration: '3s' }} />
                 </div>
               </div>
-              <h3 className="text-2xl font-serif text-luxury-text mb-3">Creating your designs…</h3>
-              <p className="text-luxury-text-muted">Crafted to match your preferences. This may take a moment.</p>
+              <h3 className="text-2xl font-serif text-luxury-text mb-2">Creating your designs…</h3>
+              <p className="text-luxury-text-muted mb-1">We're generating concepts based on your inputs.</p>
+              <p className="text-xs text-luxury-text-muted/70">This takes about 15–30 seconds.</p>
             </div>
           </div>
         </section>
@@ -828,8 +832,13 @@ const Custom = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-3">Your Custom Concepts</h2>
-                <p className="text-luxury-text-muted">Choose your favorite or regenerate for more variations</p>
+                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Custom Concepts</h2>
+                <p className="text-luxury-text-muted mb-1">Like one? Save it. Want changes? Request variations — nothing is final until you approve.</p>
+                <p className="text-sm text-luxury-text-muted/70">
+                  All saved designs live in{" "}
+                  <Link to="/my-designs" className="text-luxury-champagne underline">My Designs</Link>
+                  {" "}— revisit or continue anytime.
+                </p>
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
