@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Award, MapPin, Truck, Shield, Gem, Sparkles, Wrench, FileText, Package, CheckCircle } from "lucide-react";
+import { ArrowRight, Award, MapPin, Truck, Shield, FileText, Package, CheckCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Hero = () => {
@@ -9,9 +9,7 @@ export const Hero = () => {
 
   const handleStartRepair = () => {
     navigate("/repairs");
-    setTimeout(() => {
-      document.getElementById("repair-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const commonRepairs = [
@@ -26,76 +24,49 @@ export const Hero = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden bg-luxury-bg pt-16 sm:pt-20">
-        {/* Subtle decorative elements */}
-        <div className="absolute top-40 left-10 w-48 sm:w-72 h-48 sm:h-72 bg-luxury-champagne/10 rounded-full blur-3xl hidden sm:block"></div>
-        <div className="absolute bottom-20 right-10 w-64 sm:w-96 h-64 sm:h-96 bg-luxury-champagne/5 rounded-full blur-3xl hidden sm:block"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-luxury-champagne/5 rounded-full blur-3xl"></div>
+      <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden bg-luxury-bg pt-16 sm:pt-20">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-luxury-bg via-luxury-bg to-luxury-bg-warm opacity-50"></div>
 
-        <div className="container mx-auto px-4 py-8 sm:py-16 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Premium Badge */}
-            <div className="inline-flex items-center gap-2 bg-luxury-champagne/10 border border-luxury-champagne/20 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 mb-6 sm:mb-8">
-              <Gem className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-luxury-champagne" />
-              <span className="text-xs sm:text-sm font-medium text-luxury-text">NYC Diamond District Craftsmanship</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif luxury-heading text-luxury-text mb-4 sm:mb-6 leading-tight px-2">
-              Custom Design, Engagement Rings & Nationwide Mail-In Jewelry Repair by a{" "}
-              <span className="relative inline-block">
-                47th Street Master Jeweler
-                <span className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-luxury-champagne"></span>
-              </span>
-            </h1>
-            
-            <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-10 sm:mb-14 leading-relaxed font-body max-w-3xl mx-auto px-2">
-              Work directly with a master jeweler to create, customize, or restore the pieces that matter most.
+        <div className="container mx-auto px-4 py-12 sm:py-20 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Eyebrow */}
+            <p className="text-xs sm:text-sm font-medium tracking-widest uppercase text-luxury-champagne mb-6 sm:mb-8">
+              NYC Diamond District Craftsmanship
             </p>
 
-            {/* Two Clear Paths */}
-            <div className="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl mx-auto px-2">
-              {/* LEFT — Custom Jewelry (Primary) */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-luxury-champagne/20 shadow-luxury">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Sparkles className="w-5 h-5 text-luxury-champagne" />
-                  <span className="text-sm font-semibold text-luxury-text uppercase tracking-wide">Custom Jewelry</span>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Link to="/custom" className="w-full">
-                    <Button size="lg" className="w-full bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-6 py-5 text-base rounded-lg shadow-luxury tap-target">
-                      Design Custom Jewelry
-                      <Sparkles className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link to="/engagement-rings" className="w-full">
-                    <Button size="lg" variant="outline" className="w-full border-2 border-luxury-text text-luxury-text hover:bg-luxury-text/5 font-semibold px-6 py-5 text-base rounded-lg tap-target">
-                      Design an Engagement Ring
-                      <Gem className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+            {/* H1 Headline - SEO optimized */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-luxury-text mb-6 sm:mb-8 leading-[1.2] sm:leading-[1.25] tracking-tight">
+              Custom Jewelry & Engagement Rings
+              <br className="hidden sm:block" />
+              <span className="block sm:inline"> by a 47th Street Master Jeweler</span>
+            </h1>
+            
+            {/* Subheadline with SEO keywords */}
+            <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-12 sm:mb-16 leading-relaxed font-body max-w-2xl mx-auto">
+              Design from anywhere. Repair with confidence.
+              <br />
+              Handcrafted in New York's Diamond District.
+            </p>
 
-              {/* RIGHT — Mail-In Repair (Secondary) */}
-              <div className="bg-service-bg/95 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-service-gold/20 shadow-service">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Wrench className="w-5 h-5 text-service-gold" />
-                  <span className="text-sm font-semibold text-white uppercase tracking-wide">Need a Repair?</span>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Button 
-                    size="lg" 
-                    onClick={handleStartRepair}
-                    className="w-full bg-service-gold text-white hover:bg-service-gold-hover font-semibold px-6 py-5 text-base rounded-lg tap-target"
-                  >
-                    Start Mail-In Repair
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <p className="text-service-text-muted text-sm text-center font-body">
-                    Ship from anywhere in the U.S. — fully insured
-                  </p>
-                </div>
-              </div>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <Link to="/custom">
+                <Button 
+                  size="lg" 
+                  className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8 py-6 text-base rounded-lg shadow-luxury min-w-[240px]"
+                >
+                  Create Custom Jewelry
+                </Button>
+              </Link>
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={handleStartRepair}
+                className="border-2 border-luxury-text/30 text-luxury-text hover:bg-luxury-text/5 hover:border-luxury-text/50 font-semibold px-8 py-6 text-base rounded-lg min-w-[240px]"
+              >
+                Start Repair / Services
+              </Button>
             </div>
           </div>
         </div>
@@ -111,11 +82,11 @@ export const Hero = () => {
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
               <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-luxury-champagne flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-luxury-text">Master Jeweler on 47th St</span>
+              <span className="text-xs sm:text-sm font-medium text-luxury-text">47th Street Jeweler</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
               <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-luxury-champagne flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-luxury-text">Nationwide Mail-In</span>
+              <span className="text-xs sm:text-sm font-medium text-luxury-text">Nationwide Jewelry Repair</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
               <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-luxury-champagne flex-shrink-0" />
