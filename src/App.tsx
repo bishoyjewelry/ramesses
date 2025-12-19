@@ -28,6 +28,7 @@ const EngagementRings = React.lazy(() => import("./pages/EngagementRings"));
 const MyDesigns = React.lazy(() => import("./pages/MyDesigns"));
 const DesignDetail = React.lazy(() => import("./pages/DesignDetail"));
 const DesignView = React.lazy(() => import("./pages/DesignView"));
+const TrackRepair = React.lazy(() => import("./pages/TrackRepair"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -64,6 +65,7 @@ const App = () => (
             <Route path="/my-designs" element={<Suspense fallback={<PageLoader />}><MyDesigns /></Suspense>} />
             <Route path="/my-designs/:id" element={<Suspense fallback={<PageLoader />}><DesignDetail /></Suspense>} />
             <Route path="/design/:id" element={<Suspense fallback={<PageLoader />}><DesignView /></Suspense>} />
+            <Route path="/track-repair" element={<Suspense fallback={<PageLoader />}><TrackRepair /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Mobile Bottom Navigation */}
