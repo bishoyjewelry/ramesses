@@ -107,9 +107,9 @@ const Repairs = () => {
 
 
       {/* ==================== SECTION 2 — HOW IT WORKS (4 STEPS) ==================== */}
-      <section id="how-it-works" className="py-16 bg-service-neutral">
+      <section id="how-it-works" className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             How Mail-In Jewelry Repair Works
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -146,12 +146,12 @@ const Repairs = () => {
                   <div className="w-16 h-16 bg-service-gold rounded-full flex items-center justify-center mx-auto">
                     <item.icon className="w-8 h-8 text-white" />
                   </div>
-                  <div className="absolute -top-2 -right-2 w-7 h-7 bg-luxury-text rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="absolute -top-2 -right-2 w-7 h-7 bg-foreground rounded-full flex items-center justify-center text-background font-bold text-sm">
                     {item.step}
                   </div>
                 </div>
-                <h3 className="text-lg font-sans font-bold text-luxury-text mb-2">{item.title}</h3>
-                <p className="text-luxury-text-muted font-body text-sm leading-relaxed">{item.text}</p>
+                <h3 className="text-lg font-medium text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground font-body text-sm leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
@@ -159,7 +159,7 @@ const Repairs = () => {
           <div className="text-center mt-10">
             <Button 
               onClick={scrollToForm}
-              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-semibold rounded"
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-medium rounded"
             >
               Start Your Repair
             </Button>
@@ -197,9 +197,9 @@ const Repairs = () => {
       </section>
 
       {/* ==================== SECTION 4 — WHAT WE REPAIR ==================== */}
-      <section className="py-16 bg-service-neutral">
+      <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             Common Repairs We Handle
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -217,9 +217,9 @@ const Repairs = () => {
                 "Engagement ring overhauls and restoration",
                 "Vintage and heirloom restoration",
               ].map((item, index) => (
-                <div key={index} className="flex items-center gap-3 bg-white rounded-lg p-4 shadow-sm border border-luxury-divider">
+                <div key={index} className="flex items-center gap-3 bg-card rounded-lg p-4 shadow-sm border border-border">
                   <CheckCircle className="w-5 h-5 text-service-gold flex-shrink-0" />
-                  <span className="text-luxury-text font-body">{item}</span>
+                  <span className="text-foreground font-body">{item}</span>
                 </div>
               ))}
             </div>
@@ -228,7 +228,7 @@ const Repairs = () => {
           <div className="text-center mt-10">
             <Button 
               onClick={scrollToForm}
-              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-semibold rounded"
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-5 font-medium rounded"
             >
               Start Your Repair
             </Button>
@@ -237,9 +237,9 @@ const Repairs = () => {
       </section>
 
       {/* ==================== SECTION 5 — WHY CHOOSE RAMESSÉS ==================== */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             Why People Trust Us With Their Jewelry
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -262,13 +262,13 @@ const Repairs = () => {
                 text: "No surprises. You approve the quote before any work begins."
               }
             ].map((item, index) => (
-              <Card key={index} className="bg-luxury-bg-warm border-0 shadow-service hover:shadow-lg transition-shadow rounded-lg text-center">
+              <Card key={index} className="bg-card border border-border shadow-soft hover:shadow-luxury transition-shadow rounded-lg text-center">
                 <CardContent className="p-8">
                   <div className="w-16 h-16 bg-service-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <item.icon className="w-8 h-8 text-service-gold" />
                   </div>
-                  <h3 className="text-xl font-sans font-bold mb-4 text-luxury-text">{item.title}</h3>
-                  <p className="text-luxury-text-muted font-body leading-relaxed">{item.text}</p>
+                  <h3 className="text-xl font-medium mb-4 text-foreground">{item.title}</h3>
+                  <p className="text-muted-foreground font-body leading-relaxed">{item.text}</p>
                 </CardContent>
               </Card>
             ))}
@@ -276,10 +276,10 @@ const Repairs = () => {
         </div>
       </section>
 
-      {/* ==================== SECTION 4 — PRICING CARDS ==================== */}
-      <section className="py-20 bg-service-neutral">
+      {/* ==================== SECTION 6 — PRICING CARDS ==================== */}
+      <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             Popular Repair Services & Typical Prices
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -293,26 +293,26 @@ const Repairs = () => {
               { title: "Restoration / Heavy Damage", price: "Custom Quote", description: "Reshaping, rebuilding channels, replacing stones" },
               { title: "Laser Welding", price: "From $55–$150", description: "Precision repairs for delicate or complex pieces" }
             ].map((item, index) => (
-              <Card key={index} className="bg-white border-0 shadow-service hover:shadow-lg transition-all hover:translate-y-[-2px] rounded-lg">
+              <Card key={index} className="bg-card border border-border shadow-soft hover:shadow-luxury transition-all hover:translate-y-[-2px] rounded-lg">
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-sans font-bold text-luxury-text mb-2">{item.title}</h3>
-                  <p className="text-2xl font-bold text-service-gold mb-3">{item.price}</p>
-                  <p className="text-sm text-luxury-text-muted font-body">{item.description}</p>
+                  <h3 className="text-lg font-medium text-foreground mb-2">{item.title}</h3>
+                  <p className="text-2xl font-semibold text-service-gold mb-3">{item.price}</p>
+                  <p className="text-sm text-muted-foreground font-body">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
           
-          <p className="text-center text-luxury-text-muted font-body text-sm max-w-2xl mx-auto">
+          <p className="text-center text-muted-foreground font-body text-sm max-w-2xl mx-auto">
             Actual price is confirmed after inspection. No work begins until you approve the quote.
           </p>
         </div>
       </section>
 
-      {/* ==================== SECTION 5 — BEFORE & AFTER GALLERY ==================== */}
-      <section className="py-20 bg-white">
+      {/* ==================== SECTION 7 — BEFORE & AFTER GALLERY ==================== */}
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             Before & After Transformations
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -329,13 +329,13 @@ const Repairs = () => {
               "Antique ring carefully restored"
             ].map((caption, index) => (
               <div key={index} className="group">
-                <div className="aspect-square bg-service-neutral rounded-lg flex items-center justify-center border border-luxury-divider overflow-hidden">
-                  <div className="text-center text-luxury-text-muted p-4">
+                <div className="aspect-square bg-secondary rounded-lg flex items-center justify-center border border-border overflow-hidden">
+                  <div className="text-center text-muted-foreground p-4">
                     <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-50 text-service-gold" />
                     <p className="text-xs">Before/After</p>
                   </div>
                 </div>
-                <p className="text-sm text-luxury-text-muted text-center mt-2 font-body">{caption}</p>
+                <p className="text-sm text-muted-foreground text-center mt-2 font-body">{caption}</p>
               </div>
             ))}
           </div>
@@ -395,10 +395,10 @@ const Repairs = () => {
         </div>
       </section>
 
-      {/* ==================== SECTION 8 — TESTIMONIALS ==================== */}
-      <section className="py-20 bg-service-neutral">
+      {/* ==================== SECTION 10 — TESTIMONIALS ==================== */}
+      <section className="py-20 bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold text-center mb-4 text-luxury-text">
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-center mb-4 text-foreground">
             What Our Customers Say
           </h2>
           <div className="w-24 h-1 bg-service-gold mx-auto mb-12"></div>
@@ -411,7 +411,7 @@ const Repairs = () => {
               { text: "The video unboxing gave me so much peace of mind. Truly professional service.", author: "Jessica L." },
               { text: "Fair pricing and exceptional quality. My bracelet looks brand new!", author: "David K." }
             ].map((review, index) => (
-              <Card key={index} className="bg-white border-0 shadow-service rounded-lg">
+              <Card key={index} className="bg-card border border-border shadow-soft rounded-lg">
                 <CardContent className="p-6">
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
@@ -419,8 +419,8 @@ const Repairs = () => {
                     ))}
                   </div>
                   <Quote className="w-6 h-6 text-service-gold/30 mb-2" />
-                  <p className="text-luxury-text font-body mb-4 italic">"{review.text}"</p>
-                  <p className="text-sm text-luxury-text-muted font-semibold">— {review.author}</p>
+                  <p className="text-foreground font-body mb-4 italic">"{review.text}"</p>
+                  <p className="text-sm text-muted-foreground font-medium">— {review.author}</p>
                 </CardContent>
               </Card>
             ))}
