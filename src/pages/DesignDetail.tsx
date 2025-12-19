@@ -35,8 +35,74 @@ interface UserDesign {
   inspiration_image_urls: string[] | null;
   status: string;
   created_at: string;
+  updated_at: string;
   user_id: string;
+  custom_inquiry_id: string | null;
 }
+
+// Customer-facing status labels (does NOT expose internal SLA or admin info)
+const CUSTOMER_STATUS_MAP: Record<string, { label: string; description: string; color: string }> = {
+  draft: { 
+    label: 'Draft', 
+    description: 'Design saved but not yet sent for review.',
+    color: 'bg-muted text-muted-foreground'
+  },
+  saved: { 
+    label: 'Draft', 
+    description: 'Design saved but not yet sent for review.',
+    color: 'bg-muted text-muted-foreground'
+  },
+  submitted_for_cad: { 
+    label: 'Under Review', 
+    description: 'Your design is being reviewed by our team.',
+    color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+  },
+  new: { 
+    label: 'Under Review', 
+    description: 'Your design is being reviewed by our team.',
+    color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+  },
+  reviewed: { 
+    label: 'Quote Pending', 
+    description: 'We\'re preparing a quote for your design.',
+    color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+  },
+  quoted: { 
+    label: 'Quote Ready', 
+    description: 'Your quote is ready for review.',
+    color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+  },
+  approved: { 
+    label: 'Approved', 
+    description: 'Your design has been approved and is queued for CAD.',
+    color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+  },
+  in_cad: { 
+    label: 'In Progress', 
+    description: 'Our CAD team is working on your design.',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+  },
+  cad_complete: { 
+    label: 'Final Review', 
+    description: 'CAD work is complete. Awaiting final approval.',
+    color: 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400'
+  },
+  production_ready: { 
+    label: 'In Production', 
+    description: 'Your piece is being crafted by our master jewelers.',
+    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+  },
+  completed: { 
+    label: 'Complete', 
+    description: 'Your custom piece is ready!',
+    color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+  },
+  declined: { 
+    label: 'Closed', 
+    description: 'This inquiry has been closed.',
+    color: 'bg-gray-100 text-gray-600 dark:bg-gray-800/30 dark:text-gray-400'
+  },
+};
 
 const DesignDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -193,33 +259,15 @@ const DesignDetail = () => {
   };
 
   const getStatusLabel = (status: string) => {
-    const statusMap: Record<string, string> = {
-      draft: 'Draft',
-      saved: 'Draft',
-      submitted_for_cad: 'Sent to Designer',
-      in_cad: 'In CAD',
-      quoted: 'Quoted',
-      completed: 'Completed'
-    };
-    return statusMap[status] || status;
+    return CUSTOMER_STATUS_MAP[status]?.label || status;
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'draft':
-      case 'saved':
-        return 'bg-luxury-champagne/20 text-luxury-text';
-      case 'submitted_for_cad':
-        return 'bg-blue-100 text-blue-700';
-      case 'in_cad':
-        return 'bg-amber-100 text-amber-700';
-      case 'quoted':
-        return 'bg-purple-100 text-purple-700';
-      case 'completed':
-        return 'bg-green-100 text-green-700';
-      default:
-        return 'bg-gray-100 text-gray-700';
-    }
+    return CUSTOMER_STATUS_MAP[status]?.color || 'bg-gray-100 text-gray-700';
+  };
+
+  const getStatusDescription = (status: string) => {
+    return CUSTOMER_STATUS_MAP[status]?.description || '';
   };
 
   const thumbnails = [
@@ -375,9 +423,16 @@ const DesignDetail = () => {
                   )}
 
                   {design.status !== 'draft' && design.status !== 'saved' && (
-                    <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-3 rounded-lg">
-                      <FileCheck className="w-4 h-4" />
-                      <span className="text-sm font-medium">{getStatusLabel(design.status)}</span>
+                    <div className="bg-muted/30 border border-border px-4 py-3 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusColor(design.status)}`}>
+                          {getStatusLabel(design.status)}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{getStatusDescription(design.status)}</p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Last updated: {new Date(design.updated_at).toLocaleDateString()}
+                      </p>
                     </div>
                   )}
 
