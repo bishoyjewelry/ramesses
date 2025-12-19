@@ -98,7 +98,7 @@ export const Hero = () => {
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-champagne/20 rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-luxury-champagne" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">Design Custom Jewelry</h3>
+              <h2 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">Design Custom Jewelry</h2>
               <p className="text-luxury-text-muted font-body mb-5 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 From rings and pendants to full redesigns, work with an expert to bring your idea to life.
               </p>
@@ -115,7 +115,7 @@ export const Hero = () => {
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-luxury-champagne/20 rounded-full flex items-center justify-center mb-4 sm:mb-6">
                 <Gem className="w-6 h-6 sm:w-7 sm:h-7 text-luxury-champagne" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">Create Your Engagement Ring</h3>
+              <h2 className="text-xl sm:text-2xl font-serif text-luxury-text mb-3 sm:mb-4">Create Your Engagement Ring</h2>
               <p className="text-luxury-text-muted font-body mb-5 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 Personalized guidance, premium craftsmanship, and complete customization options.
               </p>
