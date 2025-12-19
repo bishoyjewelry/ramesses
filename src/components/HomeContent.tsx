@@ -18,7 +18,7 @@ export const HomeContent = () => {
   return (
     <>
       {/* ==================== SECTION 2 — CREDIBILITY BAR ==================== */}
-      <section className="py-8 bg-luxury-bg border-y border-luxury-divider">
+      <section className="py-8 bg-background border-y border-border">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
             {[
@@ -29,8 +29,8 @@ export const HomeContent = () => {
               { icon: Sparkles, text: "AI-Powered Custom Design" },
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-2">
-                <item.icon className="w-5 h-5 text-luxury-champagne" />
-                <span className="text-sm font-medium text-luxury-text">{item.text}</span>
+                <item.icon className="w-5 h-5 text-primary" />
+                <span className="text-sm font-medium text-foreground">{item.text}</span>
               </div>
             ))}
           </div>

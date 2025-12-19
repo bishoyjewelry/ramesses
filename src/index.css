@@ -9,126 +9,135 @@
 
 @layer base {
   :root {
-    /* Premium neutral palette - refined ivory base */
-    --background: 45 25% 97%;              /* Warm ivory */
-    --foreground: 220 20% 15%;             /* Rich charcoal */
+    /* ============================================
+       STANDARDIZED LUXURY COLOR SYSTEM
+       ============================================ */
+    
+    /* Core Palette */
+    --color-ivory: 40 33% 95%;             /* #F7F4EF - Background */
+    --color-charcoal: 0 0% 12%;            /* #1F1F1F - Primary Text */
+    --color-muted-gray: 0 0% 44%;          /* #6F6F6F - Secondary Text */
+    --color-gold: 36 52% 54%;              /* #C79A4B - Accent / Primary CTA */
+    --color-gold-hover: 36 48% 44%;        /* Darker gold for hover */
+    --color-stone: 38 18% 87%;             /* #E5E1DA - Borders / Dividers */
+    --color-white: 0 0% 100%;              /* Pure white for cards */
+    
+    /* Semantic Mappings */
+    --background: var(--color-ivory);
+    --foreground: var(--color-charcoal);
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    --card: var(--color-white);
+    --card-foreground: var(--color-charcoal);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover: var(--color-white);
+    --popover-foreground: var(--color-charcoal);
 
-    /* Restrained accent - refined warm gold */
-    --primary: 32 45% 42%;                 /* Warm antique gold */
-    --primary-foreground: 0 0% 100%;
+    --primary: var(--color-gold);
+    --primary-foreground: var(--color-white);
 
-    --secondary: 45 18% 95%;               /* Soft warm cream */
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 40 25% 93%;               /* Slightly darker ivory */
+    --secondary-foreground: var(--color-charcoal);
 
-    --muted: 45 12% 93%;                   /* Light warm gray */
-    --muted-foreground: 220 10% 40%;       /* Readable muted text */
+    --muted: 40 20% 92%;
+    --muted-foreground: var(--color-muted-gray);
 
-    --accent: 32 45% 42%;
-    --accent-foreground: 0 0% 100%;
+    --accent: var(--color-gold);
+    --accent-foreground: var(--color-white);
 
     --destructive: 0 60% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: var(--color-white);
 
-    --border: 45 12% 85%;                  /* Soft warm divider */
-    --input: 45 12% 85%;
-    --ring: 32 45% 42%;
+    --border: var(--color-stone);
+    --input: var(--color-stone);
+    --ring: var(--color-gold);
 
-    --radius: 0.375rem;                    /* Subtle rounded corners */
+    --radius: 0.375rem;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 20% 15%;
-    --sidebar-primary: 220 20% 15%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 45 18% 95%;
-    --sidebar-accent-foreground: 220 20% 15%;
-    --sidebar-border: 45 12% 85%;
-    --sidebar-ring: 32 45% 42%;
-
-    /* ============================================
-       PALETTE 1: SERVICE CORE (Warm Neutrals)
-       For: Repairs, About, FAQ, Policies, Contact, Footer
-       ============================================ */
-    --service-bg-primary: 30 6% 15%;       /* Warm charcoal */
-    --service-bg-secondary: 35 15% 91%;    /* Light stone/taupe */
-    --service-gold: 36 55% 50%;            /* Warm gold - visible */
-    --service-gold-hover: 36 50% 42%;      /* Darker on hover */
-    --service-text-primary: 0 0% 100%;     /* Pure white */
-    --service-text-secondary: 30 8% 75%;   /* Warm light gray */
-    --service-neutral: 45 20% 97%;         /* Warm off-white */
-    --service-gold-text: 32 50% 28%;       /* Dark gold for light backgrounds */
+    /* Sidebar */
+    --sidebar-background: var(--color-white);
+    --sidebar-foreground: var(--color-charcoal);
+    --sidebar-primary: var(--color-charcoal);
+    --sidebar-primary-foreground: var(--color-white);
+    --sidebar-accent: 40 25% 93%;
+    --sidebar-accent-foreground: var(--color-charcoal);
+    --sidebar-border: var(--color-stone);
+    --sidebar-ring: var(--color-gold);
 
     /* ============================================
-       PALETTE 2: LUXURY LAB (Warm Neutrals)
-       For: Custom Lab, Marketplace, Bridal, Galleries
+       UNIFIED SERVICE & LUXURY TOKENS
+       (All warm, no navy/blue)
        ============================================ */
-    --luxury-bg-primary: 45 25% 97%;       /* Warm ivory */
-    --luxury-bg-secondary: 45 18% 95%;     /* Soft cream */
-    --luxury-champagne: 36 40% 55%;        /* Warm champagne */
-    --luxury-champagne-hover: 36 38% 45%;  /* Darker hover */
-    --luxury-divider: 45 10% 88%;          /* Subtle divider */
-    --luxury-text-primary: 220 20% 15%;    /* Rich charcoal */
-    --luxury-text-secondary: 220 10% 40%;  /* Readable body text */
+    --service-bg-primary: var(--color-ivory);
+    --service-bg-secondary: 40 25% 93%;
+    --service-gold: var(--color-gold);
+    --service-gold-hover: var(--color-gold-hover);
+    --service-text-primary: var(--color-charcoal);
+    --service-text-secondary: var(--color-muted-gray);
+    --service-neutral: var(--color-ivory);
+    --service-gold-text: 36 45% 35%;
 
-    /* Legacy tokens (for compatibility) */
-    --luxury-gold: 36 55% 50%;
-    --luxury-gold-light: 36 40% 55%;
-    --luxury-dark: 30 6% 15%;              /* Warm charcoal (was navy) */
-    --luxury-charcoal: 30 8% 20%;          /* Slightly lighter warm charcoal */
-    --luxury-cream: 45 18% 95%;
-    --luxury-warm: 45 18% 95%;
+    --luxury-bg-primary: var(--color-ivory);
+    --luxury-bg-secondary: 40 25% 93%;
+    --luxury-champagne: var(--color-gold);
+    --luxury-champagne-hover: var(--color-gold-hover);
+    --luxury-divider: var(--color-stone);
+    --luxury-text-primary: var(--color-charcoal);
+    --luxury-text-secondary: var(--color-muted-gray);
+
+    /* Legacy tokens (mapped to new system) */
+    --luxury-gold: var(--color-gold);
+    --luxury-gold-light: 36 45% 60%;
+    --luxury-dark: var(--color-charcoal);
+    --luxury-charcoal: var(--color-charcoal);
+    --luxury-cream: 40 25% 93%;
+    --luxury-warm: 40 25% 93%;
     
     /* Shadows - refined */
-    --shadow-luxury: 0 4px 24px -6px hsl(220 20% 15% / 0.1);
-    --shadow-soft: 0 2px 12px -2px hsl(220 20% 15% / 0.06);
-    --shadow-service: 0 4px 20px -4px hsl(220 30% 10% / 0.15);
+    --shadow-luxury: 0 4px 24px -6px hsl(var(--color-charcoal) / 0.08);
+    --shadow-soft: 0 2px 12px -2px hsl(var(--color-charcoal) / 0.05);
+    --shadow-service: 0 4px 20px -4px hsl(var(--color-charcoal) / 0.1);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 220 25% 10%;
+    --background: 0 0% 10%;
     --foreground: 40 10% 96%;
 
-    --card: 220 20% 14%;
+    --card: 0 0% 14%;
     --card-foreground: 40 10% 96%;
 
-    --popover: 220 20% 14%;
+    --popover: 0 0% 14%;
     --popover-foreground: 40 10% 96%;
 
-    --primary: 30 40% 55%;
-    --primary-foreground: 220 20% 10%;
+    --primary: var(--color-gold);
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 220 18% 18%;
+    --secondary: 0 0% 18%;
     --secondary-foreground: 40 10% 96%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 8% 65%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 30 40% 55%;
-    --accent-foreground: 220 20% 10%;
+    --accent: var(--color-gold);
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 60% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 22%;
-    --input: 220 15% 22%;
-    --ring: 30 40% 55%;
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
+    --ring: var(--color-gold);
     
-    --sidebar-background: 220 25% 10%;
+    --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 40 10% 96%;
-    --sidebar-primary: 30 40% 55%;
-    --sidebar-primary-foreground: 220 20% 10%;
-    --sidebar-accent: 220 18% 18%;
+    --sidebar-primary: var(--color-gold);
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 18%;
     --sidebar-accent-foreground: 40 10% 96%;
-    --sidebar-border: 220 15% 22%;
-    --sidebar-ring: 30 40% 55%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: var(--color-gold);
   }
 }
 
@@ -228,39 +237,23 @@
    PALETTE UTILITIES
    ============================================ */
 
-/* Apply Service Core palette (dark backgrounds) */
-.palette-service {
-  --background: var(--service-bg-primary);
-  --foreground: var(--service-text-primary);
-  --muted-foreground: var(--service-text-secondary);
-  --primary: var(--service-gold);
-  --primary-foreground: var(--service-bg-primary);
-  --border: hsl(220 15% 25%);
-  --input: hsl(220 15% 25%);
-}
-
-/* Apply Luxury Lab palette (light backgrounds) */
+/* Apply unified palette (light backgrounds) */
+.palette-service,
 .palette-luxury {
-  --background: var(--luxury-bg-primary);
-  --foreground: var(--luxury-text-primary);
-  --muted-foreground: var(--luxury-text-secondary);
-  --primary: var(--luxury-champagne);
-  --border: var(--luxury-divider);
+  --background: var(--color-ivory);
+  --foreground: var(--color-charcoal);
+  --muted-foreground: var(--color-muted-gray);
+  --primary: var(--color-gold);
+  --border: var(--color-stone);
+  --input: var(--color-stone);
 }
 
-/* Service heading style */
-.service-heading {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 500;
-  color: hsl(var(--service-text-primary));
-  letter-spacing: -0.02em;
-}
-
-/* Luxury heading style */
+/* Heading styles */
+.service-heading,
 .luxury-heading {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 500;
-  color: hsl(var(--luxury-text-primary));
+  color: hsl(var(--color-charcoal));
   letter-spacing: -0.02em;
 }
 
