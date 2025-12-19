@@ -273,30 +273,45 @@ function customerStatusUpdateTemplate(data: Record<string, unknown>): { subject:
   const { customer_name, new_status, design_name, account_link } = data as unknown as StatusUpdateData & { account_link: string };
 
   const statusMessages: Record<string, { subject: string; headline: string; body: string }> = {
+    reviewed: {
+      subject: "Your design has been reviewed",
+      headline: "Design Reviewed",
+      body: "Great news! Our team has reviewed your design and we're preparing a detailed quote for you. You'll receive it shortly.",
+    },
+    quoted: {
+      subject: "Your custom jewelry quote is ready",
+      headline: "Quote Ready",
+      body: "We've prepared a quote for your custom piece. Please log into your account to review the details and approve to proceed.",
+    },
+    approved: {
+      subject: "Your design has been approved for CAD",
+      headline: "Approved for CAD",
+      body: "Thank you for approving the quote! Our CAD team will begin working on your design shortly.",
+    },
     in_cad: {
       subject: "Your design is now in CAD",
       headline: "Your Design is Being Created",
       body: "Our CAD team has started working on your design. We're translating your vision into precise technical specifications that will guide our master jewelers.",
     },
-    awaiting_client_approval: {
-      subject: "Your approval is needed",
-      headline: "Review Required",
-      body: "We've completed the initial work on your design and need your approval before proceeding to production. Please review the details in your account.",
+    cad_complete: {
+      subject: "Your CAD design is complete",
+      headline: "CAD Complete - Review Required",
+      body: "We've completed the CAD work on your design. Please log into your account to review and approve the final design before production begins.",
     },
-    in_production: {
-      subject: "Your piece is now in production",
-      headline: "Production Has Begun",
-      body: "Exciting news! Your custom piece has entered production. Our master jewelers are now handcrafting your design with care and precision.",
+    production_ready: {
+      subject: "Your piece is ready for production",
+      headline: "Production Ready",
+      body: "Your design has been finalized and is ready to begin production. Our master jewelers will start handcrafting your piece.",
     },
     completed: {
       subject: "Your custom jewelry is complete",
       headline: "Your Piece is Ready!",
       body: "Congratulations! Your custom piece has been completed. We'll be in touch shortly with shipping details and delivery information.",
     },
-    cancelled: {
-      subject: "Your order has been cancelled",
-      headline: "Order Cancelled",
-      body: "Your custom jewelry order has been cancelled. If you have any questions or would like to restart your project, please don't hesitate to reach out.",
+    declined: {
+      subject: "Your order has been closed",
+      headline: "Order Closed",
+      body: "Your custom jewelry order has been closed. If you have any questions or would like to restart your project, please don't hesitate to reach out.",
     },
   };
 
