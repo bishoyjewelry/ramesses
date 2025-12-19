@@ -1,0 +1,630 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { 
+  ArrowLeft, ArrowRight, Check, CheckCircle, Upload, 
+  CircleDot, Package, MapPin, Truck, UserPlus, LogIn, Home,
+  Camera
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+
+// Types
+type FulfillmentMethod = "mail_in" | "drop_off" | "courier";
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  jewelryType: string;
+  repairNeeded: string[];
+  notes: string;
+  fulfillmentMethod: FulfillmentMethod;
+  preferredDropoffDate: string;
+  preferredDropoffTime: string;
+  dropoffNotes: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  zip: string;
+  pickupWindow: string;
+  courierNotes: string;
+}
+
+// Jewelry type options
+const jewelryTypes = [
+  { value: "ring", label: "Ring", icon: "💍" },
+  { value: "necklace", label: "Necklace / Chain", icon: "📿" },
+  { value: "bracelet", label: "Bracelet", icon: "⌚" },
+  { value: "earrings", label: "Earrings", icon: "✨" },
+  { value: "watch", label: "Watch", icon: "⏱️" },
+  { value: "other", label: "Other", icon: "💎" },
+];
+
+// Repair type options
+const repairTypes = [
+  { value: "broken_chain", label: "Broken chain" },
+  { value: "ring_resizing", label: "Ring resizing" },
+  { value: "stone_loose", label: "Stone loose or missing" },
+  { value: "prong_repair", label: "Prong repair" },
+  { value: "clasp_repair", label: "Clasp repair" },
+  { value: "polishing", label: "Polishing / cleaning" },
+  { value: "soldering", label: "Soldering" },
+  { value: "not_sure", label: "Not sure / need expert review" },
+];
+
+// Fulfillment options
+const fulfillmentOptions = [
+  { 
+    value: "mail_in", 
+    label: "Mail-in (insured shipping)", 
+    description: "We'll send you an insured shipping label",
+    icon: Package 
+  },
+  { 
+    value: "drop_off", 
+    label: "In-person drop-off (NYC)", 
+    description: "Visit our 47th Street location",
+    icon: MapPin 
+  },
+  { 
+    value: "courier", 
+    label: "Local pickup (Manhattan / North Jersey)", 
+    description: "We'll contact you to schedule a pickup window",
+    icon: Truck 
+  },
+];
+
+export const RepairWizard = () => {
+  const { user } = useAuth();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    jewelryType: "",
+    repairNeeded: [],
+    notes: "",
+    fulfillmentMethod: "mail_in",
+    preferredDropoffDate: "",
+    preferredDropoffTime: "",
+    dropoffNotes: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    zip: "",
+    pickupWindow: "",
+    courierNotes: "",
+  });
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const totalSteps = 5;
+
+  // Navigation
+  const goNext = () => setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
+  const goBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
+
+  // Validation
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return formData.jewelryType !== "";
+      case 2:
+        return formData.repairNeeded.length > 0;
+      case 3:
+        return true; // Photos are optional
+      case 4:
+        return true; // Fulfillment method always has a default value
+      case 5:
+        return formData.name.trim() !== "" && formData.email.trim() !== "";
+      default:
+        return false;
+    }
+  };
+
+  // Handle repair type selection (multi-select)
+  const toggleRepairType = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      repairNeeded: prev.repairNeeded.includes(value)
+        ? prev.repairNeeded.filter((v) => v !== value)
+        : [...prev.repairNeeded, value],
+    }));
+  };
+
+  // Handle image upload
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      if (uploadedImages.length + files.length > 6) {
+        toast.error("Maximum 6 images allowed");
+        return;
+      }
+      setUploadedImages((prev) => [...prev, ...files]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setUploadedImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+
+    try {
+      // Convert repair types array to string for notes
+      const repairDescription = formData.repairNeeded
+        .map((r) => repairTypes.find((t) => t.value === r)?.label || r)
+        .join(", ");
+
+      const repairData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        item_type: formData.jewelryType,
+        repair_type: repairDescription,
+        description: formData.notes || repairDescription,
+        status: "pending" as const,
+        fulfillment_method: formData.fulfillmentMethod,
+        preferred_dropoff_time:
+          formData.fulfillmentMethod === "drop_off"
+            ? formData.preferredDropoffDate
+              ? `${formData.preferredDropoffDate} - ${formData.preferredDropoffTime || "Any time"}`
+              : formData.preferredDropoffTime
+            : null,
+        logistics_notes:
+          formData.fulfillmentMethod === "drop_off"
+            ? formData.dropoffNotes
+            : formData.fulfillmentMethod === "courier"
+              ? formData.courierNotes
+              : null,
+        street_address: formData.fulfillmentMethod === "courier" ? formData.streetAddress : null,
+        city: formData.fulfillmentMethod === "courier" ? formData.city : null,
+        state: formData.fulfillmentMethod === "courier" ? formData.state : null,
+        zip: formData.fulfillmentMethod === "courier" ? formData.zip : null,
+        pickup_window: formData.fulfillmentMethod === "courier" ? formData.pickupWindow : null,
+        user_id: user?.id || null,
+      };
+
+      const { data: insertedRepair, error } = await supabase
+        .from("repair_quotes")
+        .insert([repairData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Send confirmation email
+      try {
+        await supabase.functions.invoke("send-repair-status-email", {
+          body: {
+            repair_id: insertedRepair.id,
+            previous_status: null,
+            new_status: "pending",
+          },
+        });
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting repair quote:", error);
+      toast.error("Failed to submit your request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Progress indicator
+  const ProgressIndicator = () => (
+    <div className="mb-10">
+      <div className="flex items-center justify-center gap-2 mb-4">
+        {Array.from({ length: totalSteps }).map((_, i) => (
+          <div key={i} className="flex items-center">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                i + 1 < currentStep
+                  ? "bg-service-gold text-white"
+                  : i + 1 === currentStep
+                    ? "bg-service-gold text-white ring-4 ring-service-gold/20"
+                    : "bg-muted text-muted-foreground"
+              }`}
+            >
+              {i + 1 < currentStep ? <Check className="w-4 h-4" /> : i + 1}
+            </div>
+            {i < totalSteps - 1 && (
+              <div
+                className={`w-8 sm:w-12 h-0.5 mx-1 transition-all ${
+                  i + 1 < currentStep ? "bg-service-gold" : "bg-muted"
+                }`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="text-center text-sm text-muted-foreground">
+        Step {currentStep} of {totalSteps}
+      </p>
+    </div>
+  );
+
+  // Step 1: Jewelry Type
+  const Step1 = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+          What type of jewelry is it?
+        </h3>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {jewelryTypes.map((type) => (
+          <button
+            key={type.value}
+            type="button"
+            onClick={() => setFormData({ ...formData, jewelryType: type.value })}
+            className={`p-6 rounded-lg border-2 transition-all text-center ${
+              formData.jewelryType === type.value
+                ? "border-service-gold bg-service-gold/5"
+                : "border-border hover:border-service-gold/50 bg-background"
+            }`}
+          >
+            <span className="text-3xl mb-3 block">{type.icon}</span>
+            <span className="font-medium text-foreground">{type.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Step 2: Repair Type
+  const Step2 = () => {
+    const isNotSureSelected = formData.repairNeeded.includes("not_sure");
+
+    return (
+      <div className="space-y-8">
+        <div className="text-center">
+          <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+            What does it need?
+          </h3>
+          <p className="text-muted-foreground text-sm">Select all that apply</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {repairTypes.map((type) => (
+            <button
+              key={type.value}
+              type="button"
+              onClick={() => toggleRepairType(type.value)}
+              className={`p-4 rounded-lg border-2 transition-all text-left flex items-center gap-3 ${
+                formData.repairNeeded.includes(type.value)
+                  ? "border-service-gold bg-service-gold/5"
+                  : "border-border hover:border-service-gold/50 bg-background"
+              }`}
+            >
+              <div
+                className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                  formData.repairNeeded.includes(type.value)
+                    ? "border-service-gold bg-service-gold"
+                    : "border-muted-foreground/30"
+                }`}
+              >
+                {formData.repairNeeded.includes(type.value) && (
+                  <Check className="w-3 h-3 text-white" />
+                )}
+              </div>
+              <span className="font-medium text-foreground">{type.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {isNotSureSelected && (
+          <div className="p-4 bg-muted rounded-lg text-center">
+            <p className="text-muted-foreground">
+              No problem — our jeweler will review it and recommend the best repair.
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Step 3: Photo Upload
+  const Step3 = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+          Add a few photos (optional)
+        </h3>
+        <p className="text-muted-foreground text-sm">
+          Photos help us review your jewelry faster, but they're not required.
+        </p>
+      </div>
+
+      <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-service-gold/50 transition-colors">
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageUpload}
+          className="hidden"
+          id="wizard-image-upload"
+        />
+        <label htmlFor="wizard-image-upload" className="cursor-pointer block">
+          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+            <Camera className="w-8 h-8 text-muted-foreground" />
+          </div>
+          <p className="text-foreground font-medium mb-1">Tap to upload photos</p>
+          <p className="text-muted-foreground text-sm">Up to 6 images</p>
+        </label>
+      </div>
+
+      {uploadedImages.length > 0 && (
+        <div className="flex flex-wrap gap-3 justify-center">
+          {uploadedImages.map((file, index) => (
+            <div key={index} className="relative group">
+              <div className="w-20 h-20 rounded-lg overflow-hidden border border-border">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`Upload ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  // Step 4: Fulfillment Method
+  const Step4 = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+          How would you like to get your jewelry to us?
+        </h3>
+      </div>
+
+      <div className="space-y-3">
+        {fulfillmentOptions.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() =>
+              setFormData({ ...formData, fulfillmentMethod: option.value as FulfillmentMethod })
+            }
+            className={`w-full p-5 rounded-lg border-2 transition-all text-left flex items-start gap-4 ${
+              formData.fulfillmentMethod === option.value
+                ? "border-service-gold bg-service-gold/5"
+                : "border-border hover:border-service-gold/50 bg-background"
+            }`}
+          >
+            <div
+              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                formData.fulfillmentMethod === option.value
+                  ? "border-service-gold"
+                  : "border-muted-foreground/30"
+              }`}
+            >
+              {formData.fulfillmentMethod === option.value && (
+                <div className="w-2.5 h-2.5 rounded-full bg-service-gold" />
+              )}
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <option.icon className="w-5 h-5 text-service-gold" />
+                <span className="font-medium text-foreground">{option.label}</span>
+              </div>
+              <p className="text-sm text-muted-foreground">{option.description}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {formData.fulfillmentMethod === "courier" && (
+        <div className="p-4 bg-muted rounded-lg">
+          <p className="text-muted-foreground text-sm">
+            We'll contact you to schedule a pickup window after you submit your request.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  // Step 5: Contact Info
+  const Step5 = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
+          Where should we send updates?
+        </h3>
+      </div>
+
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <Label className="text-foreground font-medium">Full name *</Label>
+          <Input
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+            placeholder="Your name"
+            className="h-12"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-foreground font-medium">Email *</Label>
+          <Input
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
+            placeholder="your@email.com"
+            className="h-12"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-foreground font-medium">Phone (optional)</Label>
+          <Input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            placeholder="(555) 123-4567"
+            className="h-12"
+          />
+        </div>
+      </div>
+
+      <p className="text-center text-sm text-muted-foreground">
+        We'll review your jewelry and send a quote before any work begins.
+      </p>
+    </div>
+  );
+
+  // Success Confirmation
+  const SuccessConfirmation = () => (
+    <div className="text-center py-8">
+      <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <CheckCircle className="w-10 h-10 text-green-600" />
+      </div>
+
+      <h3 className="text-2xl font-serif font-medium text-foreground mb-3">
+        Repair request received
+      </h3>
+
+      <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
+        Our 47th Street jeweler will review your item and follow up with a quote.
+      </p>
+
+      {user ? (
+        <Link to="/my-repairs">
+          <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-8">
+            View My Repairs
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </Link>
+      ) : (
+        <div className="space-y-4">
+          <Link to="/auth?mode=signup&redirect=/my-repairs">
+            <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-6 w-full sm:w-auto">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Create an account to track this repair
+            </Button>
+          </Link>
+          <div>
+            <Link
+              to="/"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+            >
+              <Home className="w-4 h-4" />
+              Return to homepage
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // Render current step
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return <Step1 />;
+      case 2:
+        return <Step2 />;
+      case 3:
+        return <Step3 />;
+      case 4:
+        return <Step4 />;
+      case 5:
+        return <Step5 />;
+      default:
+        return null;
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <Card className="border border-border shadow-soft">
+        <CardContent className="p-8 md:p-10">
+          <SuccessConfirmation />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="border border-border shadow-soft">
+      <CardContent className="p-6 md:p-10">
+        <ProgressIndicator />
+
+        <div className="min-h-[320px]">{renderStep()}</div>
+
+        {/* Navigation buttons */}
+        <div className="flex items-center justify-between mt-10 pt-6 border-t border-border">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={goBack}
+            disabled={currentStep === 1}
+            className={currentStep === 1 ? "invisible" : ""}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+
+          {currentStep < totalSteps ? (
+            <Button
+              type="button"
+              onClick={goNext}
+              disabled={!canProceed()}
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8"
+            >
+              Next
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canProceed() || isSubmitting}
+              className="bg-service-gold text-white hover:bg-service-gold-hover px-8"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Repair Request"}
+            </Button>
+          )}
+        </div>
+
+        {/* Skip option for Step 3 */}
+        {currentStep === 3 && (
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={goNext}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Skip this step
+            </button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
