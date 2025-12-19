@@ -29,6 +29,19 @@ interface StatusUpdateData {
   inquiry_id: string;
 }
 
+// HTML escape function to prevent XSS in email templates
+function escapeHtml(str: unknown): string {
+  const s = String(str ?? '');
+  const htmlEscapes: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return s.replace(/[&<>"']/g, (char) => htmlEscapes[char]);
+}
+
 // Brand styling constants
 const BRAND_COLORS = {
   primary: "#d4af37",
@@ -96,7 +109,7 @@ function adminNewCadRequestTemplate(data: Record<string, unknown>): { subject: s
     admin_link 
   } = data;
 
-  const subject = `New CAD Request: ${design_name || 'Direct Upload'} (${customer_email})`;
+  const subject = `New CAD Request: ${escapeHtml(design_name) || 'Direct Upload'} (${escapeHtml(customer_email)})`;
   
   const content = `
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
@@ -107,15 +120,15 @@ function adminNewCadRequestTemplate(data: Record<string, unknown>): { subject: s
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 8px 0; color: ${BRAND_COLORS.muted}; font-size: 14px;">Customer:</td>
-          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px;">${customer_name} (${customer_email})</td>
+          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px;">${escapeHtml(customer_name)} (${escapeHtml(customer_email)})</td>
         </tr>
         <tr>
           <td style="padding: 8px 0; color: ${BRAND_COLORS.muted}; font-size: 14px;">Inquiry ID:</td>
-          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px; font-family: monospace;">${inquiry_id}</td>
+          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px; font-family: monospace;">${escapeHtml(inquiry_id)}</td>
         </tr>
         <tr>
           <td style="padding: 8px 0; color: ${BRAND_COLORS.muted}; font-size: 14px;">Type:</td>
-          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px;">${design_type}</td>
+          <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px;">${escapeHtml(design_type)}</td>
         </tr>
         <tr>
           <td style="padding: 8px 0; color: ${BRAND_COLORS.muted}; font-size: 14px;">Source:</td>
@@ -127,19 +140,19 @@ function adminNewCadRequestTemplate(data: Record<string, unknown>): { subject: s
     ${!is_direct_upload && design_name ? `
     <div style="margin: 0 0 24px 0;">
       <p style="color: ${BRAND_COLORS.muted}; font-size: 12px; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 1px;">Design Name</p>
-      <p style="color: ${BRAND_COLORS.text}; font-size: 16px; margin: 0; font-weight: bold;">${design_name}</p>
+      <p style="color: ${BRAND_COLORS.text}; font-size: 16px; margin: 0; font-weight: bold;">${escapeHtml(design_name)}</p>
     </div>
     ` : ''}
 
     ${design_overview ? `
     <div style="margin: 0 0 24px 0;">
       <p style="color: ${BRAND_COLORS.muted}; font-size: 12px; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 1px;">Overview</p>
-      <p style="color: ${BRAND_COLORS.text}; font-size: 14px; margin: 0; line-height: 1.5;">${design_overview}</p>
+      <p style="color: ${BRAND_COLORS.text}; font-size: 14px; margin: 0; line-height: 1.5;">${escapeHtml(design_overview)}</p>
     </div>
     ` : ''}
     
     <div style="text-align: center; margin: 32px 0;">
-      <a href="${admin_link}" 
+      <a href="${escapeHtml(admin_link)}" 
          style="display: inline-block; background-color: ${BRAND_COLORS.primary}; color: ${BRAND_COLORS.dark}; padding: 16px 40px; 
                 text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 1px;
                 text-transform: uppercase;">
@@ -159,11 +172,11 @@ function customerCadReceivedTemplate(data: Record<string, unknown>): { subject: 
   
   const content = `
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      Dear ${customer_name},
+      Dear ${escapeHtml(customer_name)},
     </p>
     
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      Thank you for submitting your ${design_name ? `"${design_name}"` : 'custom jewelry'} design for CAD review!
+      Thank you for submitting your ${design_name ? `"${escapeHtml(design_name)}"` : 'custom jewelry'} design for CAD review!
     </p>
     
     <div style="background-color: ${BRAND_COLORS.light}; border-left: 3px solid ${BRAND_COLORS.primary}; padding: 20px; margin: 24px 0;">
@@ -181,7 +194,7 @@ function customerCadReceivedTemplate(data: Record<string, unknown>): { subject: 
     </p>
     
     <div style="text-align: center; margin: 32px 0;">
-      <a href="${account_link}" 
+      <a href="${escapeHtml(account_link)}" 
          style="display: inline-block; background-color: ${BRAND_COLORS.primary}; color: ${BRAND_COLORS.dark}; padding: 16px 40px; 
                 text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 1px;
                 text-transform: uppercase;">
@@ -205,11 +218,11 @@ function customerQuoteReadyTemplate(data: Record<string, unknown>): { subject: s
   
   const content = `
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      Dear ${customer_name},
+      Dear ${escapeHtml(customer_name)},
     </p>
     
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      Great news! We've reviewed your ${design_name || 'custom jewelry'} request and are pleased to provide you with a quote.
+      Great news! We've reviewed your ${escapeHtml(design_name) || 'custom jewelry'} request and are pleased to provide you with a quote.
     </p>
     
     <!-- Quote Box -->
@@ -225,7 +238,7 @@ function customerQuoteReadyTemplate(data: Record<string, unknown>): { subject: s
     ${message ? `
     <div style="background-color: #f5f5f5; padding: 20px; border-left: 3px solid ${BRAND_COLORS.primary}; margin: 24px 0;">
       <p style="color: ${BRAND_COLORS.text}; font-size: 14px; line-height: 1.6; margin: 0; font-style: italic;">
-        "${message}"
+        "${escapeHtml(message)}"
       </p>
       <p style="color: ${BRAND_COLORS.muted}; font-size: 12px; margin: 12px 0 0 0;">
         — Your Ramessés Design Team
@@ -239,7 +252,7 @@ function customerQuoteReadyTemplate(data: Record<string, unknown>): { subject: s
     </p>
     
     <div style="text-align: center; margin: 32px 0;">
-      <a href="${account_link}" 
+      <a href="${escapeHtml(account_link)}" 
          style="display: inline-block; background-color: ${BRAND_COLORS.primary}; color: ${BRAND_COLORS.dark}; padding: 16px 40px; 
                 text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 1px;
                 text-transform: uppercase;">
@@ -290,12 +303,12 @@ function customerStatusUpdateTemplate(data: Record<string, unknown>): { subject:
   const statusInfo = statusMessages[new_status] || {
     subject: `Update on your custom jewelry order`,
     headline: "Status Update",
-    body: `Your order status has been updated to: ${new_status}`,
+    body: `Your order status has been updated to: ${escapeHtml(new_status)}`,
   };
 
   const content = `
     <p style="color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-      Dear ${customer_name},
+      Dear ${escapeHtml(customer_name)},
     </p>
     
     <h2 style="color: ${BRAND_COLORS.dark}; font-size: 24px; margin: 0 0 16px 0; font-weight: normal;">
@@ -304,7 +317,7 @@ function customerStatusUpdateTemplate(data: Record<string, unknown>): { subject:
     
     ${design_name ? `
     <p style="color: ${BRAND_COLORS.muted}; font-size: 14px; margin: 0 0 24px 0;">
-      Design: <strong style="color: ${BRAND_COLORS.text};">${design_name}</strong>
+      Design: <strong style="color: ${BRAND_COLORS.text};">${escapeHtml(design_name)}</strong>
     </p>
     ` : ''}
     
@@ -313,7 +326,7 @@ function customerStatusUpdateTemplate(data: Record<string, unknown>): { subject:
     </p>
     
     <div style="text-align: center; margin: 32px 0;">
-      <a href="${account_link}" 
+      <a href="${escapeHtml(account_link)}" 
          style="display: inline-block; background-color: ${BRAND_COLORS.primary}; color: ${BRAND_COLORS.dark}; padding: 16px 40px; 
                 text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 1px;
                 text-transform: uppercase;">
