@@ -15,9 +15,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, 
-  Palette, FileCheck, Package, Loader2, Wand2, ImagePlus
+  Palette, FileCheck, Package, Loader2, Wand2, ImagePlus, HelpCircle, Camera
 } from "lucide-react";
-import { SimpleSelect } from "@/components/SimpleSelect";
 
 type DesignFlow = "general" | "engagement" | null;
 
@@ -48,6 +47,43 @@ interface Concept {
     top: string;
   };
 }
+
+// Visual selection options
+const jewelryTypeOptions = [
+  { value: "ring", label: "Ring", icon: "💍" },
+  { value: "pendant", label: "Pendant", icon: "📿" },
+  { value: "chain", label: "Chain", icon: "⛓️" },
+  { value: "bracelet", label: "Bracelet", icon: "⌚" },
+  { value: "earrings", label: "Earrings", icon: "✨" },
+  { value: "redesign", label: "Redesign / Heirloom", icon: "♻️" },
+];
+
+const ringStyleOptions = [
+  { value: "solitaire", label: "Solitaire", description: "Classic & timeless" },
+  { value: "halo", label: "Halo", description: "Extra sparkle" },
+  { value: "hidden-halo", label: "Hidden Halo", description: "Subtle brilliance" },
+  { value: "three-stone", label: "Three-Stone", description: "Symbolic trio" },
+  { value: "pave", label: "Pavé", description: "Diamond-encrusted" },
+  { value: "other", label: "Other / Unsure", description: "Open to ideas" },
+];
+
+const stoneShapeOptions = [
+  { value: "round", label: "Round", icon: "⚪" },
+  { value: "oval", label: "Oval", icon: "⬭" },
+  { value: "emerald", label: "Emerald", icon: "▭" },
+  { value: "cushion", label: "Cushion", icon: "⬜" },
+  { value: "pear", label: "Pear", icon: "💧" },
+  { value: "radiant", label: "Radiant", icon: "◇" },
+  { value: "marquise", label: "Marquise", icon: "◆" },
+];
+
+const metalOptions = [
+  { value: "14k-yellow", label: "Yellow Gold", color: "#FFD700" },
+  { value: "14k-white", label: "White Gold", color: "#E8E8E8" },
+  { value: "14k-rose", label: "Rose Gold", color: "#E8B4B8" },
+  { value: "platinum", label: "Platinum", color: "#D4D4D4" },
+  { value: "not-sure", label: "Not Sure", color: null },
+];
 
 const Custom = () => {
   const { user } = useAuth();
@@ -99,6 +135,7 @@ const Custom = () => {
   const [generalForm, setGeneralForm] = useState({
     pieceType: "",
     metal: "",
+    style: "",
     stonePreferences: "",
     budget: "",
     description: "",
@@ -107,6 +144,7 @@ const Custom = () => {
   // Engagement ring form state
   const [engagementForm, setEngagementForm] = useState({
     style: styleParam || "",
+    stoneShape: "",
     centerStoneType: "",
     centerStoneSize: "",
     metal: "",
@@ -426,208 +464,233 @@ const Custom = () => {
       {/* FORM SECTION */}
       <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             {activeFlow ? (
               <Card className="border border-luxury-divider shadow-luxury rounded-xl sm:rounded-2xl bg-white">
                 <CardContent className="p-5 sm:p-8 md:p-10">
-                  <div className="text-center mb-6 sm:mb-8">
+                  <div className="text-center mb-8">
                     <h2 className="text-xl sm:text-2xl font-serif text-luxury-text mb-2">
                       {activeFlow === 'engagement' ? 'Design Your Engagement Ring' : 'Design Your Custom Piece'}
                     </h2>
-                    <p className="text-luxury-text-muted text-sm sm:text-base">Fill out the details and we'll generate AI concepts instantly.</p>
+                    <p className="text-luxury-text-muted text-sm sm:text-base">Select your preferences below.</p>
                   </div>
                   
-                  <form onSubmit={(e) => { e.preventDefault(); handleGenerateConcepts(); }} className="space-y-5 sm:space-y-6">
+                  <form onSubmit={(e) => { e.preventDefault(); handleGenerateConcepts(); }} className="space-y-8">
                     {activeFlow === "general" ? (
                       <>
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Jewelry Type</Label>
-                          <SimpleSelect
-                            value={generalForm.pieceType}
-                            onValueChange={(value) => setGeneralForm({...generalForm, pieceType: value})}
-                            placeholder="Select jewelry type"
-                            options={[
-                              { value: "ring", label: "Ring" },
-                              { value: "pendant", label: "Pendant" },
-                              { value: "chain", label: "Chain" },
-                              { value: "bracelet", label: "Bracelet" },
-                              { value: "earrings", label: "Earrings" },
-                              { value: "redesign", label: "Redesign / Heirloom" },
-                              { value: "other", label: "Other" },
-                            ]}
-                          />
+                        {/* Step 1: Jewelry Type - Card Grid */}
+                        <div className="space-y-4">
+                          <Label className="text-base font-medium text-luxury-text block">What are you designing?</Label>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {jewelryTypeOptions.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => setGeneralForm({...generalForm, pieceType: option.value})}
+                                className={`p-4 rounded-xl border-2 transition-all text-center ${
+                                  generalForm.pieceType === option.value
+                                    ? "border-luxury-champagne bg-luxury-champagne/10"
+                                    : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                }`}
+                              >
+                                <span className="text-2xl mb-2 block">{option.icon}</span>
+                                <span className="text-sm font-medium text-luxury-text">{option.label}</span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Metal Preference</Label>
-                          <SimpleSelect
-                            value={generalForm.metal}
-                            onValueChange={(value) => setGeneralForm({...generalForm, metal: value})}
-                            placeholder="Select metal"
-                            options={[
-                              { value: "14k-yellow", label: "14k Yellow Gold" },
-                              { value: "14k-white", label: "14k White Gold" },
-                              { value: "14k-rose", label: "14k Rose Gold" },
-                              { value: "18k", label: "18k Gold" },
-                              { value: "platinum", label: "Platinum" },
-                              { value: "silver", label: "Silver" },
-                              { value: "not-sure", label: "Not Sure Yet" },
-                            ]}
-                          />
-                        </div>
+                        {/* Step 2: Metal Selection - Card Grid */}
+                        {generalForm.pieceType && (
+                          <div className="space-y-4">
+                            <Label className="text-base font-medium text-luxury-text block">Metal preference</Label>
+                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                              {metalOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => setGeneralForm({...generalForm, metal: option.value})}
+                                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                                    generalForm.metal === option.value
+                                      ? "border-luxury-champagne bg-luxury-champagne/10"
+                                      : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                  }`}
+                                >
+                                  {option.color ? (
+                                    <div 
+                                      className="w-8 h-8 rounded-full mx-auto mb-2 border border-luxury-divider"
+                                      style={{ backgroundColor: option.color }}
+                                    />
+                                  ) : (
+                                    <HelpCircle className="w-8 h-8 mx-auto mb-2 text-luxury-text-muted" />
+                                  )}
+                                  <span className="text-xs font-medium text-luxury-text">{option.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Stone Preferences (optional)</Label>
-                          <Textarea
-                            value={generalForm.stonePreferences}
-                            onChange={(e) => setGeneralForm({...generalForm, stonePreferences: e.target.value})}
-                            placeholder="E.g., Diamond center stone, sapphire accents, no stones..."
-                            rows={2}
-                            className="border-luxury-divider focus:border-luxury-champagne bg-white rounded-lg font-body"
-                          />
-                        </div>
+                        {/* Step 3: Style (Optional) */}
+                        {generalForm.metal && (
+                          <div className="space-y-4">
+                            <Label className="text-base font-medium text-luxury-text block">Choose a style (optional)</Label>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                              {[
+                                { value: "classic", label: "Classic", icon: "✨" },
+                                { value: "modern", label: "Modern", icon: "◇" },
+                                { value: "vintage", label: "Vintage", icon: "🕰️" },
+                                { value: "minimalist", label: "Minimalist", icon: "○" },
+                                { value: "bold", label: "Bold", icon: "💎" },
+                                { value: "delicate", label: "Delicate", icon: "🌸" },
+                                { value: "surprise", label: "Surprise Me", icon: "🎁" },
+                              ].map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => setGeneralForm({...generalForm, style: option.value})}
+                                  className={`p-3 rounded-xl border-2 transition-all text-center ${
+                                    generalForm.style === option.value
+                                      ? "border-luxury-champagne bg-luxury-champagne/10"
+                                      : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                  }`}
+                                >
+                                  <span className="text-lg mb-1 block">{option.icon}</span>
+                                  <span className="text-xs font-medium text-luxury-text">{option.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Budget Range</Label>
-                          <SimpleSelect
-                            value={generalForm.budget}
-                            onValueChange={(value) => setGeneralForm({...generalForm, budget: value})}
-                            placeholder="Select budget range"
-                            options={[
-                              { value: "500-1000", label: "$500 – $1,000" },
-                              { value: "1000-2500", label: "$1,000 – $2,500" },
-                              { value: "2500-5000", label: "$2,500 – $5,000" },
-                              { value: "5000-10000", label: "$5,000 – $10,000" },
-                              { value: "10000+", label: "$10,000+" },
-                            ]}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Project Description</Label>
-                          <Textarea
-                            value={generalForm.description}
-                            onChange={(e) => setGeneralForm({...generalForm, description: e.target.value})}
-                            placeholder="Tell us about your vision — style, details, occasion, or any specific requirements..."
-                            rows={4}
-                            className="border-luxury-divider focus:border-luxury-champagne resize-none bg-white rounded-lg font-body"
-                            required
-                          />
-                        </div>
+                        {/* Step 4: Description */}
+                        {generalForm.metal && (
+                          <div className="space-y-2">
+                            <Label className="text-base font-medium text-luxury-text">Describe your vision</Label>
+                            <Textarea
+                              value={generalForm.description}
+                              onChange={(e) => setGeneralForm({...generalForm, description: e.target.value})}
+                              placeholder="Tell us about your vision — style, details, occasion, or any specific requirements..."
+                              rows={3}
+                              className="border-luxury-divider focus:border-luxury-champagne resize-none bg-white rounded-lg font-body"
+                            />
+                          </div>
+                        )}
                       </>
                     ) : (
                       <>
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Ring Style</Label>
-                          <SimpleSelect
-                            value={engagementForm.style}
-                            onValueChange={(value) => setEngagementForm({...engagementForm, style: value})}
-                            placeholder="Select ring style"
-                            options={[
-                              { value: "solitaire", label: "Solitaire" },
-                              { value: "hidden-halo", label: "Hidden Halo" },
-                              { value: "halo", label: "Halo" },
-                              { value: "three-stone", label: "Three-Stone" },
-                              { value: "pave", label: "Pavé" },
-                              { value: "vintage", label: "Vintage" },
-                              { value: "other", label: "Other / Custom" },
-                            ]}
-                          />
+                        {/* Engagement Ring Flow */}
+                        
+                        {/* Step 1: Ring Style - Visual Cards */}
+                        <div className="space-y-4">
+                          <Label className="text-base font-medium text-luxury-text block">Choose a ring style</Label>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {ringStyleOptions.map((option) => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => setEngagementForm({...engagementForm, style: option.value})}
+                                className={`p-4 rounded-xl border-2 transition-all text-left ${
+                                  engagementForm.style === option.value
+                                    ? "border-luxury-champagne bg-luxury-champagne/10"
+                                    : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                }`}
+                              >
+                                <span className="text-sm font-semibold text-luxury-text block mb-1">{option.label}</span>
+                                <span className="text-xs text-luxury-text-muted">{option.description}</span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Center Stone Type</Label>
-                          <SimpleSelect
-                            value={engagementForm.centerStoneType}
-                            onValueChange={(value) => setEngagementForm({...engagementForm, centerStoneType: value})}
-                            placeholder="Select stone type"
-                            options={[
-                              { value: "natural-diamond", label: "Natural Diamond" },
-                              { value: "lab-diamond", label: "Lab-Grown Diamond" },
-                              { value: "moissanite", label: "Moissanite" },
-                              { value: "sapphire", label: "Sapphire" },
-                              { value: "emerald", label: "Emerald" },
-                              { value: "ruby", label: "Ruby" },
-                              { value: "other", label: "Other Gemstone" },
-                            ]}
-                          />
-                        </div>
+                        {/* Step 2: Stone Shape - Visual Cards */}
+                        {engagementForm.style && (
+                          <div className="space-y-4">
+                            <Label className="text-base font-medium text-luxury-text block">Choose stone shape</Label>
+                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                              {stoneShapeOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => setEngagementForm({...engagementForm, stoneShape: option.value})}
+                                  className={`p-3 rounded-xl border-2 transition-all text-center ${
+                                    engagementForm.stoneShape === option.value
+                                      ? "border-luxury-champagne bg-luxury-champagne/10"
+                                      : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                  }`}
+                                >
+                                  <span className="text-xl mb-1 block">{option.icon}</span>
+                                  <span className="text-xs font-medium text-luxury-text">{option.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Approximate Size</Label>
-                          <SimpleSelect
-                            value={engagementForm.centerStoneSize}
-                            onValueChange={(value) => setEngagementForm({...engagementForm, centerStoneSize: value})}
-                            placeholder="Select approximate size"
-                            options={[
-                              { value: "0.5-0.75", label: "0.5 – 0.75 carat" },
-                              { value: "0.75-1.0", label: "0.75 – 1.0 carat" },
-                              { value: "1.0-1.5", label: "1.0 – 1.5 carat" },
-                              { value: "1.5-2.0", label: "1.5 – 2.0 carat" },
-                              { value: "2.0-3.0", label: "2.0 – 3.0 carat" },
-                              { value: "3.0+", label: "3.0+ carat" },
-                            ]}
-                          />
-                        </div>
+                        {/* Step 3: Metal Selection - Card Grid */}
+                        {engagementForm.stoneShape && (
+                          <div className="space-y-4">
+                            <Label className="text-base font-medium text-luxury-text block">Metal preference</Label>
+                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                              {metalOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => setEngagementForm({...engagementForm, metal: option.value})}
+                                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                                    engagementForm.metal === option.value
+                                      ? "border-luxury-champagne bg-luxury-champagne/10"
+                                      : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
+                                  }`}
+                                >
+                                  {option.color ? (
+                                    <div 
+                                      className="w-8 h-8 rounded-full mx-auto mb-2 border border-luxury-divider"
+                                      style={{ backgroundColor: option.color }}
+                                    />
+                                  ) : (
+                                    <HelpCircle className="w-8 h-8 mx-auto mb-2 text-luxury-text-muted" />
+                                  )}
+                                  <span className="text-xs font-medium text-luxury-text">{option.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Metal Preference</Label>
-                          <SimpleSelect
-                            value={engagementForm.metal}
-                            onValueChange={(value) => setEngagementForm({...engagementForm, metal: value})}
-                            placeholder="Select metal"
-                            options={[
-                              { value: "14k-yellow", label: "14k Yellow Gold" },
-                              { value: "14k-white", label: "14k White Gold" },
-                              { value: "14k-rose", label: "14k Rose Gold" },
-                              { value: "18k", label: "18k Gold" },
-                              { value: "platinum", label: "Platinum" },
-                            ]}
-                          />
-                        </div>
+                        {/* Step 4: Ring Size */}
+                        {engagementForm.metal && (
+                          <div className="space-y-2">
+                            <Label className="text-base font-medium text-luxury-text">Ring size (optional)</Label>
+                            <Input
+                              value={engagementForm.ringSize}
+                              onChange={(e) => setEngagementForm({...engagementForm, ringSize: e.target.value})}
+                              placeholder="E.g., 6, 7.5, or leave blank if unsure"
+                              className="border-luxury-divider focus:border-luxury-champagne bg-white rounded-lg font-body"
+                            />
+                          </div>
+                        )}
                         
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Ring Size (if known)</Label>
-                          <Input
-                            value={engagementForm.ringSize}
-                            onChange={(e) => setEngagementForm({...engagementForm, ringSize: e.target.value})}
-                            placeholder="E.g., 6, 7.5, or 'not sure yet'"
-                            className="border-luxury-divider focus:border-luxury-champagne bg-white rounded-lg font-body"
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Budget Range</Label>
-                          <SimpleSelect
-                            value={engagementForm.budget}
-                            onValueChange={(value) => setEngagementForm({...engagementForm, budget: value})}
-                            placeholder="Select budget range"
-                            options={[
-                              { value: "1000-2500", label: "$1,000 – $2,500" },
-                              { value: "2500-5000", label: "$2,500 – $5,000" },
-                              { value: "5000-10000", label: "$5,000 – $10,000" },
-                              { value: "10000-20000", label: "$10,000 – $20,000" },
-                              { value: "20000+", label: "$20,000+" },
-                            ]}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-luxury-text">Special Requests (optional)</Label>
-                          <Textarea
-                            value={engagementForm.specialRequests}
-                            onChange={(e) => setEngagementForm({...engagementForm, specialRequests: e.target.value})}
-                            placeholder="E.g., hidden diamond detail, custom engraving, timeline needs..."
-                            rows={3}
-                            className="border-luxury-divider focus:border-luxury-champagne bg-white rounded-lg font-body"
-                          />
-                        </div>
+                        {/* Step 5: Special Requests */}
+                        {engagementForm.metal && (
+                          <div className="space-y-2">
+                            <Label className="text-base font-medium text-luxury-text">Special requests (optional)</Label>
+                            <Textarea
+                              value={engagementForm.specialRequests}
+                              onChange={(e) => setEngagementForm({...engagementForm, specialRequests: e.target.value})}
+                              placeholder="E.g., hidden diamond detail, custom engraving, timeline needs..."
+                              rows={2}
+                              className="border-luxury-divider focus:border-luxury-champagne bg-white rounded-lg font-body"
+                            />
+                          </div>
+                        )}
                       </>
                     )}
                     
                     {/* Image Upload */}
                     <div className="space-y-3">
-                      <Label className="text-sm font-medium text-luxury-text">Inspiration Images (optional, up to 6)</Label>
+                      <Label className="text-base font-medium text-luxury-text">Have inspiration? (Optional)</Label>
+                      <p className="text-sm text-luxury-text-muted -mt-1">Upload photos if you have them — or skip this step.</p>
                       <div className="border-2 border-dashed border-luxury-divider rounded-xl p-6 text-center hover:border-luxury-champagne/50 transition-colors bg-luxury-bg/50">
                         <input
                           type="file"
@@ -638,8 +701,8 @@ const Custom = () => {
                           id="image-upload"
                         />
                         <label htmlFor="image-upload" className="cursor-pointer">
-                          <Upload className="w-8 h-8 text-luxury-text-muted mx-auto mb-2" />
-                          <p className="text-sm text-luxury-text-muted font-body">Click to upload inspiration photos</p>
+                          <Camera className="w-8 h-8 text-luxury-text-muted mx-auto mb-2" />
+                          <p className="text-sm text-luxury-text-muted font-body">Tap to upload photos</p>
                         </label>
                       </div>
                       
@@ -932,18 +995,28 @@ const Custom = () => {
             
             <div className="space-y-2">
               <Label className="text-sm font-medium">Metal Preference</Label>
-              <SimpleSelect
-                value={directUploadForm.metal}
-                onValueChange={(value) => setDirectUploadForm({...directUploadForm, metal: value})}
-                placeholder="Select metal"
-                options={[
-                  { value: "14k-yellow", label: "14k Yellow Gold" },
-                  { value: "14k-white", label: "14k White Gold" },
-                  { value: "14k-rose", label: "14k Rose Gold" },
-                  { value: "18k", label: "18k Gold" },
-                  { value: "platinum", label: "Platinum" },
-                ]}
-              />
+              <div className="grid grid-cols-5 gap-2">
+                {metalOptions.slice(0, -1).map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setDirectUploadForm({...directUploadForm, metal: option.value})}
+                    className={`p-2 rounded-lg border-2 transition-all text-center ${
+                      directUploadForm.metal === option.value
+                        ? "border-luxury-champagne bg-luxury-champagne/10"
+                        : "border-luxury-divider hover:border-luxury-champagne/50"
+                    }`}
+                  >
+                    {option.color && (
+                      <div 
+                        className="w-6 h-6 rounded-full mx-auto mb-1 border border-luxury-divider"
+                        style={{ backgroundColor: option.color }}
+                      />
+                    )}
+                    <span className="text-xs text-luxury-text">{option.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div className="space-y-2">
@@ -958,17 +1031,27 @@ const Custom = () => {
             
             <div className="space-y-2">
               <Label className="text-sm font-medium">Budget Range</Label>
-              <SimpleSelect
-                value={directUploadForm.budget}
-                onValueChange={(value) => setDirectUploadForm({...directUploadForm, budget: value})}
-                placeholder="Select budget"
-                options={[
-                  { value: "1000-2500", label: "$1,000 – $2,500" },
-                  { value: "2500-5000", label: "$2,500 – $5,000" },
-                  { value: "5000-10000", label: "$5,000 – $10,000" },
-                  { value: "10000+", label: "$10,000+" },
-                ]}
-              />
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { value: "1000-2500", label: "$1K–$2.5K" },
+                  { value: "2500-5000", label: "$2.5K–$5K" },
+                  { value: "5000-10000", label: "$5K–$10K" },
+                  { value: "10000+", label: "$10K+" },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setDirectUploadForm({...directUploadForm, budget: option.value})}
+                    className={`p-2 rounded-lg border-2 transition-all text-center text-sm ${
+                      directUploadForm.budget === option.value
+                        ? "border-luxury-champagne bg-luxury-champagne/10 text-luxury-text"
+                        : "border-luxury-divider hover:border-luxury-champagne/50 text-luxury-text-muted"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div className="space-y-2">
