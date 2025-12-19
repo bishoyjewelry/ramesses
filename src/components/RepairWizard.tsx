@@ -79,26 +79,41 @@ const fulfillmentOptions = [
   },
 ];
 
-export const RepairWizard = () => {
+interface RepairWizardProps {
+  preselectedRepair?: string | null;
+  notSureMode?: boolean;
+}
+
+export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardProps) => {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    jewelryType: "",
-    repairNeeded: [],
-    notes: "",
-    fulfillmentMethod: "mail_in",
-    preferredDropoffDate: "",
-    preferredDropoffTime: "",
-    dropoffNotes: "",
-    streetAddress: "",
-    city: "",
-    state: "",
-    zip: "",
-    pickupWindow: "",
-    courierNotes: "",
+  const [formData, setFormData] = useState<FormData>(() => {
+    // Initialize with preselected repair if provided
+    const initialRepairs: string[] = [];
+    if (preselectedRepair) {
+      initialRepairs.push(preselectedRepair);
+    } else if (notSureMode) {
+      initialRepairs.push("not_sure");
+    }
+    
+    return {
+      name: "",
+      email: "",
+      phone: "",
+      jewelryType: "",
+      repairNeeded: initialRepairs,
+      notes: "",
+      fulfillmentMethod: "mail_in",
+      preferredDropoffDate: "",
+      preferredDropoffTime: "",
+      dropoffNotes: "",
+      streetAddress: "",
+      city: "",
+      state: "",
+      zip: "",
+      pickupWindow: "",
+      courierNotes: "",
+    };
   });
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
