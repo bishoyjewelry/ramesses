@@ -340,8 +340,11 @@ export default function EngagementRings() {
               Design Your Engagement Ring — <span className="text-luxury-champagne">Instantly</span>
             </h1>
             
-            <p className="text-lg text-luxury-text-muted mb-8 max-w-2xl mx-auto">
-              Create custom engagement ring concepts in seconds, guided by our 47th Street master jewelers.
+            <p className="text-lg text-luxury-text-muted mb-4 max-w-2xl mx-auto">
+              Start with rough ideas — we'll help you refine them. No design experience needed.
+            </p>
+            <p className="text-sm text-luxury-text-muted/70 mb-8 max-w-xl mx-auto">
+              Every design you generate is saved to your account. Come back anytime to continue.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -516,11 +519,14 @@ export default function EngagementRings() {
             <div className="bg-white rounded-2xl p-8 border border-luxury-divider shadow-luxury">
               <Sparkles className="w-12 h-12 text-luxury-champagne mx-auto mb-4" />
               <h2 className="text-2xl font-serif text-luxury-text mb-2">Ready to See Your Ring?</h2>
-              <p className="text-luxury-text-muted mb-6">
+              <p className="text-luxury-text-muted mb-2">
                 {canGenerate 
-                  ? "Click below to generate personalized engagement ring concepts based on your selections."
+                  ? "We'll generate a few concepts based on your choices. Not sure about something? That's okay — pick what feels right and we'll refine from there."
                   : "Complete the selections above to generate your custom ring concepts."
                 }
+              </p>
+              <p className="text-xs text-luxury-text-muted/70 mb-6">
+                You're not committing to anything. Explore freely.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -566,9 +572,13 @@ export default function EngagementRings() {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-8">
                 <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Ring Concepts</h2>
-                <p className="text-luxury-text-muted">
-                  Saved designs are available in{" "}
+                <p className="text-luxury-text-muted mb-1">
+                  Like one? Save it to refine later. Want changes? Let us know — nothing is final until you say so.
+                </p>
+                <p className="text-sm text-luxury-text-muted/70">
+                  All designs are saved to{" "}
                   <Link to="/my-designs" className="text-luxury-champagne underline">My Designs</Link>
+                  {" "}— revisit anytime.
                 </p>
               </div>
               
@@ -594,17 +604,21 @@ export default function EngagementRings() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Already Have a Design?</h2>
-              <p className="text-luxury-text-muted">
-                Skip AI generation and send your design directly to our master jeweler.
+              <p className="text-luxury-text-muted mb-1">
+                Send photos or sketches directly to our jeweler — no AI step needed.
+              </p>
+              <p className="text-sm text-luxury-text-muted/70">
+                We'll review and follow up within 24 hours.
               </p>
             </div>
             
             <div className="bg-white rounded-2xl p-6 sm:p-8 border border-luxury-divider shadow-luxury">
               {/* Image Upload */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-luxury-text mb-2">
+                <label className="block text-sm font-medium text-luxury-text mb-1">
                   Upload Design or Inspiration Images
                 </label>
+                <p className="text-xs text-luxury-text-muted mb-2">Pinterest screenshots, sketches, or photos of rings you like — anything helps.</p>
                 <div className="border-2 border-dashed border-luxury-divider rounded-xl p-6 text-center hover:border-luxury-champagne/50 transition-colors">
                   <input
                     type="file"
