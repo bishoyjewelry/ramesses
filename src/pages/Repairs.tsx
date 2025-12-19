@@ -504,20 +504,76 @@ const Repairs = () => {
               <span className="text-service-gold">47th Street Craftsmanship</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-service-text-muted mb-10 max-w-3xl mx-auto leading-relaxed font-body">
+            <p className="text-lg md:text-xl text-service-text-muted mb-16 max-w-3xl mx-auto leading-relaxed font-body">
               Ship your jewelry to our NYC workshop for expert repair, restoration, and polishing. Every piece is fully documented, insured, and handled by a master jeweler.
             </p>
+          </div>
+          
+          {/* Embedded How It Works - 3 Steps */}
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-serif font-medium text-white mb-3">
+                How Our Mail-In Jewelry Repair Works
+              </h2>
+              <p className="text-service-text-muted font-body">
+                Simple, insured, and handled by our 47th Street master jeweler.
+              </p>
+            </div>
             
-            <Button 
-              onClick={scrollToForm}
-              className="bg-service-gold text-white hover:bg-service-gold-hover px-10 py-6 text-lg font-semibold rounded"
-            >
-              Start Your Repair
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12 mb-12">
+              {/* Step 1 */}
+              <div className="text-center">
+                <div className="w-14 h-14 bg-service-gold/15 border border-service-gold/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                  <FileText className="w-6 h-6 text-service-gold" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-3">Start Your Repair</h3>
+                <p className="text-service-text-muted font-body text-sm leading-relaxed">
+                  Tell us about your jewelry and upload a few photos. If you're not sure what repair you need, that's okay — we'll review it for you.
+                </p>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="text-center">
+                <div className="w-14 h-14 bg-service-gold/15 border border-service-gold/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                  <Package className="w-6 h-6 text-service-gold" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-3">Ship or Drop Off</h3>
+                <p className="text-service-text-muted font-body text-sm leading-relaxed">
+                  Mail your piece using insured shipping, drop it off in person, or schedule local pickup in Manhattan or North Jersey.
+                </p>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="text-center">
+                <div className="w-14 h-14 bg-service-gold/15 border border-service-gold/30 rounded-full flex items-center justify-center mx-auto mb-5">
+                  <CheckCircle className="w-6 h-6 text-service-gold" />
+                </div>
+                <h3 className="text-lg font-medium text-white mb-3">Repair & Return</h3>
+                <p className="text-service-text-muted font-body text-sm leading-relaxed">
+                  Our 47th Street jeweler completes the repair. You approve the quote before work begins, and we ship it safely back to you.
+                </p>
+              </div>
+            </div>
+            
+            {/* CTA */}
+            <div className="text-center">
+              <Button 
+                onClick={scrollToForm}
+                className="bg-service-gold text-white hover:bg-service-gold-hover px-10 py-6 text-lg font-medium rounded mb-4"
+              >
+                Start Mail-In Repair
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              
+              {/* Trust micro-copy */}
+              <p className="text-service-text-muted/70 text-sm font-body">
+                Insured shipping • Secure handling • No work done without approval
+              </p>
+            </div>
           </div>
         </div>
       </section>
+
 
       {/* ==================== SECTION 2 — HOW IT WORKS (4 STEPS) ==================== */}
       <section id="how-it-works" className="py-16 bg-service-neutral">
