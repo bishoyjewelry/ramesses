@@ -342,7 +342,7 @@ export const HomeContent = () => {
             <p className="text-xl text-service-text-muted mb-10 font-body">
               Start a repair or design a custom piece today — your jewelry is in trusted hands.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/repairs">
                 <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-8 py-6 text-lg font-semibold rounded">
                   Start Your Repair
