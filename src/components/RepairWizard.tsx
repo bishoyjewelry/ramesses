@@ -45,16 +45,16 @@ const jewelryTypes = [
   { value: "other", label: "Other", icon: "💎" },
 ];
 
-// Repair type options
+// Repair type options with estimate ranges
 const repairTypes = [
-  { value: "broken_chain", label: "Broken chain" },
-  { value: "ring_resizing", label: "Ring resizing" },
-  { value: "stone_loose", label: "Stone loose or missing" },
-  { value: "prong_repair", label: "Prong repair" },
-  { value: "clasp_repair", label: "Clasp repair" },
-  { value: "polishing", label: "Polishing / cleaning" },
-  { value: "soldering", label: "Soldering" },
-  { value: "not_sure", label: "Not sure / need expert review" },
+  { value: "broken_chain", label: "Broken chain", estimate: "$25–$75" },
+  { value: "ring_resizing", label: "Ring resizing", estimate: "$45–$95" },
+  { value: "stone_loose", label: "Stone loose or missing", estimate: "$35–$120" },
+  { value: "prong_repair", label: "Prong repair", estimate: "$35–$90" },
+  { value: "clasp_repair", label: "Clasp repair", estimate: "$25–$65" },
+  { value: "polishing", label: "Polishing / cleaning", estimate: "$35–$65" },
+  { value: "soldering", label: "Soldering", estimate: "$30–$80" },
+  { value: "not_sure", label: "Not sure / need expert review", estimate: null },
 ];
 
 // Fulfillment options
@@ -303,9 +303,28 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
   // Step 2: Repair Type
   const Step2 = () => {
     const isNotSureSelected = formData.repairNeeded.includes("not_sure");
+    const selectedRepairs = formData.repairNeeded.filter(r => r !== "not_sure");
+    const hasMultipleSelections = selectedRepairs.length > 1;
+    
+    // Get estimate for display
+    const getEstimateDisplay = () => {
+      if (isNotSureSelected) {
+        return null; // Will show special message
+      }
+      if (hasMultipleSelections) {
+        return "multiple";
+      }
+      if (selectedRepairs.length === 1) {
+        const repair = repairTypes.find(t => t.value === selectedRepairs[0]);
+        return repair?.estimate || null;
+      }
+      return null;
+    };
+    
+    const estimateDisplay = getEstimateDisplay();
 
     return (
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div className="text-center">
           <h3 className="text-2xl font-serif font-medium text-foreground mb-2">
             What does it need?
@@ -314,40 +333,70 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {repairTypes.map((type) => (
-            <button
-              key={type.value}
-              type="button"
-              onClick={() => toggleRepairType(type.value)}
-              className={`p-4 rounded-lg border-2 transition-all text-left flex items-center gap-3 ${
-                formData.repairNeeded.includes(type.value)
-                  ? "border-service-gold bg-service-gold/5"
-                  : "border-border hover:border-service-gold/50 bg-background"
-              }`}
-            >
-              <div
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                  formData.repairNeeded.includes(type.value)
-                    ? "border-service-gold bg-service-gold"
-                    : "border-muted-foreground/30"
+          {repairTypes.map((type) => {
+            const isSelected = formData.repairNeeded.includes(type.value);
+            return (
+              <button
+                key={type.value}
+                type="button"
+                onClick={() => toggleRepairType(type.value)}
+                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                  isSelected
+                    ? "border-service-gold bg-service-gold/5"
+                    : "border-border hover:border-service-gold/50 bg-background"
                 }`}
               >
-                {formData.repairNeeded.includes(type.value) && (
-                  <Check className="w-3 h-3 text-white" />
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                      isSelected
+                        ? "border-service-gold bg-service-gold"
+                        : "border-muted-foreground/30"
+                    }`}
+                  >
+                    {isSelected && (
+                      <Check className="w-3 h-3 text-white" />
+                    )}
+                  </div>
+                  <span className="font-medium text-foreground">{type.label}</span>
+                </div>
+                {/* Show estimate inline when selected and it's a single selection */}
+                {isSelected && type.estimate && !hasMultipleSelections && !isNotSureSelected && (
+                  <div className="mt-2 ml-8 text-sm text-service-gold">
+                    Typical range: {type.estimate}
+                  </div>
                 )}
-              </div>
-              <span className="font-medium text-foreground">{type.label}</span>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
 
-        {isNotSureSelected && (
+        {/* Estimate/Reassurance Panel */}
+        {isNotSureSelected ? (
           <div className="p-4 bg-muted rounded-lg text-center">
             <p className="text-muted-foreground">
-              No problem — our jeweler will review it and recommend the best repair.
+              Our jeweler will review your piece and provide a quote.
             </p>
           </div>
-        )}
+        ) : estimateDisplay === "multiple" ? (
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-muted-foreground text-sm text-center">
+              Multiple repairs selected — quote provided after inspection.
+            </p>
+            <p className="text-xs text-muted-foreground/70 text-center mt-2">
+              Final quote provided after inspection. No work is done without your approval.
+            </p>
+          </div>
+        ) : estimateDisplay ? (
+          <div className="p-4 bg-service-gold/5 border border-service-gold/20 rounded-lg">
+            <p className="text-foreground text-sm text-center mb-1">
+              Typical repair range: <span className="font-semibold text-service-gold">{estimateDisplay}</span>
+            </p>
+            <p className="text-xs text-muted-foreground text-center">
+              Final quote provided after inspection. No work is done without your approval.
+            </p>
+          </div>
+        ) : null}
       </div>
     );
   };
