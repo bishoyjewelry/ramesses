@@ -70,7 +70,7 @@ export const LandingRepairHero = () => {
               <Link to="#gallery">
                 <Button 
                   variant="outline" 
-                  className="border-2 border-service-gold text-service-gold hover:bg-service-gold/10 px-8 py-6 text-lg font-semibold rounded"
+                  className="border-2 border-service-gold-text text-service-gold-text hover:bg-service-gold-text/10 px-8 py-6 text-lg font-semibold rounded"
                 >
                   See Before & After Gallery
                 </Button>

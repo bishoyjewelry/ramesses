@@ -17,10 +17,10 @@ export const SEOContentBlock = ({
     <section className={`py-12 bg-service-neutral ${className}`}>
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-sm font-medium text-luxury-text-muted/60 mb-3 uppercase tracking-wide">
+          <h2 className="text-sm font-medium text-luxury-text/70 mb-3 uppercase tracking-wide">
             {title}
           </h2>
-          <p className="text-sm text-luxury-text-muted/70 leading-relaxed">
+          <p className="text-sm text-luxury-text-muted leading-relaxed">
             {content}
           </p>
         </div>

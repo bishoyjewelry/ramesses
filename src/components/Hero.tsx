@@ -56,7 +56,7 @@ export const Hero = () => {
             {/* Tertiary Link */}
             <button 
               onClick={scrollToRepairs}
-              className="inline-flex items-center gap-2 text-luxury-champagne hover:text-luxury-champagne-hover font-medium transition-colors tap-target py-2"
+              className="inline-flex items-center gap-2 text-luxury-text-muted hover:text-luxury-text font-medium transition-colors tap-target py-2"
             >
               Learn About Mail-In Repairs
               <ArrowRight className="h-4 w-4" />
