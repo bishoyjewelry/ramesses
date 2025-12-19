@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CartDrawer } from "./CartDrawer";
@@ -26,6 +26,27 @@ export const Navigation = () => {
     } else {
       toast.success("Signed out successfully");
       navigate("/");
+    }
+  };
+
+  const handleStartRepair = () => {
+    setIsOpen(false);
+    navigate("/repairs");
+    // Scroll to the wizard after navigation
+    setTimeout(() => {
+      const wizardElement = document.getElementById("repair-form");
+      if (wizardElement) {
+        wizardElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
+
+  const handleTrackRepair = () => {
+    setIsOpen(false);
+    if (user) {
+      navigate("/my-repairs");
+    } else {
+      navigate("/auth?mode=login&redirect=/my-repairs");
     }
   };
 
@@ -102,7 +123,7 @@ export const Navigation = () => {
           </nav>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Language Toggle */}
             <Button
               variant="ghost"
@@ -113,13 +134,32 @@ export const Navigation = () => {
               {t('nav.language')}
             </Button>
 
+            {/* Start Repair CTA - Desktop */}
+            <Button
+              onClick={handleStartRepair}
+              size="sm"
+              className="hidden sm:flex bg-service-gold hover:bg-service-gold/90 text-white font-medium px-4"
+            >
+              Start Repair
+            </Button>
+
             {/* Cart */}
             <CartDrawer isScrolled={true} />
 
             {/* Account Actions */}
             <div className="hidden sm:block">
-              <AccountDropdown />
+              <AccountDropdown onTrackRepair={handleTrackRepair} />
             </div>
+
+            {/* Start Repair CTA - Mobile (visible before menu toggle) */}
+            <Button
+              onClick={handleStartRepair}
+              size="sm"
+              className="sm:hidden bg-service-gold hover:bg-service-gold/90 text-white font-medium px-3 text-xs"
+            >
+              <Wrench className="h-3.5 w-3.5 mr-1" />
+              Repair
+            </Button>
 
             {/* Mobile Menu Button */}
             <Button
@@ -159,6 +199,15 @@ export const Navigation = () => {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Track Repair - Mobile */}
+              <button
+                onClick={handleTrackRepair}
+                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-luxury-bg-warm text-service-gold tap-target flex items-center gap-2"
+              >
+                <Wrench className="h-4 w-4" />
+                Track Repair
+              </button>
               
               {/* Mobile Account Links */}
               <div className="border-t border-luxury-divider mt-2 pt-2">

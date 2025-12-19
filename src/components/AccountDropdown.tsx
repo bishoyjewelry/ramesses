@@ -7,11 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Sparkles, Wrench, Settings, LogOut } from "lucide-react";
+import { ChevronDown, Sparkles, Wrench, Settings, LogOut, ClipboardList } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
-export const AccountDropdown = () => {
+interface AccountDropdownProps {
+  onTrackRepair?: () => void;
+}
+
+export const AccountDropdown = ({ onTrackRepair }: AccountDropdownProps) => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -25,17 +29,47 @@ export const AccountDropdown = () => {
     }
   };
 
+  const handleTrackRepairClick = () => {
+    if (onTrackRepair) {
+      onTrackRepair();
+    } else if (user) {
+      navigate("/my-repairs");
+    } else {
+      navigate("/auth?mode=login&redirect=/my-repairs");
+    }
+  };
+
   if (!user) {
     return (
-      <Link to="/auth?mode=login">
-        <Button 
-          variant="ghost" 
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
           size="sm"
-          className="text-luxury-text hover:text-luxury-champagne font-medium"
+          onClick={handleTrackRepairClick}
+          className="text-service-gold hover:text-service-gold/80 font-medium flex items-center gap-1"
         >
-          Sign In / Create Account
+          <ClipboardList className="h-4 w-4" />
+          Track Repair
         </Button>
-      </Link>
+        <Link to="/auth?mode=login">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="text-luxury-text hover:text-luxury-champagne font-medium"
+          >
+            Sign In
+          </Button>
+        </Link>
+        <Link to="/auth?mode=signup">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-white font-medium"
+          >
+            Create Account
+          </Button>
+        </Link>
+      </div>
     );
   }
 
@@ -52,6 +86,15 @@ export const AccountDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-white border-luxury-divider">
+        <DropdownMenuItem asChild>
+          <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer text-service-gold">
+            <ClipboardList className="w-4 h-4" />
+            Track Repair
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuSeparator className="bg-luxury-divider" />
+        
         <DropdownMenuItem asChild>
           <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
             <Sparkles className="w-4 h-4" />
