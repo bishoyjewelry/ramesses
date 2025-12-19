@@ -25,8 +25,11 @@ export const Footer = () => {
                 className="h-8 w-auto"
               />
             </div>
-            <p className="text-muted-foreground max-w-md leading-relaxed">
+            <p className="text-muted-foreground max-w-md leading-relaxed mb-4">
               {t('footer.tagline')}
+            </p>
+            <p className="text-xs text-muted-foreground/70 max-w-md">
+              Diamond District craftsmanship since 1992. Fully insured. No work without your approval.
             </p>
           </div>
 

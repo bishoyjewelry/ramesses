@@ -114,19 +114,19 @@ export const Hero = () => {
           <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4 max-w-5xl mx-auto">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
               <Award className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">30+ Years Experience</span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
-              <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">47th Street Jeweler</span>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
-              <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">Nationwide Jewelry Repair</span>
+              <span className="text-xs sm:text-sm font-medium text-foreground">30+ Years on 47th Street</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
               <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium text-foreground">Insured Shipping</span>
+              <span className="text-xs sm:text-sm font-medium text-foreground">Fully Insured, Door to Door</span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
+              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+              <span className="text-xs sm:text-sm font-medium text-foreground">No Work Without Approval</span>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-center sm:text-left">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+              <span className="text-xs sm:text-sm font-medium text-foreground">Track Everything Online</span>
             </div>
           </div>
         </div>
@@ -186,7 +186,7 @@ export const Hero = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-muted-foreground text-xs mt-3 font-body">
-                Takes about 2 minutes. No account required.
+                Takes about 2 minutes. Track your repair anytime in your account.
               </p>
             </div>
           </div>

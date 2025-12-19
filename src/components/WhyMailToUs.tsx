@@ -6,26 +6,26 @@ import { Award, Shield, DollarSign, Clock, ArrowRight } from "lucide-react";
 const reasons = [
   {
     icon: Award,
-    title: "47th Street Expertise",
-    description: "All repairs are performed by a master jeweler with 30+ years on NYC's Diamond District.",
+    title: "Diamond District Craftsmanship",
+    description: "Every repair is handled by a master jeweler with 30+ years on NYC's 47th Street.",
     color: "bg-amber-100 text-amber-700"
   },
   {
     icon: Shield,
-    title: "Documented & Insured",
-    description: "We record a full video intake and provide insured, trackable shipping.",
+    title: "Insured From Pickup to Delivery",
+    description: "Your piece is fully insured from the moment it leaves your hands until it's returned.",
     color: "bg-blue-100 text-blue-700"
   },
   {
     icon: DollarSign,
-    title: "Transparent Quotes",
-    description: "You receive a written digital quote you can approve online. No hidden fees.",
+    title: "No Work Without Approval",
+    description: "You receive a detailed quote and must approve before any repair begins.",
     color: "bg-green-100 text-green-700"
   },
   {
     icon: Clock,
-    title: "Fast Turnaround",
-    description: "Most repairs are completed within 3–5 business days once approved.",
+    title: "Track in Your Account",
+    description: "Follow your repair's progress online. Every step documented and visible to you.",
     color: "bg-purple-100 text-purple-700"
   },
 ];
