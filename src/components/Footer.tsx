@@ -32,7 +32,7 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-6 text-service-gold text-lg">Quick Links</h4>
+            <h2 className="font-semibold mb-6 text-service-gold text-lg">Quick Links</h2>
             <div className="space-y-3">
               <Link to="/repairs" className="block text-service-text-muted hover:text-service-gold transition-colors">
                 {t('nav.repairs')}
@@ -51,7 +51,7 @@ export const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-6 text-service-gold text-lg">Contact</h4>
+            <h2 className="font-semibold mb-6 text-service-gold text-lg">Contact</h2>
             <div className="space-y-4 text-service-text-muted text-sm">
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0 text-service-gold" />
@@ -68,6 +68,7 @@ export const Footer = () => {
                 href="https://wa.me/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                aria-label="Contact us on WhatsApp"
                 className="w-10 h-10 rounded-full bg-service-bg-secondary flex items-center justify-center text-service-text-muted hover:text-service-gold hover:bg-service-gold/10 transition-all"
               >
                 <MessageCircle className="h-5 w-5" />
@@ -76,6 +77,7 @@ export const Footer = () => {
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
+                aria-label="Follow us on Instagram"
                 className="w-10 h-10 rounded-full bg-service-bg-secondary flex items-center justify-center text-service-text-muted hover:text-service-gold hover:bg-service-gold/10 transition-all"
               >
                 <Instagram className="h-5 w-5" />
