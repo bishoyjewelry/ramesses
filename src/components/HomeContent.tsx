@@ -22,11 +22,10 @@ export const HomeContent = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-8 md:gap-12">
             {[
-              { icon: Crown, text: "Master Jeweler — 30+ Years" },
-              { icon: Award, text: "47th Street Quality" },
-              { icon: Shield, text: "Insured Nationwide" },
-              { icon: CheckCircle, text: "Thousands Repaired" },
-              { icon: Sparkles, text: "AI-Powered Custom Design" },
+              { icon: Crown, text: "Diamond District Master Jeweler" },
+              { icon: Shield, text: "Fully Insured, Door to Door" },
+              { icon: CheckCircle, text: "No Work Without Your Approval" },
+              { icon: FileText, text: "Track Progress in Your Account" },
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-2">
                 <item.icon className="w-5 h-5 text-primary" />
@@ -56,14 +55,14 @@ export const HomeContent = () => {
                   Mail-In Jewelry Repairs
                 </h3>
                 <p className="text-service-text-muted mb-6 font-body leading-relaxed">
-                  Professional repairs, sizing, polishing, stone tightening, and restorations — all handled by a master jeweler.
+                  Repairs handled by a Diamond District master jeweler with 30+ years at the bench. Insured from pickup to delivery.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    "Insured shipping both ways",
-                    "Video unboxing & intake",
-                    "Transparent quotes",
-                    "3–5 day turnaround"
+                    "Fully insured shipping both ways",
+                    "Video documentation on arrival",
+                    "Quote before any work begins",
+                    "Track progress in your account"
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-service-gold flex-shrink-0" />
@@ -90,14 +89,14 @@ export const HomeContent = () => {
                   Ramessés Custom Lab™
                 </h3>
                 <p className="text-luxury-text-muted mb-6 font-body leading-relaxed">
-                  Create one-of-a-kind jewelry using AI concepting + expert human craftsmanship from 47th Street.
+                  Start with rough ideas — we refine them together. Nothing is made until you approve the final design.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    "Upload your idea or inspiration",
-                    "AI-generated concepts",
-                    "Human-refined CAD",
-                    "Handcrafted in NYC"
+                    "AI-generated concepts from your ideas",
+                    "Expert CAD refinement in NYC",
+                    "Full approval before production",
+                    "Saved designs in your account"
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-luxury-champagne flex-shrink-0" />
@@ -217,22 +216,22 @@ export const HomeContent = () => {
             {/* Content */}
             <div>
               <h2 className="text-3xl md:text-4xl font-serif luxury-heading text-luxury-text mb-6">
-                The Only Full-Service National Jewelry Platform
+                Diamond District Craftsmanship, Nationwide
               </h2>
               <div className="w-24 h-1 bg-luxury-champagne mb-8"></div>
               
               <p className="text-lg text-luxury-text-muted mb-10 leading-relaxed font-body">
-                At Ramessés, we combine insured nationwide repairs, AI-driven design, and 47th Street craftsmanship into a single, trusted experience.
+                Every repair and custom piece is handled by a master jeweler with 30+ years on New York's 47th Street. Your jewelry stays insured from the moment it leaves your hands.
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Crown, text: "30+ Years Bench Experience" },
-                  { icon: Shield, text: "Insured Shipping Nationwide" },
-                  { icon: Sparkles, text: "AI-Powered Design Studio" },
-                  { icon: CheckCircle, text: "Master Jeweler QC" },
-                  { icon: DollarSign, text: "Transparent Pricing" },
-                  { icon: Truck, text: "National Coverage" },
+                  { icon: Crown, text: "30+ Years at the Bench" },
+                  { icon: Shield, text: "Insured Door to Door" },
+                  { icon: CheckCircle, text: "Nothing Starts Without Approval" },
+                  { icon: FileText, text: "Track Everything in Your Account" },
+                  { icon: Video, text: "Video Documentation" },
+                  { icon: Truck, text: "Nationwide Service" },
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-luxury-champagne/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -339,8 +338,11 @@ export const HomeContent = () => {
             <h2 className="text-3xl md:text-4xl font-sans service-heading font-bold mb-6 text-white">
               Ready to Begin?
             </h2>
-            <p className="text-xl text-service-text-muted mb-10 font-body">
-              Start a repair or design a custom piece today — your jewelry is in trusted hands.
+            <p className="text-xl text-service-text-muted mb-4 font-body">
+              Start a repair or design a custom piece today.
+            </p>
+            <p className="text-sm text-service-text-muted/70 mb-10 font-body">
+              Fully insured. No work without approval. Track everything in your account.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/repairs">
