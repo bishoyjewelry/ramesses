@@ -27,6 +27,7 @@ const AdminCadQueue = React.lazy(() => import("./pages/AdminCadQueue"));
 const EngagementRings = React.lazy(() => import("./pages/EngagementRings"));
 const MyDesigns = React.lazy(() => import("./pages/MyDesigns"));
 const DesignDetail = React.lazy(() => import("./pages/DesignDetail"));
+const DesignView = React.lazy(() => import("./pages/DesignView"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/engagement-rings" element={<Suspense fallback={<PageLoader />}><EngagementRings /></Suspense>} />
             <Route path="/my-designs" element={<Suspense fallback={<PageLoader />}><MyDesigns /></Suspense>} />
             <Route path="/my-designs/:id" element={<Suspense fallback={<PageLoader />}><DesignDetail /></Suspense>} />
+            <Route path="/design/:id" element={<Suspense fallback={<PageLoader />}><DesignView /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Mobile Bottom Navigation */}
