@@ -29,14 +29,6 @@ export const Navigation = () => {
     }
   };
 
-  const handleStartServices = () => {
-    setIsOpen(false);
-    navigate("/repairs");
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 100);
-  };
-
   const handleTrackRepair = () => {
     setIsOpen(false);
     if (user) {
@@ -54,10 +46,11 @@ export const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Primary navigation links - Custom first
+  // Primary navigation links - all text-only with equal styling
   const navLinks = [
     { to: "/custom", label: "Create Custom Jewelry" },
     { to: "/engagement-rings", label: "Create Engagement Ring" },
+    { to: "/repairs", label: "Start Repair / Services" },
     { to: "/shop", label: "Shop" },
   ];
 
@@ -87,7 +80,7 @@ export const Navigation = () => {
             />
           </Link>
 
-          {/* Desktop Navigation - Primary Links */}
+          {/* Desktop Navigation - Primary Links (all text-only) */}
           <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
@@ -109,14 +102,19 @@ export const Navigation = () => {
 
           {/* Right side actions */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Start Repair / Services CTA - Desktop Only */}
-            <Button
-              onClick={handleStartServices}
-              size="sm"
-              className="hidden lg:flex bg-service-gold hover:bg-service-gold/90 text-white font-medium px-4 h-9"
-            >
-              Start Repair / Services
-            </Button>
+            {/* My Designs - Conditional (logged in only) - Desktop */}
+            {user && (
+              <Link
+                to="/my-designs"
+                className={`hidden lg:flex text-sm font-medium transition-colors items-center h-9 px-2 ${
+                  location.pathname === '/my-designs'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                My Designs
+              </Link>
+            )}
 
             {/* Track Repair - Desktop */}
             <Button
@@ -157,15 +155,7 @@ export const Navigation = () => {
         {isOpen && (
           <div className="lg:hidden bg-white border-t border-border max-h-[calc(100vh-56px)] overflow-y-auto">
             <nav className="flex flex-col py-2">
-              {/* Primary CTA - Mobile (Sticky feel) */}
-              <button
-                onClick={handleStartServices}
-                className="mx-4 my-2 py-3 rounded-lg bg-service-gold text-white font-medium text-center"
-              >
-                Start Repair / Services
-              </button>
-
-              {/* Primary Nav Links */}
+              {/* Primary Nav Links - all equal styling */}
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -180,6 +170,21 @@ export const Navigation = () => {
                   {link.label}
                 </Link>
               ))}
+
+              {/* My Designs - Conditional (logged in only) - Mobile */}
+              {user && (
+                <Link
+                  to="/my-designs"
+                  className={`px-4 py-3.5 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center ${
+                    location.pathname === '/my-designs'
+                      ? 'text-foreground bg-muted/50'
+                      : 'text-muted-foreground'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  My Designs
+                </Link>
+              )}
 
               {/* Track Repair - Mobile */}
               <button
@@ -202,18 +207,11 @@ export const Navigation = () => {
                       My Account
                     </Link>
                     <Link
-                      to="/my-designs"
-                      className="px-4 py-3.5 text-base font-medium text-muted-foreground hover:bg-muted block tap-target"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      My Designs
-                    </Link>
-                    <Link
                       to="/my-repairs"
                       className="px-4 py-3.5 text-base font-medium text-muted-foreground hover:bg-muted block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
-                      Repairs / Services
+                      Repairs
                     </Link>
                     <button
                       onClick={handleMobileSignOut}

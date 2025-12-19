@@ -60,16 +60,16 @@ export const AccountDropdown = () => {
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
-          <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
-            <Sparkles className="w-4 h-4" />
-            My Designs
+          <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer">
+            <Wrench className="w-4 h-4" />
+            Repairs
           </Link>
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
-          <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer">
-            <Wrench className="w-4 h-4" />
-            Repairs / Services
+          <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
+            <Sparkles className="w-4 h-4" />
+            My Designs
           </Link>
         </DropdownMenuItem>
         
