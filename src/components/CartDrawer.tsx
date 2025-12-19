@@ -54,7 +54,7 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="ghost" size="icon" className="relative" aria-label="Open shopping cart">
           <ShoppingCart className={`h-5 w-5 ${isScrolled ? 'text-foreground' : 'text-white'}`} />
           {totalItems > 0 && (
             <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary text-primary-foreground">
@@ -112,6 +112,7 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
                           size="icon"
                           className="h-6 w-6"
                           onClick={() => removeItem(item.variantId)}
+                          aria-label={`Remove ${item.product.node.title} from cart`}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
@@ -122,6 +123,7 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
                             size="icon"
                             className="h-6 w-6"
                             onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
+                            aria-label={`Decrease quantity of ${item.product.node.title}`}
                           >
                             <Minus className="h-3 w-3" />
                           </Button>
@@ -131,6 +133,7 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
                             size="icon"
                             className="h-6 w-6"
                             onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
+                            aria-label={`Increase quantity of ${item.product.node.title}`}
                           >
                             <Plus className="h-3 w-3" />
                           </Button>
