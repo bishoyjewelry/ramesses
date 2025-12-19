@@ -54,11 +54,14 @@
        ============================================ */
     --service-bg-primary: 217 60% 13%;      /* #0B1B36 */
     --service-bg-secondary: 218 47% 16%;     /* #15233E */
-    --service-gold: 43 74% 52%;              /* #D4AF37 */
-    --service-gold-hover: 43 74% 46%;        /* #C99F32 */
+    --service-gold: 43 74% 38%;              /* #A88424 - darker for 4.5:1 contrast with white */
+    --service-gold-hover: 43 74% 32%;        /* #8F7020 */
     --service-text-primary: 0 0% 100%;       /* #FFFFFF */
     --service-text-secondary: 220 10% 80%;   /* #C8CDD8 */
     --service-neutral: 240 4% 95%;           /* #F2F2F5 */
+    
+    /* High-contrast accessible text color for links on light backgrounds */
+    --service-gold-text: 43 74% 28%;         /* #724E16 - meets 4.5:1 on white */
 
     /* ============================================
        PALETTE 2: LUXURY LAB (White/Champagne)

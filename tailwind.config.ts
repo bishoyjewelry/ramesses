@@ -63,6 +63,7 @@ export default {
           "bg-secondary": "hsl(var(--service-bg-secondary))",
           gold: "hsl(var(--service-gold))",
           "gold-hover": "hsl(var(--service-gold-hover))",
+          "gold-text": "hsl(var(--service-gold-text))",
           text: "hsl(var(--service-text-primary))",
           "text-muted": "hsl(var(--service-text-secondary))",
           neutral: "hsl(var(--service-neutral))",
