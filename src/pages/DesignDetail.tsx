@@ -16,7 +16,10 @@ import {
   Trash2, 
   ChevronDown, 
   ChevronUp,
-  Sparkles 
+  Sparkles,
+  Share2,
+  Copy,
+  Check
 } from "lucide-react";
 
 interface UserDesign {
@@ -48,6 +51,20 @@ const DesignDetail = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [specsOpen, setSpecsOpen] = useState(false);
   const [inputsOpen, setInputsOpen] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const shareUrl = design ? `${window.location.origin}/design/${design.id}` : "";
+
+  const handleCopyShareLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setLinkCopied(true);
+      toast.success("Share link copied to clipboard");
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch (error) {
+      toast.error("Failed to copy link");
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -178,8 +195,10 @@ const DesignDetail = () => {
   const getStatusLabel = (status: string) => {
     const statusMap: Record<string, string> = {
       draft: 'Draft',
-      submitted_for_cad: 'Submitted for CAD',
+      saved: 'Draft',
+      submitted_for_cad: 'Sent to Designer',
       in_cad: 'In CAD',
+      quoted: 'Quoted',
       completed: 'Completed'
     };
     return statusMap[status] || status;
@@ -188,11 +207,14 @@ const DesignDetail = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'draft':
+      case 'saved':
         return 'bg-luxury-champagne/20 text-luxury-text';
       case 'submitted_for_cad':
         return 'bg-blue-100 text-blue-700';
       case 'in_cad':
         return 'bg-amber-100 text-amber-700';
+      case 'quoted':
+        return 'bg-purple-100 text-purple-700';
       case 'completed':
         return 'bg-green-100 text-green-700';
       default:
@@ -332,7 +354,7 @@ const DesignDetail = () => {
 
                 {/* Action Buttons */}
                 <div className="space-y-3 pt-4 border-t border-luxury-divider">
-                  {design.status === 'draft' && (
+                  {(design.status === 'draft' || design.status === 'saved') && (
                     <Button
                       onClick={handleSubmitForCAD}
                       disabled={isSubmittingCAD}
@@ -346,13 +368,13 @@ const DesignDetail = () => {
                       ) : (
                         <>
                           <FileCheck className="w-4 h-4 mr-2" />
-                          Submit for CAD Review
+                          Send to Designer
                         </>
                       )}
                     </Button>
                   )}
 
-                  {design.status !== 'draft' && (
+                  {design.status !== 'draft' && design.status !== 'saved' && (
                     <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-3 rounded-lg">
                       <FileCheck className="w-4 h-4" />
                       <span className="text-sm font-medium">{getStatusLabel(design.status)}</span>
@@ -393,6 +415,31 @@ const DesignDetail = () => {
                       </>
                     )}
                   </Button>
+
+                  {/* Share Link */}
+                  <div className="pt-3 border-t border-luxury-divider">
+                    <p className="text-xs text-luxury-text-muted mb-2">Share this design (view-only)</p>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        readOnly 
+                        value={shareUrl}
+                        className="flex-1 text-xs px-3 py-2 bg-luxury-bg rounded border border-luxury-divider text-luxury-text-muted"
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCopyShareLink}
+                        className="border-luxury-divider"
+                      >
+                        {linkCopied ? (
+                          <Check className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Specifications */}

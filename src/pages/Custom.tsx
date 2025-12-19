@@ -256,7 +256,7 @@ const Custom = () => {
     try {
       const formInputs = activeFlow === "engagement" ? engagementForm : generalForm;
       
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('user_designs')
         .insert([{
           user_id: user.id,
@@ -278,11 +278,21 @@ const Custom = () => {
           side_image_url: concept.images.side,
           top_image_url: concept.images.top,
           status: 'saved',
-        }]);
+        }])
+        .select()
+        .single();
 
       if (error) throw error;
 
-      toast.success("Design saved to your account!");
+      toast.success(
+        <div className="flex flex-col gap-1">
+          <span>Design saved to your account!</span>
+          <Link to={`/my-designs/${data.id}`} className="text-luxury-champagne underline text-sm">
+            View in My Designs →
+          </Link>
+        </div>,
+        { duration: 5000 }
+      );
     } catch (error) {
       console.error('Error saving design:', error);
       toast.error("Failed to save design. Please try again.");

@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Sparkles, Wrench, Settings, LogOut, ClipboardList } from "lucide-react";
+import { ChevronDown, Sparkles, Wrench, Settings, LogOut, ClipboardList, ShoppingBag } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -106,6 +106,13 @@ export const AccountDropdown = ({ onTrackRepair }: AccountDropdownProps) => {
           <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer">
             <Wrench className="w-4 h-4" />
             My Repairs
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem asChild>
+          <Link to="/orders" className="flex items-center gap-2 cursor-pointer">
+            <ShoppingBag className="w-4 h-4" />
+            Orders
           </Link>
         </DropdownMenuItem>
         

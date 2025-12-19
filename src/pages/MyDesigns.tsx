@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Sparkles, Plus, RefreshCw, FileCheck, Trash2, ChevronDown, ChevronUp, Loader2, ArrowLeft } from "lucide-react";
+import { Sparkles, Plus, Loader2, ArrowLeft, Filter, SortAsc, SortDesc } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface UserDesign {
   id: string;
@@ -29,10 +34,35 @@ const MyDesigns = () => {
   const navigate = useNavigate();
   const [designs, setDesigns] = useState<UserDesign[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDesign, setSelectedDesign] = useState<UserDesign | null>(null);
-  const [showSpecs, setShowSpecs] = useState(false);
   const [isSubmittingCAD, setIsSubmittingCAD] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  
+  // Filter & Sort state
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+
+  const filteredDesigns = useMemo(() => {
+    let result = [...designs];
+    
+    // Filter by type
+    if (typeFilter !== "all") {
+      result = result.filter(d => d.flow_type === typeFilter);
+    }
+    
+    // Filter by status
+    if (statusFilter !== "all") {
+      result = result.filter(d => d.status === statusFilter);
+    }
+    
+    // Sort
+    result.sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+    
+    return result;
+  }, [designs, typeFilter, statusFilter, sortOrder]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -66,8 +96,10 @@ const MyDesigns = () => {
   const getStatusLabel = (status: string) => {
     const statusMap: Record<string, string> = {
       draft: 'Draft',
-      submitted_for_cad: 'Submitted for CAD',
+      saved: 'Draft',
+      submitted_for_cad: 'Sent to Designer',
       in_cad: 'In CAD',
+      quoted: 'Quoted',
       completed: 'Completed'
     };
     return statusMap[status] || status;
@@ -76,17 +108,22 @@ const MyDesigns = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'draft':
+      case 'saved':
         return 'bg-luxury-champagne/20 text-luxury-text';
       case 'submitted_for_cad':
         return 'bg-blue-100 text-blue-700';
       case 'in_cad':
         return 'bg-amber-100 text-amber-700';
+      case 'quoted':
+        return 'bg-purple-100 text-purple-700';
       case 'completed':
         return 'bg-green-100 text-green-700';
       default:
         return 'bg-gray-100 text-gray-700';
     }
   };
+
+  const activeFiltersCount = (typeFilter !== "all" ? 1 : 0) + (statusFilter !== "all" ? 1 : 0);
 
   const handleSubmitForCAD = async (design: UserDesign) => {
     if (!user) return;
@@ -101,7 +138,6 @@ const MyDesigns = () => {
 
       if (data?.success) {
         toast.success("Your design has been submitted for CAD review.");
-        setSelectedDesign(null);
         fetchDesigns();
       } else {
         throw new Error(data?.error || "Failed to submit design");
@@ -111,29 +147,6 @@ const MyDesigns = () => {
       toast.error(error?.message || "Failed to submit design. Please try again.");
     } finally {
       setIsSubmittingCAD(false);
-    }
-  };
-
-  const handleDelete = async (designId: string) => {
-    if (!confirm("Are you sure you want to delete this design?")) return;
-    
-    setIsDeleting(true);
-    try {
-      const { error } = await supabase
-        .from('user_designs')
-        .delete()
-        .eq('id', designId);
-
-      if (error) throw error;
-
-      toast.success("Design deleted");
-      setSelectedDesign(null);
-      fetchDesigns();
-    } catch (error) {
-      console.error('Error deleting design:', error);
-      toast.error("Failed to delete design");
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -162,10 +175,10 @@ const MyDesigns = () => {
               Back to Account
             </Link>
             
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">My Designs</h1>
-                <p className="text-luxury-text-muted">View, revise, and submit your saved concepts for CAD review.</p>
+                <p className="text-luxury-text-muted">Your saved custom jewelry concepts — edit, refine, or send to our designers.</p>
               </div>
               <Link to="/custom">
                 <Button className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover">
@@ -175,8 +188,85 @@ const MyDesigns = () => {
               </Link>
             </div>
 
+            {/* Filters & Sorting */}
+            {designs.length > 0 && (
+              <div className="flex flex-wrap items-center gap-3 mb-6 pb-4 border-b border-luxury-divider">
+                {/* Type Filter */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="border-luxury-divider text-luxury-text">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Type: {typeFilter === "all" ? "All" : typeFilter === "engagement" ? "Engagement" : "Custom"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="bg-white border-luxury-divider">
+                    <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTypeFilter("engagement")}>Engagement Ring</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setTypeFilter("general")}>Custom Jewelry</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Status Filter */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="border-luxury-divider text-luxury-text">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Status: {statusFilter === "all" ? "All" : getStatusLabel(statusFilter)}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="bg-white border-luxury-divider">
+                    <DropdownMenuItem onClick={() => setStatusFilter("all")}>All Statuses</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setStatusFilter("draft")}>Draft</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setStatusFilter("submitted_for_cad")}>Sent to Designer</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setStatusFilter("in_cad")}>In CAD</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setStatusFilter("quoted")}>Quoted</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Sort */}
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="border-luxury-divider text-luxury-text"
+                  onClick={() => setSortOrder(prev => prev === "newest" ? "oldest" : "newest")}
+                >
+                  {sortOrder === "newest" ? (
+                    <><SortDesc className="w-4 h-4 mr-2" /> Newest</>
+                  ) : (
+                    <><SortAsc className="w-4 h-4 mr-2" /> Oldest</>
+                  )}
+                </Button>
+
+                {activeFiltersCount > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => { setTypeFilter("all"); setStatusFilter("all"); }}
+                    className="text-luxury-text-muted hover:text-luxury-text"
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </div>
+            )}
+
             {/* Designs Grid */}
-            {designs.length === 0 ? (
+            {filteredDesigns.length === 0 && designs.length > 0 ? (
+              <Card className="border-luxury-divider">
+                <CardContent className="py-16 text-center">
+                  <Filter className="w-16 h-16 text-luxury-champagne/30 mx-auto mb-4" />
+                  <h3 className="text-xl font-serif text-luxury-text mb-2">No designs match your filters.</h3>
+                  <p className="text-luxury-text-muted mb-6">Try adjusting your filter settings.</p>
+                  <Button 
+                    variant="outline"
+                    onClick={() => { setTypeFilter("all"); setStatusFilter("all"); }}
+                    className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text"
+                  >
+                    Clear Filters
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : designs.length === 0 ? (
               <Card className="border-luxury-divider">
                 <CardContent className="py-16 text-center">
                   <Sparkles className="w-16 h-16 text-luxury-champagne/30 mx-auto mb-4" />
@@ -191,7 +281,7 @@ const MyDesigns = () => {
               </Card>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {designs.map((design) => (
+                {filteredDesigns.map((design) => (
                   <Card 
                     key={design.id}
                     className="border-luxury-divider hover:border-luxury-champagne/50 transition-colors overflow-hidden flex flex-col"
@@ -224,6 +314,9 @@ const MyDesigns = () => {
                           {design.overview.slice(0, 80)}{design.overview.length > 80 ? '...' : ''}
                         </p>
                       )}
+                      <p className="text-xs text-luxury-text-muted mb-3">
+                        {new Date(design.created_at).toLocaleDateString()}
+                      </p>
                       <div className="mt-auto flex flex-col gap-2 pt-3 border-t border-luxury-divider">
                         <Button 
                           onClick={() => navigate(`/my-designs/${design.id}`)}
@@ -231,7 +324,7 @@ const MyDesigns = () => {
                         >
                           View Details
                         </Button>
-                        {design.status === 'draft' && (
+                        {(design.status === 'draft' || design.status === 'saved') && (
                           <Button 
                             variant="outline"
                             onClick={(e) => {
@@ -241,7 +334,7 @@ const MyDesigns = () => {
                             disabled={isSubmittingCAD}
                             className="w-full border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text text-sm"
                           >
-                            {isSubmittingCAD ? 'Submitting...' : 'Submit for CAD Review'}
+                            {isSubmittingCAD ? 'Submitting...' : 'Send to Designer'}
                           </Button>
                         )}
                       </div>
@@ -253,133 +346,6 @@ const MyDesigns = () => {
           </div>
         </div>
       </section>
-
-      {/* Design Detail Modal */}
-      <Dialog open={!!selectedDesign} onOpenChange={() => setSelectedDesign(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          {selectedDesign && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl font-serif">{selectedDesign.name}</DialogTitle>
-              </DialogHeader>
-              
-              <div className="space-y-6 mt-4">
-                {/* Images */}
-                <div className="grid grid-cols-3 gap-3">
-                  {['hero', 'side', 'top'].map((view) => {
-                    const imageUrl = selectedDesign[`${view}_image_url` as keyof UserDesign] as string;
-                    return (
-                      <div key={view} className="aspect-square bg-luxury-bg-warm rounded-lg overflow-hidden">
-                        {imageUrl ? (
-                          <img 
-                            src={imageUrl} 
-                            alt={`${view} view`}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-luxury-text-muted text-xs uppercase">
-                            {view}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Overview */}
-                {selectedDesign.overview && (
-                  <p className="text-luxury-text-muted">{selectedDesign.overview}</p>
-                )}
-
-                {/* Specs */}
-                {selectedDesign.spec_sheet && (
-                  <div>
-                    <button
-                      onClick={() => setShowSpecs(!showSpecs)}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-luxury-bg rounded-lg text-sm font-medium text-luxury-text hover:bg-luxury-bg-warm transition-colors"
-                    >
-                      <span>Full Specifications</span>
-                      {showSpecs ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-                    
-                    {showSpecs && (
-                      <div className="mt-3 bg-luxury-bg rounded-lg p-4 text-sm space-y-2">
-                        <pre className="whitespace-pre-wrap text-luxury-text font-mono text-xs">
-                          {JSON.stringify(selectedDesign.spec_sheet, null, 2)}
-                        </pre>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Original Inputs */}
-                <div className="bg-luxury-bg rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-luxury-text mb-2">Original Inputs</h4>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    {Object.entries(selectedDesign.form_inputs).map(([key, value]) => (
-                      <div key={key}>
-                        <span className="text-luxury-text-muted capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
-                        <span className="ml-1 text-luxury-text">{String(value) || 'Not specified'}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-wrap gap-3 pt-4 border-t border-luxury-divider">
-                  {selectedDesign.status !== 'submitted_for_cad' && (
-                    <>
-                      <Button
-                        onClick={() => handleSubmitForCAD(selectedDesign)}
-                        disabled={isSubmittingCAD}
-                        className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover"
-                      >
-                        {isSubmittingCAD ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Submitting...
-                          </>
-                        ) : (
-                          <>
-                            <FileCheck className="w-4 h-4 mr-2" />
-                            Submit for CAD Review
-                          </>
-                        )}
-                      </Button>
-                      <Link to={`/custom?regenerate=${selectedDesign.id}`}>
-                        <Button variant="outline" className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text">
-                          <RefreshCw className="w-4 h-4 mr-2" />
-                          Regenerate Variations
-                        </Button>
-                      </Link>
-                    </>
-                  )}
-                  
-                  {selectedDesign.status === 'submitted_for_cad' && (
-                    <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-2 rounded-lg">
-                      <FileCheck className="w-4 h-4" />
-                      <span className="text-sm font-medium">Submitted for CAD Review</span>
-                    </div>
-                  )}
-                  
-                  <Button
-                    variant="outline"
-                    onClick={() => handleDelete(selectedDesign.id)}
-                    disabled={isDeleting}
-                    className="border-red-200 text-red-600 hover:bg-red-50 ml-auto"
-                  >
-                    {isDeleting ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="w-4 h-4" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
 
       <Footer />
     </div>
