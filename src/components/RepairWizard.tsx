@@ -62,19 +62,19 @@ const fulfillmentOptions = [
   { 
     value: "mail_in", 
     label: "Mail-in (insured shipping)", 
-    description: "We'll send you an insured shipping label",
+    description: "We email you a prepaid label. Ship when ready.",
     icon: Package 
   },
   { 
     value: "drop_off", 
-    label: "In-person drop-off (NYC)", 
-    description: "Visit our 47th Street location",
+    label: "Drop off in person (NYC)", 
+    description: "Bring it to our 47th Street location.",
     icon: MapPin 
   },
   { 
     value: "courier", 
     label: "Local pickup (Manhattan / North Jersey)", 
-    description: "We'll contact you to schedule a pickup window",
+    description: "We arrange a pickup time that works for you.",
     icon: Truck 
   },
 ];
@@ -557,7 +557,7 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
       </div>
 
       <p className="text-center text-sm text-muted-foreground">
-        We'll review your jewelry and send a quote before any work begins.
+        We will inspect your jewelry on video and email you a quote. No work begins without your approval.
       </p>
     </div>
   );
@@ -570,26 +570,43 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
       </div>
 
       <h3 className="text-2xl font-serif font-medium text-foreground mb-3">
-        Repair request received
+        Request received
       </h3>
 
-      <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-        Our 47th Street jeweler will review your item and follow up with a quote.
-      </p>
+      <div className="text-muted-foreground mb-8 max-w-sm mx-auto space-y-3">
+        <p className="font-medium text-foreground">What happens next:</p>
+        <ol className="text-left text-sm space-y-2">
+          <li className="flex gap-2">
+            <span className="text-primary font-medium">1.</span>
+            <span>We email you a prepaid, insured shipping label within 24 hours.</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-primary font-medium">2.</span>
+            <span>Ship your jewelry. We record a video when it arrives.</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="text-primary font-medium">3.</span>
+            <span>You receive a quote. No work starts without your approval.</span>
+          </li>
+        </ol>
+      </div>
 
       {user ? (
         <Link to="/my-repairs">
-          <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-8">
-            View My Repairs
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8">
+            Track Your Repair
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </Link>
       ) : (
         <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Check your email for confirmation and shipping instructions.
+          </p>
           <Link to="/auth?mode=signup&redirect=/my-repairs">
-            <Button className="bg-service-gold text-white hover:bg-service-gold-hover px-6 w-full sm:w-auto">
+            <Button variant="outline" className="px-6 w-full sm:w-auto">
               <UserPlus className="w-4 h-4 mr-2" />
-              Create an account to track this repair
+              Create account to track online
             </Button>
           </Link>
           <div>

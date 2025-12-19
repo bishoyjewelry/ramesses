@@ -60,12 +60,12 @@ export const Hero = () => {
                 <span className="text-sm font-semibold text-foreground uppercase tracking-wide">Custom Jewelry</span>
               </div>
               <p className="text-muted-foreground font-body text-sm mb-6 leading-relaxed">
-                Work directly with a master jeweler to design your dream piece — engagement rings, pendants, bracelets, and more.
+                Describe your vision. We generate concepts, refine the design together, and craft it in NYC.
               </p>
               <div className="flex flex-col gap-3">
                 <Link to="/custom" className="w-full">
                   <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 py-5 text-base rounded-lg shadow-luxury">
-                    Create Custom Jewelry
+                    Start Your Design
                     <Sparkles className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
@@ -74,6 +74,9 @@ export const Hero = () => {
                     Design Engagement Ring
                   </Button>
                 </Link>
+                <p className="text-muted-foreground text-xs text-center font-body">
+                  No commitment until you approve the final design
+                </p>
               </div>
             </div>
 
@@ -84,7 +87,7 @@ export const Hero = () => {
                 <span className="text-sm font-semibold text-foreground uppercase tracking-wide">Repair Services</span>
               </div>
               <p className="text-muted-foreground font-body text-sm mb-6 leading-relaxed">
-                Ship from anywhere in the U.S. — fully insured mail-in jewelry repair by an experienced NYC jeweler.
+                Tell us what needs fixing. We send an insured label, inspect it on video, and quote before any work begins.
               </p>
               <div className="flex flex-col gap-3">
                 <Button 
@@ -93,11 +96,11 @@ export const Hero = () => {
                   onClick={handleStartRepair}
                   className="w-full border border-border text-foreground hover:bg-secondary font-semibold px-6 py-5 text-base rounded-lg"
                 >
-                  Start Repair / Services
+                  Get a Free Quote
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <p className="text-muted-foreground text-xs text-center font-body">
-                  Free quotes • Insured shipping • Expert craftsmanship
+                  Fully insured shipping. No repairs without your approval.
                 </p>
               </div>
             </div>
@@ -143,9 +146,9 @@ export const Hero = () => {
                 <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FileText className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Start Online</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">1. Describe Your Repair</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Tell us about your jewelry and upload photos.
+                  Tell us what needs fixing. Photos help but are not required.
                 </p>
               </div>
               
@@ -154,9 +157,9 @@ export const Hero = () => {
                 <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Package className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Ship or Drop Off</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">2. Ship It Insured</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Mail it insured, drop it off in NYC, or schedule local pickup.
+                  We email you a prepaid, insured label. Or drop off in NYC.
                 </p>
               </div>
               
@@ -165,9 +168,9 @@ export const Hero = () => {
                 <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Repair & Return</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">3. Approve, Then We Repair</h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  You approve the quote. We repair it and ship it back safely.
+                  We inspect it on video and send a quote. No work starts without your OK.
                 </p>
               </div>
             </div>
@@ -179,9 +182,12 @@ export const Hero = () => {
                 variant="outline"
                 className="border border-border text-foreground hover:bg-secondary font-semibold px-8 py-5 rounded"
               >
-                Start Mail-In Repair
+                Get a Free Quote
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+              <p className="text-muted-foreground text-xs mt-3 font-body">
+                Takes about 2 minutes. No account required.
+              </p>
             </div>
           </div>
         </div>
@@ -211,7 +217,7 @@ export const Hero = () => {
             </div>
             
             <p className="text-center text-muted-foreground text-sm font-body">
-              Click any repair type to get started — our jeweler handles all kinds of repairs.
+              Select a repair type to start, or describe your issue in the form.
             </p>
           </div>
         </div>

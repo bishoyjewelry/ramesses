@@ -51,25 +51,25 @@ export const AccountDropdown = () => {
           My Account
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-44 bg-background border-border">
+      <DropdownMenuContent align="end" className="w-48 bg-background border-border">
         <DropdownMenuItem asChild>
           <Link to="/account" className="flex items-center gap-2 cursor-pointer">
             <User className="w-4 h-4" />
-            My Account
+            Account Settings
           </Link>
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
           <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer">
             <Wrench className="w-4 h-4" />
-            Repairs
+            Track Repairs
           </Link>
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
           <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
             <Sparkles className="w-4 h-4" />
-            My Designs
+            Saved Designs
           </Link>
         </DropdownMenuItem>
         
