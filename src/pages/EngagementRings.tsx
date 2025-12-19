@@ -525,8 +525,11 @@ export default function EngagementRings() {
                   : "Complete the selections above to generate your custom ring concepts."
                 }
               </p>
+              <p className="text-sm text-luxury-text-muted/70 mb-2">
+                These are starting points for exploration — not final designs. A master jeweler reviews every piece before production begins.
+              </p>
               <p className="text-xs text-luxury-text-muted/70 mb-6">
-                You're not committing to anything. Explore freely.
+                You're not committing to anything. No work starts without your approval.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -575,6 +578,9 @@ export default function EngagementRings() {
                 <p className="text-luxury-text-muted mb-1">
                   Like one? Save it to refine later. Want changes? Let us know — nothing is final until you say so.
                 </p>
+                <p className="text-sm text-luxury-text-muted/70 mb-1">
+                  These AI concepts are for exploration. Our master jeweler refines every detail before anything is made.
+                </p>
                 <p className="text-sm text-luxury-text-muted/70">
                   All designs are saved to{" "}
                   <Link to="/my-designs" className="text-luxury-champagne underline">My Designs</Link>
@@ -605,10 +611,10 @@ export default function EngagementRings() {
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Already Have a Design?</h2>
               <p className="text-luxury-text-muted mb-1">
-                Send photos or sketches directly to our jeweler — no AI step needed.
+                Send photos or sketches directly to our master jeweler — no AI step needed.
               </p>
               <p className="text-sm text-luxury-text-muted/70">
-                We'll review and follow up within 24 hours.
+                We'll review and follow up within 24 hours. No commitment until you approve.
               </p>
             </div>
             

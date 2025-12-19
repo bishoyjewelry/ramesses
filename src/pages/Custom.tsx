@@ -743,6 +743,13 @@ const Custom = () => {
                       )}
                     </div>
                     
+                    {/* Trust messaging */}
+                    <div className="text-center py-3 border-t border-luxury-divider">
+                      <p className="text-sm text-luxury-text-muted/80">
+                        AI generates starting points for exploration — not final designs. A master jeweler reviews every piece before production.
+                      </p>
+                    </div>
+                    
                     {/* Generate Concepts Button */}
                     <Button 
                       type="submit" 
@@ -834,6 +841,9 @@ const Custom = () => {
               <div className="text-center mb-10">
                 <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Custom Concepts</h2>
                 <p className="text-luxury-text-muted mb-1">Like one? Save it. Want changes? Request variations — nothing is final until you approve.</p>
+                <p className="text-sm text-luxury-text-muted/70 mb-1">
+                  These AI concepts are for exploration. Our master jeweler refines every detail before anything is made.
+                </p>
                 <p className="text-sm text-luxury-text-muted/70">
                   All saved designs live in{" "}
                   <Link to="/my-designs" className="text-luxury-champagne underline">My Designs</Link>
@@ -874,8 +884,11 @@ const Custom = () => {
             <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
               How Our Custom Process Works
             </h2>
-            <p className="text-luxury-text-muted max-w-2xl mx-auto">
+            <p className="text-luxury-text-muted max-w-2xl mx-auto mb-2">
               From inspiration to finished piece, we guide you every step of the way.
+            </p>
+            <p className="text-sm text-luxury-text-muted/70 max-w-xl mx-auto">
+              AI helps you explore ideas. A Diamond District master jeweler reviews and refines every detail. No work begins without your approval.
             </p>
           </div>
           
