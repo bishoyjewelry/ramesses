@@ -51,15 +51,15 @@
     --sidebar-ring: 32 45% 42%;
 
     /* ============================================
-       PALETTE 1: SERVICE CORE (Rich Dark)
+       PALETTE 1: SERVICE CORE (Warm Neutrals)
        For: Repairs, About, FAQ, Policies, Contact, Footer
        ============================================ */
-    --service-bg-primary: 220 30% 10%;     /* Deep rich navy */
-    --service-bg-secondary: 220 25% 14%;   /* Lighter navy for contrast */
+    --service-bg-primary: 30 6% 15%;       /* Warm charcoal */
+    --service-bg-secondary: 35 15% 91%;    /* Light stone/taupe */
     --service-gold: 36 55% 50%;            /* Warm gold - visible */
     --service-gold-hover: 36 50% 42%;      /* Darker on hover */
     --service-text-primary: 0 0% 100%;     /* Pure white */
-    --service-text-secondary: 220 15% 82%; /* Light gray - HIGH CONTRAST */
+    --service-text-secondary: 30 8% 75%;   /* Warm light gray */
     --service-neutral: 45 20% 97%;         /* Warm off-white */
     --service-gold-text: 32 50% 28%;       /* Dark gold for light backgrounds */
 
@@ -78,8 +78,8 @@
     /* Legacy tokens (for compatibility) */
     --luxury-gold: 36 55% 50%;
     --luxury-gold-light: 36 40% 55%;
-    --luxury-dark: 220 30% 10%;
-    --luxury-charcoal: 220 25% 14%;
+    --luxury-dark: 30 6% 15%;              /* Warm charcoal (was navy) */
+    --luxury-charcoal: 30 8% 20%;          /* Slightly lighter warm charcoal */
     --luxury-cream: 45 18% 95%;
     --luxury-warm: 45 18% 95%;
     
