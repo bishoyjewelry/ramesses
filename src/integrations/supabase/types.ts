@@ -17,27 +17,54 @@ export type Database = {
       contact_submissions: {
         Row: {
           created_at: string
+          design_link: string | null
           email: string
           id: string
+          image_urls: string[] | null
+          intent_type: string | null
+          location: string | null
           message: string
           name: string
           phone: string | null
+          preferred_contact: string | null
+          related_design_id: string | null
+          related_repair_id: string | null
+          timeline_urgency: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string
+          design_link?: string | null
           email: string
           id?: string
+          image_urls?: string[] | null
+          intent_type?: string | null
+          location?: string | null
           message: string
           name: string
           phone?: string | null
+          preferred_contact?: string | null
+          related_design_id?: string | null
+          related_repair_id?: string | null
+          timeline_urgency?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string
+          design_link?: string | null
           email?: string
           id?: string
+          image_urls?: string[] | null
+          intent_type?: string | null
+          location?: string | null
           message?: string
           name?: string
           phone?: string | null
+          preferred_contact?: string | null
+          related_design_id?: string | null
+          related_repair_id?: string | null
+          timeline_urgency?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
