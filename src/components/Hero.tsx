@@ -2,39 +2,57 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Award, MapPin, Truck, Shield, FileText, Package, CheckCircle, Sparkles, Wrench } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-
 export const Hero = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const navigate = useNavigate();
-
   const handleStartRepair = () => {
     navigate("/repairs");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   };
-
-  const commonRepairs = [
-    { label: "Ring Resizing", icon: "💍" },
-    { label: "Broken Chain", icon: "⛓️" },
-    { label: "Prong Repair", icon: "💎" },
-    { label: "Stone Replacement", icon: "✨" },
-    { label: "Clasp Repair", icon: "🔗" },
-    { label: "Polishing & Cleaning", icon: "✦" },
-  ];
-  
-  return (
-    <>
+  const commonRepairs = [{
+    label: "Ring Resizing",
+    icon: "💍"
+  }, {
+    label: "Broken Chain",
+    icon: "⛓️"
+  }, {
+    label: "Prong Repair",
+    icon: "💎"
+  }, {
+    label: "Stone Replacement",
+    icon: "✨"
+  }, {
+    label: "Clasp Repair",
+    icon: "🔗"
+  }, {
+    label: "Polishing & Cleaning",
+    icon: "✦"
+  }];
+  return <>
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] sm:min-h-[55vh] flex items-center justify-center overflow-hidden bg-background pt-16 sm:pt-20">
-        <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* H1 Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-foreground mb-8 sm:mb-12 leading-[1.1] tracking-tight">
-              Custom Jewelry & Repairs
+      <section className="relative min-h-[60vh] sm:min-h-[65vh] flex items-center justify-center overflow-hidden bg-background pt-16 sm:pt-20">
+        <div className="container mx-auto px-4 py-12 sm:py-16 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Eyebrow */}
+            <p className="text-xs sm:text-sm font-medium tracking-widest uppercase text-primary mb-6 sm:mb-8">
+              NYC Diamond District Craftsmanship
+            </p>
+
+            {/* H1 Headline - SEO optimized */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-foreground mb-6 sm:mb-8 leading-[1.2] sm:leading-[1.25] tracking-tight">Design and nationwide repair handled in New York's Diamond District.<br className="hidden sm:block" />
+              <span className="block sm:inline"> by a 47th Street Master Jeweler</span>
             </h1>
             
-            {/* Subheadline */}
-            <p className="text-base sm:text-lg text-muted-foreground/80 font-body max-w-xl mx-auto leading-relaxed">
-              Design and nationwide repair, handled in New York's Diamond District.
+            {/* Subheadline with SEO keywords */}
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-10 sm:mb-12 leading-relaxed font-body max-w-2xl mx-auto">
+              Design from anywhere. Repair with confidence.
+              <br />
+              Handcrafted in New York's Diamond District.
             </p>
           </div>
         </div>
@@ -81,12 +99,7 @@ export const Hero = () => {
                 Tell us what needs fixing. We send an insured label, inspect it on video, and quote before any work begins.
               </p>
               <div className="flex flex-col gap-3">
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={handleStartRepair}
-                  className="w-full border border-border text-foreground hover:bg-secondary font-semibold px-6 py-5 text-base rounded-lg"
-                >
+                <Button size="lg" variant="outline" onClick={handleStartRepair} className="w-full border border-border text-foreground hover:bg-secondary font-semibold px-6 py-5 text-base rounded-lg">
                   Get a Free Quote
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -168,11 +181,7 @@ export const Hero = () => {
             
             {/* CTA */}
             <div className="text-center">
-              <Button 
-                onClick={handleStartRepair}
-                variant="outline"
-                className="border border-border text-foreground hover:bg-secondary font-semibold px-8 py-5 rounded"
-              >
+              <Button onClick={handleStartRepair} variant="outline" className="border border-border text-foreground hover:bg-secondary font-semibold px-8 py-5 rounded">
                 Get a Free Quote
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -193,18 +202,12 @@ export const Hero = () => {
             </h2>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-              {commonRepairs.map((repair, index) => (
-                <Link 
-                  key={index}
-                  to="/repairs"
-                  className="group bg-card hover:bg-background border border-border hover:border-primary/30 rounded-xl p-4 sm:p-5 text-center transition-all duration-200"
-                >
+              {commonRepairs.map((repair, index) => <Link key={index} to="/repairs" className="group bg-card hover:bg-background border border-border hover:border-primary/30 rounded-xl p-4 sm:p-5 text-center transition-all duration-200">
                   <span className="text-2xl mb-2 block">{repair.icon}</span>
                   <span className="text-sm sm:text-base font-medium text-foreground group-hover:text-primary transition-colors">
                     {repair.label}
                   </span>
-                </Link>
-              ))}
+                </Link>)}
             </div>
             
             <p className="text-center text-muted-foreground text-sm font-body">
@@ -213,6 +216,5 @@ export const Hero = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
