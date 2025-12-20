@@ -89,6 +89,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
         display: ["Playfair Display", "Georgia", "serif"],
+        hero: ["Cinzel", "Trajan Pro", "Times New Roman", "serif"],
       },
       fontSize: {
         // Small/helper text: 13-14px
