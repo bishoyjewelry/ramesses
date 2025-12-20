@@ -38,9 +38,20 @@ export const Hero = () => {
             </h1>
             
             {/* Subheadline */}
-            <p className="text-base sm:text-lg text-muted-foreground/75 max-w-md mx-auto leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-muted-foreground/75 max-w-md mx-auto leading-relaxed font-normal mb-8 sm:mb-10">
               Design and nationwide repair, handled in New York's Diamond District.
             </p>
+            
+            {/* Subtle CTA */}
+            <Link 
+              to="/custom" 
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+            >
+              <span className="border-b border-muted-foreground/30 group-hover:border-foreground/50 pb-0.5 transition-colors">
+                Start designing
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+            </Link>
           </div>
         </div>
       </section>
