@@ -13,7 +13,7 @@ export const Hero = () => {
   return (
     <>
       {/* ==================== 1. HERO SECTION ==================== */}
-      <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center pt-16">
+      <section className="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center pt-16">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -23,13 +23,13 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
         
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 py-28 sm:py-36">
+        <div className="relative z-10 container mx-auto px-4 py-20 sm:py-24">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="font-display text-white mb-6 sm:mb-8 font-normal text-5xl sm:text-6xl tracking-tight">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="text-base sm:text-subhead text-white/80 mb-14 sm:mb-16 font-normal tracking-wide">
+            <p className="text-base sm:text-subhead text-white/80 mb-10 sm:mb-12 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
