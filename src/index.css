@@ -10,42 +10,42 @@
 @layer base {
   :root {
     /* ============================================
-       STANDARDIZED LUXURY COLOR SYSTEM
+       LUXURY COLOR SYSTEM - Warm & Restrained
        ============================================ */
     
     /* Core Palette */
-    --color-ivory: 40 33% 95%;             /* #F7F4EF - Background */
-    --color-charcoal: 0 0% 12%;            /* #1F1F1F - Primary Text */
-    --color-muted-gray: 0 0% 44%;          /* #6F6F6F - Secondary Text */
-    --color-gold: 36 52% 54%;              /* #C79A4B - Accent / Primary CTA */
-    --color-gold-hover: 36 48% 44%;        /* Darker gold for hover */
-    --color-stone: 38 18% 87%;             /* #E5E1DA - Borders / Dividers */
-    --color-white: 0 0% 100%;              /* Pure white for cards */
+    --color-ivory: 42 30% 96%;              /* Warm off-white background */
+    --color-warm-black: 30 8% 15%;          /* Near-black with warmth */
+    --color-warm-gray: 30 5% 45%;           /* Muted warm gray for secondary text */
+    --color-gold: 38 45% 50%;               /* Single accent - refined gold */
+    --color-gold-hover: 38 40% 42%;         /* Darker gold for hover */
+    --color-stone: 35 15% 88%;              /* Warm stone for borders */
+    --color-cream: 40 25% 98%;              /* Soft cream for cards */
     
     /* Semantic Mappings */
     --background: var(--color-ivory);
-    --foreground: var(--color-charcoal);
+    --foreground: var(--color-warm-black);
 
-    --card: var(--color-white);
-    --card-foreground: var(--color-charcoal);
+    --card: var(--color-cream);
+    --card-foreground: var(--color-warm-black);
 
-    --popover: var(--color-white);
-    --popover-foreground: var(--color-charcoal);
+    --popover: var(--color-cream);
+    --popover-foreground: var(--color-warm-black);
 
     --primary: var(--color-gold);
-    --primary-foreground: var(--color-white);
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 25% 93%;               /* Slightly darker ivory */
-    --secondary-foreground: var(--color-charcoal);
+    --secondary: 40 20% 94%;
+    --secondary-foreground: var(--color-warm-black);
 
-    --muted: 40 20% 92%;
-    --muted-foreground: var(--color-muted-gray);
+    --muted: 38 15% 93%;
+    --muted-foreground: var(--color-warm-gray);
 
     --accent: var(--color-gold);
-    --accent-foreground: var(--color-white);
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 60% 50%;
-    --destructive-foreground: var(--color-white);
+    --destructive: 0 55% 48%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: var(--color-stone);
     --input: var(--color-stone);
@@ -58,89 +58,88 @@
     --section-padding-lg: clamp(6rem, 14vw, 10rem);
 
     /* Sidebar */
-    --sidebar-background: var(--color-white);
-    --sidebar-foreground: var(--color-charcoal);
-    --sidebar-primary: var(--color-charcoal);
-    --sidebar-primary-foreground: var(--color-white);
-    --sidebar-accent: 40 25% 93%;
-    --sidebar-accent-foreground: var(--color-charcoal);
+    --sidebar-background: var(--color-cream);
+    --sidebar-foreground: var(--color-warm-black);
+    --sidebar-primary: var(--color-warm-black);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 20% 94%;
+    --sidebar-accent-foreground: var(--color-warm-black);
     --sidebar-border: var(--color-stone);
     --sidebar-ring: var(--color-gold);
 
     /* ============================================
-       UNIFIED SERVICE & LUXURY TOKENS
-       (All warm, no navy/blue)
+       SERVICE & LUXURY TOKENS (Unified)
        ============================================ */
     --service-bg-primary: var(--color-ivory);
-    --service-bg-secondary: 40 25% 93%;
+    --service-bg-secondary: 40 20% 94%;
     --service-gold: var(--color-gold);
     --service-gold-hover: var(--color-gold-hover);
-    --service-text-primary: var(--color-charcoal);
-    --service-text-secondary: var(--color-muted-gray);
+    --service-text-primary: var(--color-warm-black);
+    --service-text-secondary: var(--color-warm-gray);
     --service-neutral: var(--color-ivory);
-    --service-gold-text: 36 45% 35%;
+    --service-gold-text: 38 40% 38%;
 
     --luxury-bg-primary: var(--color-ivory);
-    --luxury-bg-secondary: 40 25% 93%;
+    --luxury-bg-secondary: 40 20% 94%;
     --luxury-champagne: var(--color-gold);
     --luxury-champagne-hover: var(--color-gold-hover);
     --luxury-divider: var(--color-stone);
-    --luxury-text-primary: var(--color-charcoal);
-    --luxury-text-secondary: var(--color-muted-gray);
+    --luxury-text-primary: var(--color-warm-black);
+    --luxury-text-secondary: var(--color-warm-gray);
 
     /* Legacy tokens (mapped to new system) */
     --luxury-gold: var(--color-gold);
-    --luxury-gold-light: 36 45% 60%;
-    --luxury-dark: var(--color-charcoal);
-    --luxury-charcoal: var(--color-charcoal);
-    --luxury-cream: 40 25% 93%;
-    --luxury-warm: 40 25% 93%;
+    --luxury-gold-light: 38 40% 58%;
+    --luxury-dark: var(--color-warm-black);
+    --luxury-charcoal: var(--color-warm-black);
+    --luxury-cream: 40 20% 94%;
+    --luxury-warm: 40 20% 94%;
     
-    /* Shadows - minimal, understated */
-    --shadow-luxury: 0 4px 24px -6px hsl(var(--color-charcoal) / 0.08);
-    --shadow-soft: 0 2px 12px -2px hsl(var(--color-charcoal) / 0.05);
-    --shadow-service: 0 4px 20px -4px hsl(var(--color-charcoal) / 0.1);
+    /* Shadows - minimal, no heavy effects */
+    --shadow-luxury: 0 2px 16px -4px hsl(var(--color-warm-black) / 0.06);
+    --shadow-soft: 0 1px 8px -2px hsl(var(--color-warm-black) / 0.04);
+    --shadow-service: 0 2px 12px -3px hsl(var(--color-warm-black) / 0.06);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --background: 0 0% 10%;
-    --foreground: 40 10% 96%;
+    --background: 30 8% 8%;
+    --foreground: 40 10% 94%;
 
-    --card: 0 0% 14%;
-    --card-foreground: 40 10% 96%;
+    --card: 30 8% 11%;
+    --card-foreground: 40 10% 94%;
 
-    --popover: 0 0% 14%;
-    --popover-foreground: 40 10% 96%;
+    --popover: 30 8% 11%;
+    --popover-foreground: 40 10% 94%;
 
     --primary: var(--color-gold);
-    --primary-foreground: 0 0% 10%;
+    --primary-foreground: 30 8% 8%;
 
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 40 10% 96%;
+    --secondary: 30 6% 16%;
+    --secondary-foreground: 40 10% 94%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 30 6% 18%;
+    --muted-foreground: 30 5% 60%;
 
     --accent: var(--color-gold);
-    --accent-foreground: 0 0% 10%;
+    --accent-foreground: 30 8% 8%;
 
-    --destructive: 0 60% 45%;
+    --destructive: 0 55% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 22%;
-    --input: 0 0% 22%;
+    --border: 30 6% 20%;
+    --input: 30 6% 20%;
     --ring: var(--color-gold);
     
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 40 10% 96%;
+    --sidebar-background: 30 8% 8%;
+    --sidebar-foreground: 40 10% 94%;
     --sidebar-primary: var(--color-gold);
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 40 10% 96%;
-    --sidebar-border: 0 0% 22%;
+    --sidebar-primary-foreground: 30 8% 8%;
+    --sidebar-accent: 30 6% 16%;
+    --sidebar-accent-foreground: 40 10% 94%;
+    --sidebar-border: 30 6% 20%;
     --sidebar-ring: var(--color-gold);
   }
 }
