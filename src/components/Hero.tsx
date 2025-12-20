@@ -15,7 +15,6 @@ export const Hero = () => {
       <section className="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center bg-background pt-20 sm:pt-24">
         <div className="container mx-auto px-4 py-28 sm:py-36">
           <div className="max-w-2xl mx-auto text-center">
-            {/* Headline */}
             <h1 
               className="font-display text-foreground mb-6 sm:mb-8 font-normal" 
               style={{ 
@@ -27,12 +26,10 @@ export const Hero = () => {
               Custom Jewelry & Repairs
             </h1>
             
-            {/* Subheadline */}
             <p className="text-base sm:text-lg text-muted-foreground/60 mb-14 sm:mb-16 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
-            {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               <Link to="/custom">
                 <Button 
@@ -59,7 +56,7 @@ export const Hero = () => {
       <section className="py-8 sm:py-10 bg-background">
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground/50 tracking-wide font-light">
-            Three generations of master jewelers on New York's 47th Street — serving clients nationwide
+            Master jewelers crafting and restoring fine jewelry on NYC's 47th Street — serving clients nationwide.
           </p>
         </div>
       </section>
