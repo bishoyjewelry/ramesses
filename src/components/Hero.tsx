@@ -12,41 +12,41 @@ export const Hero = () => {
   return (
     <>
       {/* ==================== 1. HERO SECTION ==================== */}
-      <section className="relative min-h-[60vh] sm:min-h-[65vh] flex items-center justify-center bg-background pt-20 sm:pt-24">
-        <div className="container mx-auto px-4 py-24 sm:py-32">
+      <section className="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center bg-background pt-20 sm:pt-24">
+        <div className="container mx-auto px-4 py-28 sm:py-36">
           <div className="max-w-2xl mx-auto text-center">
             {/* Headline */}
             <h1 
-              className="font-display text-foreground mb-5 sm:mb-6 font-normal" 
+              className="font-display text-foreground mb-6 sm:mb-8 font-normal" 
               style={{ 
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)', 
-                lineHeight: '1.05', 
-                letterSpacing: '0.02em' 
+                fontSize: 'clamp(2.75rem, 7vw, 4.5rem)', 
+                lineHeight: '1.02', 
+                letterSpacing: '0.01em' 
               }}
             >
               Custom Jewelry & Repairs
             </h1>
             
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-muted-foreground/70 mb-10 sm:mb-12 font-normal">
+            <p className="text-base sm:text-lg text-muted-foreground/60 mb-14 sm:mb-16 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               <Link to="/custom">
                 <Button 
                   size="lg" 
-                  className="bg-foreground text-background hover:bg-foreground/90 font-medium px-8 py-6 text-base rounded-none min-w-[220px]"
+                  className="bg-foreground text-background hover:bg-foreground/90 font-normal px-10 py-6 text-sm tracking-wide rounded-none min-w-[200px]"
                 >
                   Start a Custom Design
                 </Button>
               </Link>
               <Button 
                 size="lg" 
-                variant="outline"
+                variant="ghost"
                 onClick={handleStartRepair}
-                className="border-foreground/20 text-foreground hover:bg-foreground/5 font-medium px-8 py-6 text-base rounded-none min-w-[220px]"
+                className="text-muted-foreground hover:text-foreground hover:bg-transparent font-normal px-6 py-6 text-sm tracking-wide"
               >
                 Mail-In Repair
               </Button>
@@ -56,9 +56,9 @@ export const Hero = () => {
       </section>
 
       {/* ==================== 2. QUIET CREDIBILITY STRIP ==================== */}
-      <section className="py-6 sm:py-8 bg-background border-y border-border/50">
+      <section className="py-8 sm:py-10 bg-background">
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground/60 tracking-wide">
+          <p className="text-center text-sm text-muted-foreground/50 tracking-wide font-light">
             Three generations of master jewelers on New York's 47th Street — serving clients nationwide
           </p>
         </div>

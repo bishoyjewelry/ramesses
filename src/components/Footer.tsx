@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, MessageCircle, Instagram } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logoIcon from "@/assets/logo-icon.png";
 import logoText from "@/assets/logo-text-only.png";
@@ -8,89 +7,50 @@ export const Footer = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-secondary py-20 border-t border-border">
+    <footer className="bg-background py-20 sm:py-24 border-t border-border/30">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Logo & Tagline */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-6">
               <img 
                 src={logoIcon} 
                 alt="Ramesses Jewelry" 
-                className="h-14 w-auto"
+                className="h-10 w-auto opacity-80"
               />
               <img 
                 src={logoText} 
                 alt="Ramesses Jewelry" 
-                className="h-8 w-auto"
+                className="h-5 w-auto opacity-80"
               />
             </div>
-            <p className="text-muted-foreground max-w-md leading-relaxed mb-4">
-              {t('footer.tagline')}
-            </p>
-            <p className="text-xs text-muted-foreground/70 max-w-md">
-              Diamond District craftsmanship since 1992. Fully insured. No work without your approval.
+            <p className="text-sm text-muted-foreground/50 max-w-sm mx-auto">
+              Diamond District craftsmanship since 1992
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h2 className="font-semibold mb-6 text-primary text-lg">Quick Links</h2>
-            <div className="space-y-3">
-              <Link to="/repairs" className="block text-muted-foreground hover:text-primary transition-colors">
-                {t('nav.repairs')}
-              </Link>
-              <Link to="/custom" className="block text-muted-foreground hover:text-primary transition-colors">
-                {t('nav.custom')}
-              </Link>
-              <Link to="/shop" className="block text-muted-foreground hover:text-primary transition-colors">
-                {t('nav.shop')}
-              </Link>
-              <Link to="/contact" className="block text-muted-foreground hover:text-primary transition-colors">
-                {t('nav.contact')}
-              </Link>
-            </div>
+          {/* Links - minimal horizontal layout */}
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-16 text-sm">
+            <Link to="/repairs" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Repairs
+            </Link>
+            <Link to="/custom" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Custom
+            </Link>
+            <Link to="/shop" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Shop
+            </Link>
+            <Link to="/contact" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Contact
+            </Link>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h2 className="font-semibold mb-6 text-primary text-lg">Contact</h2>
-            <div className="space-y-4 text-muted-foreground text-sm">
-              <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
-                <span>47th Street, NYC<br />(Address coming soon)</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 flex-shrink-0 text-primary" />
-                <span>(Phone coming soon)</span>
-              </div>
-              <p>{t('footer.hours')}</p>
-            </div>
-            <div className="flex gap-4 mt-6">
-              <a 
-                href="https://wa.me/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                aria-label="Contact us on WhatsApp"
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-all"
-              >
-                <MessageCircle className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                aria-label="Follow us on Instagram"
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-all"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-            </div>
+          {/* Copyright */}
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground/40">
+              &copy; {new Date().getFullYear()} Ramesses Jewelry. {t('footer.rights')}
+            </p>
           </div>
-        </div>
-
-        <div className="border-t border-border pt-8 text-center text-muted-foreground text-sm">
-          <p>&copy; {new Date().getFullYear()} Ramesses Jewelry. {t('footer.rights')}</p>
         </div>
       </div>
     </footer>
