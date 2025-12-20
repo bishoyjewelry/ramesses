@@ -20,7 +20,7 @@ export const HomeContent = () => {
               <div className="aspect-[4/3] bg-secondary/40 mb-8 flex items-center justify-center">
                 <span className="text-muted-foreground/30 text-xs tracking-widest uppercase">Image</span>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-4 font-normal tracking-wide">
+              <h2 className="font-display text-3xl sm:text-4xl text-foreground mb-4 font-normal tracking-tight">
                 Custom Jewelry
               </h2>
               <p className="text-muted-foreground/70 text-sm mb-8 max-w-xs mx-auto md:mx-0">
@@ -29,7 +29,7 @@ export const HomeContent = () => {
               <Link to="/custom">
                 <Button 
                   variant="outline" 
-                  className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-normal px-8 py-5 text-sm tracking-wide rounded-none transition-all"
+                  className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-medium px-8 py-5 text-button tracking-wide rounded-none transition-all"
                 >
                   Start a Custom Design
                 </Button>
@@ -41,7 +41,7 @@ export const HomeContent = () => {
               <div className="aspect-[4/3] bg-secondary/40 mb-8 flex items-center justify-center">
                 <span className="text-muted-foreground/30 text-xs tracking-widest uppercase">Image</span>
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-4 font-normal tracking-wide">
+              <h2 className="font-display text-3xl sm:text-4xl text-foreground mb-4 font-normal tracking-tight">
                 Mail-In Repairs
               </h2>
               <p className="text-muted-foreground/70 text-sm mb-8 max-w-xs mx-auto md:mx-0">
@@ -50,7 +50,7 @@ export const HomeContent = () => {
               <Button 
                 variant="outline" 
                 onClick={handleStartRepair}
-                className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-normal px-8 py-5 text-sm tracking-wide rounded-none transition-all"
+                className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-medium px-8 py-5 text-button tracking-wide rounded-none transition-all"
               >
                 Start a Repair
               </Button>
@@ -62,7 +62,7 @@ export const HomeContent = () => {
       {/* ==================== 4. CONDENSED TRUST BLOCK ==================== */}
       <section className="py-12 sm:py-14 bg-background">
         <div className="container mx-auto px-4">
-          <p className="text-center text-xs text-muted-foreground/50 tracking-wide">
+          <p className="text-center text-xs text-muted-foreground/50 tracking-wide font-normal">
             Fully insured • No work without approval • Track everything in your account
           </p>
         </div>
@@ -72,14 +72,7 @@ export const HomeContent = () => {
       <section className="py-28 sm:py-36 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
-            <h2 
-              className="font-display text-foreground mb-10 sm:mb-12 font-normal" 
-              style={{ 
-                fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', 
-                lineHeight: '1.1', 
-                letterSpacing: '0.01em' 
-              }}
-            >
+            <h2 className="font-display text-foreground mb-10 sm:mb-12 font-normal text-3xl sm:text-4xl tracking-tight">
               Begin Your Custom Piece
             </h2>
             
@@ -87,7 +80,7 @@ export const HomeContent = () => {
               <Link to="/custom">
                 <Button 
                   size="lg" 
-                  className="bg-foreground text-background hover:bg-foreground/90 font-normal px-10 py-6 text-sm tracking-wide rounded-none min-w-[200px]"
+                  className="bg-foreground text-background hover:bg-foreground/90 font-medium px-10 py-6 text-button tracking-wide rounded-none min-w-[200px]"
                 >
                   Start a Custom Design
                 </Button>
@@ -96,7 +89,7 @@ export const HomeContent = () => {
                 size="lg" 
                 variant="ghost"
                 onClick={handleStartRepair}
-                className="text-muted-foreground hover:text-foreground hover:bg-transparent font-normal text-sm tracking-wide"
+                className="text-muted-foreground hover:text-foreground hover:bg-transparent font-medium text-button tracking-wide"
               >
                 Mail-In Repair
               </Button>
