@@ -39,14 +39,14 @@ export const HomeContent = () => {
                 Engagement Rings
               </h2>
               <p className="text-muted-foreground text-sm mb-8 max-w-xs mx-auto">
-                Timeless designs for your forever moment.
+                Bespoke engagement rings, made by master jewelers.
               </p>
               <Link to="/engagement-rings">
                 <Button 
                   variant="outline" 
                   className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-medium px-8 py-5 text-button tracking-wide rounded-none transition-all w-full sm:w-auto"
                 >
-                  View Collection
+                  Design an Engagement Ring
                 </Button>
               </Link>
             </div>
