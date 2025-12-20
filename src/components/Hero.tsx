@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Award, MapPin, Truck, Shield, FileText, Package, CheckCircle, Sparkles, Wrench } from "lucide-react";
+import { ArrowRight, Award, Shield, CheckCircle, FileText, Sparkles, Wrench } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Hero = () => {
@@ -11,15 +11,6 @@ export const Hero = () => {
     navigate("/repairs");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  const commonRepairs = [
-    { label: "Ring Resizing", icon: "💍" },
-    { label: "Broken Chain", icon: "⛓️" },
-    { label: "Prong Repair", icon: "💎" },
-    { label: "Stone Replacement", icon: "✨" },
-    { label: "Clasp Repair", icon: "🔗" },
-    { label: "Polishing & Cleaning", icon: "✦" },
-  ];
   
   return (
     <>
@@ -135,97 +126,6 @@ export const Hero = () => {
               <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
               <span className="text-xs sm:text-sm font-medium text-foreground">Track Everything Online</span>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mini "How Mail-In Repair Works" Section */}
-      <section className="py-14 sm:py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-serif text-foreground text-center mb-10">
-              How Our Mail-In Jewelry Repair Works
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-8 md:gap-10 mb-10">
-              {/* Step 1 */}
-              <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">1. Describe Your Repair</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Tell us what needs fixing. Photos help but are not required.
-                </p>
-              </div>
-              
-              {/* Step 2 */}
-              <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Package className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">2. Ship It Insured</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  We email you a prepaid, insured label. Or drop off in NYC.
-                </p>
-              </div>
-              
-              {/* Step 3 */}
-              <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">3. Approve, Then We Repair</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  We inspect it on video and send a quote. No work starts without your OK.
-                </p>
-              </div>
-            </div>
-            
-            {/* CTA */}
-            <div className="text-center">
-              <Button 
-                onClick={handleStartRepair}
-                variant="outline"
-                className="border border-border text-foreground hover:bg-secondary font-semibold px-8 py-5 rounded"
-              >
-                Get a Free Quote
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <p className="text-muted-foreground text-xs mt-3 font-body">
-                Takes about 2 minutes. Track your repair anytime in your account.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Common Jewelry Repairs */}
-      <section className="py-14 sm:py-16 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-serif text-foreground text-center mb-10">
-              Common Jewelry Repairs
-            </h2>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-              {commonRepairs.map((repair, index) => (
-                <Link 
-                  key={index}
-                  to="/repairs"
-                  className="group bg-card hover:bg-background border border-border hover:border-primary/30 rounded-xl p-4 sm:p-5 text-center transition-all duration-200"
-                >
-                  <span className="text-2xl mb-2 block">{repair.icon}</span>
-                  <span className="text-sm sm:text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                    {repair.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
-            
-            <p className="text-center text-muted-foreground text-sm font-body">
-              Select a repair type to start, or describe your issue in the form.
-            </p>
           </div>
         </div>
       </section>
