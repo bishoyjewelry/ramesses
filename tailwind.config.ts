@@ -87,27 +87,26 @@ export default {
         },
       },
       fontFamily: {
-        serif: ["Playfair Display", "Georgia", "serif"],
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        body: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
       },
       fontSize: {
-        // UI labels / helper text: 13-14px
-        "xs": ["0.8125rem", { lineHeight: "1.5", letterSpacing: "0.02em" }],
-        "sm": ["0.875rem", { lineHeight: "1.5", letterSpacing: "0.02em" }],
-        // Body text: 16-18px
-        "base": ["1rem", { lineHeight: "1.6" }],
-        "lg": ["1.125rem", { lineHeight: "1.6" }],
-        // H3: 22-24px
-        "xl": ["1.375rem", { lineHeight: "1.3" }],
-        "2xl": ["1.5rem", { lineHeight: "1.3" }],
-        // H2: 36-40px
-        "3xl": ["2rem", { lineHeight: "1.2" }],
-        "4xl": ["2.25rem", { lineHeight: "1.2" }],
-        // H1: 56-64px desktop / 36-40px mobile
-        "5xl": ["2.5rem", { lineHeight: "1.1" }],
-        "6xl": ["3.5rem", { lineHeight: "1.1" }],
-        "7xl": ["4rem", { lineHeight: "1.1" }],
+        // Small/helper text: 13-14px
+        "xs": ["0.8125rem", { lineHeight: "1.5" }],
+        "sm": ["0.875rem", { lineHeight: "1.5" }],
+        // Body text: 17px desktop, 16px mobile
+        "base": ["1.0625rem", { lineHeight: "1.65" }],
+        // Navigation/buttons
+        "nav": ["0.875rem", { lineHeight: "1.2" }],
+        "button": ["0.9375rem", { lineHeight: "1.2" }],
+        // H3: 22px desktop / 20px mobile
+        "xl": ["1.25rem", { lineHeight: "1.25" }],
+        "2xl": ["1.375rem", { lineHeight: "1.25" }],
+        // H2: 32px desktop / 26px mobile
+        "3xl": ["1.625rem", { lineHeight: "1.2" }],
+        "4xl": ["2rem", { lineHeight: "1.2" }],
+        // H1: 48px desktop / 34px mobile
+        "5xl": ["2.125rem", { lineHeight: "1.1" }],
+        "6xl": ["3rem", { lineHeight: "1.1" }],
       },
       fontWeight: {
         normal: "400",

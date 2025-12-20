@@ -81,12 +81,12 @@ export const Navigation = () => {
           </Link>
 
           {/* Desktop Navigation - Primary Links (all text-only) */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-sm font-medium transition-colors relative group ${
+                className={`text-sm font-medium leading-tight transition-colors relative group ${
                   location.pathname === link.to 
                     ? 'text-foreground' 
                     : 'text-muted-foreground hover:text-foreground'
