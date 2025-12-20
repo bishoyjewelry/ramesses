@@ -24,14 +24,14 @@ export const HomeContent = () => {
                 Custom Jewelry
               </h2>
               <p className="text-muted-foreground/70 text-sm mb-8 max-w-xs mx-auto md:mx-0">
-                Describe your vision — we bring it to life.
+                Designed from scratch. Crafted to last.
               </p>
               <Link to="/custom">
                 <Button 
                   variant="outline" 
                   className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-normal px-8 py-5 text-sm tracking-wide rounded-none transition-all"
                 >
-                  Start Designing
+                  Start a Custom Design
                 </Button>
               </Link>
             </div>
@@ -45,14 +45,14 @@ export const HomeContent = () => {
                 Mail-In Repairs
               </h2>
               <p className="text-muted-foreground/70 text-sm mb-8 max-w-xs mx-auto md:mx-0">
-                Ship it to us, insured. We handle the rest.
+                Expert repairs, fully insured, handled in NYC.
               </p>
               <Button 
                 variant="outline" 
                 onClick={handleStartRepair}
                 className="border-foreground/15 text-foreground hover:bg-foreground hover:text-background font-normal px-8 py-5 text-sm tracking-wide rounded-none transition-all"
               >
-                Get a Quote
+                Start a Repair
               </Button>
             </div>
           </div>
@@ -62,13 +62,9 @@ export const HomeContent = () => {
       {/* ==================== 4. CONDENSED TRUST BLOCK ==================== */}
       <section className="py-12 sm:py-14 bg-background">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-2 text-xs text-muted-foreground/50 tracking-wide">
-            <span>Fully insured shipping</span>
-            <span className="hidden sm:inline">·</span>
-            <span>No work without your approval</span>
-            <span className="hidden sm:inline">·</span>
-            <span>Track repairs in your account</span>
-          </div>
+          <p className="text-center text-xs text-muted-foreground/50 tracking-wide">
+            Fully insured • No work without approval • Track everything in your account
+          </p>
         </div>
       </section>
 
@@ -84,7 +80,7 @@ export const HomeContent = () => {
                 letterSpacing: '0.01em' 
               }}
             >
-              Ready to begin?
+              Begin Your Custom Piece
             </h2>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
