@@ -474,6 +474,77 @@ const Custom = () => {
         </div>
       </section>
 
+      {/* ==================== 4-STEP VISUAL PROCESS ==================== */}
+      <section className="py-14 bg-luxury-bg border-y border-luxury-divider">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Steps */}
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 mb-10">
+              {/* Step 1 — Explore Ideas */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">1</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Explore Ideas</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Generate instant concepts or start with inspiration.
+                </p>
+              </div>
+              
+              {/* Step 2 — Refine Direction */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">2</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Palette className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Refine Direction</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Adjust styles, stones, and details at your pace.
+                </p>
+              </div>
+              
+              {/* Step 3 — Jeweler Review */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">3</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <FileCheck className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Jeweler Review</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  A master jeweler reviews feasibility and pricing.
+                </p>
+              </div>
+              
+              {/* Step 4 — Crafted in NYC */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">4</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Gem className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Crafted in NYC</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Your piece is made in New York's Diamond District.
+                </p>
+              </div>
+            </div>
+            
+            {/* Reassurance line */}
+            <p className="text-center text-xs text-luxury-text-muted/80 font-body">
+              No commitment until you approve the final design.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* FORM SECTION */}
       <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
