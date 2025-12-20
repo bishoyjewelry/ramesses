@@ -369,6 +369,63 @@ export default function EngagementRings() {
         </div>
       </section>
 
+      {/* ==================== 3-STEP PROCESS VISUALIZATION ==================== */}
+      <section className="py-12 bg-luxury-bg border-b border-luxury-divider">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            {/* Steps */}
+            <div className="grid md:grid-cols-3 gap-8 md:gap-6 mb-8">
+              {/* Step 1 — Discover Styles */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">1</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Discover Styles</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Explore ring styles and proportions.
+                </p>
+              </div>
+              
+              {/* Step 2 — Design Together */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">2</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Heart className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Design Together</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Generate concepts, then refine with a jeweler.
+                </p>
+              </div>
+              
+              {/* Step 3 — Create with Confidence */}
+              <div className="text-center">
+                <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-base font-serif font-semibold text-luxury-champagne">3</span>
+                </div>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Gem className="w-4 h-4 text-luxury-champagne" />
+                  <h3 className="text-sm font-semibold text-luxury-text">Create with Confidence</h3>
+                </div>
+                <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
+                  Final details approved before crafting.
+                </p>
+              </div>
+            </div>
+            
+            {/* Microcopy */}
+            <p className="text-center text-xs text-luxury-text-muted/80 font-body italic">
+              Designed to guide — never to rush.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* STEP 1: STYLE SELECTION */}
       <section id="style-selection" className="py-12 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
