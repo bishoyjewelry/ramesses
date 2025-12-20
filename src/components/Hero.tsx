@@ -54,15 +54,6 @@ export const Hero = () => {
           </div>
         </div>
       </section>
-
-      {/* ==================== 2. QUIET CREDIBILITY STRIP ==================== */}
-      <section className="py-6 sm:py-8 bg-background">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-xs sm:text-sm text-muted-foreground/50 tracking-widest uppercase font-normal">
-            NYC Diamond District • Master Jewelers • Nationwide Service
-          </p>
-        </div>
-      </section>
     </>
   );
 };

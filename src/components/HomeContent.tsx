@@ -66,12 +66,15 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      {/* ==================== 3. AUTHORITY / CREDIBILITY BAND ==================== */}
-      <section className="py-12 sm:py-14 bg-secondary/20">
+      {/* ==================== 3. AUTHORITY BAND ==================== */}
+      <section className="py-14 sm:py-16 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-foreground/70 text-sm sm:text-base font-normal">
-              Fully insured nationwide service — no work without your approval.
+            <p className="text-foreground/80 text-base sm:text-lg font-normal leading-relaxed">
+              Crafted and restored by master jewelers on NYC's 47th Street.
+            </p>
+            <p className="text-muted-foreground text-sm sm:text-base mt-2">
+              Serving clients nationwide with fully insured service.
             </p>
           </div>
         </div>
