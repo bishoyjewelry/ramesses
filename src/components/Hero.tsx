@@ -24,12 +24,12 @@ export const Hero = () => {
         
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-20 sm:py-24">
-          <div className="max-w-2xl mx-auto text-center">
-            <h1 className="font-display text-white mb-6 sm:mb-8 font-normal text-5xl sm:text-6xl tracking-tight">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="font-display text-white mb-5 sm:mb-6 font-normal text-[2.75rem] sm:text-[3.5rem] md:text-[4rem] tracking-tight leading-[1.1]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="text-base sm:text-subhead text-white/80 mb-10 sm:mb-12 font-normal tracking-wide">
+            <p className="text-lg sm:text-xl text-white/85 mb-8 sm:mb-10 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
@@ -56,10 +56,10 @@ export const Hero = () => {
       </section>
 
       {/* ==================== 2. QUIET CREDIBILITY STRIP ==================== */}
-      <section className="py-10 sm:py-12 bg-background">
+      <section className="py-6 sm:py-8 bg-background">
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground/60 tracking-wide font-normal">
-            Master jewelers crafting and restoring fine jewelry on NYC's 47th Street — serving clients nationwide.
+          <p className="text-center text-xs sm:text-sm text-muted-foreground/50 tracking-widest uppercase font-normal">
+            NYC Diamond District • Master Jewelers • Nationwide Service
           </p>
         </div>
       </section>
