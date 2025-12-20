@@ -13,31 +13,31 @@ export const Hero = () => {
   return (
     <>
       {/* ==================== 1. HERO SECTION ==================== */}
-      <section className="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center pt-16">
+      <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-end justify-center pt-16 pb-16 sm:pb-20">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroCraftsmanship})` }}
         />
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/70" />
         
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 py-20 sm:py-24">
+        <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-display text-white mb-5 sm:mb-6 font-normal text-[2.75rem] sm:text-[3.5rem] md:text-[4rem] tracking-tight leading-[1.1]">
+            <h1 className="font-display text-white mb-4 sm:mb-5 font-normal text-[3rem] sm:text-[4rem] md:text-[4.5rem] tracking-tight leading-[1.05]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="text-lg sm:text-xl text-white/85 mb-8 sm:mb-10 font-normal tracking-wide">
+            <p className="text-lg sm:text-xl text-white/80 mb-8 sm:mb-10 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link to="/custom">
                 <Button 
                   size="lg" 
-                  className="bg-white text-foreground hover:bg-white/90 font-medium px-10 py-6 text-button tracking-wide rounded-none min-w-[200px]"
+                  className="bg-white text-foreground hover:bg-white/95 font-medium px-12 py-7 text-[15px] tracking-wide rounded-none min-w-[220px] shadow-lg"
                 >
                   Start a Custom Design
                 </Button>
@@ -46,7 +46,7 @@ export const Hero = () => {
                 size="lg" 
                 variant="ghost"
                 onClick={handleStartRepair}
-                className="text-white/90 hover:text-white hover:bg-white/10 font-medium px-6 py-6 text-button tracking-wide"
+                className="text-white/70 hover:text-white hover:bg-transparent font-normal px-6 py-6 text-sm tracking-wide"
               >
                 Mail-In Repair
               </Button>
