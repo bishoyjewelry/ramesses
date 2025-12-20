@@ -33,7 +33,7 @@ export const Hero = () => {
             </p>
             
             {/* H1 Headline */}
-            <h1 className="text-foreground mb-6 sm:mb-8 font-medium" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: '1.05', letterSpacing: '-0.02em' }}>
+            <h1 className="font-display text-foreground mb-6 sm:mb-8 font-normal tracking-wide" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: '1.05', letterSpacing: '0.03em' }}>
               Custom Jewelry & Repairs
             </h1>
             
