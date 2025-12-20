@@ -46,8 +46,8 @@ const Repairs = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* ==================== HERO — PROCESS FIRST ==================== */}
-      <section className="pt-28 pb-16 bg-secondary relative overflow-hidden">
+      {/* ==================== HERO ==================== */}
+      <section className="pt-28 pb-12 bg-secondary relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium mb-4 text-foreground">
@@ -56,58 +56,66 @@ const Repairs = () => {
             <p className="text-lg text-muted-foreground mb-3 font-body">
               Handled by a Diamond District master jeweler with 30+ years at the bench.
             </p>
-            <p className="text-sm text-muted-foreground/70 mb-14 font-body">
+            <p className="text-sm text-muted-foreground/70 font-body">
               Fully insured from pickup to delivery. No work begins until you approve.
             </p>
           </div>
-          
-          {/* 3-Step Process Block */}
+        </div>
+      </section>
+
+      {/* ==================== 3-STEP VISUAL PROCESS ==================== */}
+      <section className="py-14 bg-background border-b border-border">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 md:gap-10 mb-12">
-              {/* Step 1 */}
+            {/* Steps */}
+            <div className="grid md:grid-cols-3 gap-8 md:gap-6 mb-10">
+              {/* Step 1 — Send It */}
               <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-lg font-serif font-semibold text-primary">1</span>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Step 1 — Start Online</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  Tell us about your jewelry. Photos help but aren't required. Not sure what's wrong? That's okay — we'll figure it out.
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Package className="w-4 h-4 text-primary" />
+                  <h3 className="text-base font-semibold text-foreground">Send It</h3>
+                </div>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">
+                  Submit your repair and receive insured shipping instructions.
                 </p>
               </div>
               
-              {/* Step 2 */}
+              {/* Step 2 — We Evaluate */}
               <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Package className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-lg font-serif font-semibold text-primary">2</span>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Step 2 — Ship or Drop Off</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  We send you a prepaid, insured shipping label. Your piece is covered from the moment it leaves your hands.
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <FileText className="w-4 h-4 text-primary" />
+                  <h3 className="text-base font-semibold text-foreground">We Evaluate</h3>
+                </div>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">
+                  Our NYC jeweler inspects your piece and sends a quote.
                 </p>
               </div>
               
-              {/* Step 3 */}
+              {/* Step 3 — You Approve */}
               <div className="text-center">
-                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-lg font-serif font-semibold text-primary">3</span>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Step 3 — Approve, Then We Repair</h3>
-                <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                  We inspect your piece on video and send a detailed quote. No work starts without your written approval.
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <CheckCircle className="w-4 h-4 text-primary" />
+                  <h3 className="text-base font-semibold text-foreground">You Approve</h3>
+                </div>
+                <p className="text-sm text-muted-foreground font-body leading-relaxed">
+                  Work begins only after approval. Tracked until return.
                 </p>
               </div>
             </div>
             
-            {/* Primary CTA */}
-            <div className="text-center">
-              <Button 
-                onClick={() => scrollToForm()}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 text-lg font-medium rounded"
-              >
-                Start Mail-In Repair
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
+            {/* Reassurance line */}
+            <p className="text-center text-xs text-muted-foreground/80 font-body tracking-wide">
+              Fully insured • No work without approval • NYC Diamond District
+            </p>
           </div>
         </div>
       </section>
