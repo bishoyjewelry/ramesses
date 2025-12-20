@@ -24,16 +24,21 @@ export const Hero = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] sm:min-h-[55vh] flex items-center justify-center overflow-hidden bg-background pt-16 sm:pt-20">
-        <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
+      <section className="relative min-h-[55vh] sm:min-h-[60vh] flex items-center justify-center overflow-hidden bg-background pt-20 sm:pt-24">
+        <div className="container mx-auto px-4 py-20 sm:py-28 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
+            {/* Overline */}
+            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-6 sm:mb-8">
+              NYC Diamond District Craftsmanship
+            </p>
+            
             {/* H1 Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-foreground mb-8 sm:mb-12 leading-[1.1] tracking-tight">
+            <h1 className="text-foreground mb-6 sm:mb-8 font-medium" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: '1.05', letterSpacing: '-0.02em' }}>
               Custom Jewelry & Repairs
             </h1>
             
             {/* Subheadline */}
-            <p className="text-base sm:text-lg text-muted-foreground/80 font-body max-w-xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground/75 max-w-md mx-auto leading-relaxed font-normal">
               Design and nationwide repair, handled in New York's Diamond District.
             </p>
           </div>
