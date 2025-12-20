@@ -94,38 +94,41 @@ export default {
         // Small/helper text: 13-14px
         "xs": ["0.8125rem", { lineHeight: "1.5" }],
         "sm": ["0.875rem", { lineHeight: "1.5" }],
-        // Body text: 17px desktop, 16px mobile
-        "base": ["1.0625rem", { lineHeight: "1.65" }],
-        // Navigation/buttons
+        // Body text: 16px desktop, 15px mobile
+        "base": ["0.9375rem", { lineHeight: "1.55" }],
+        // Buttons: 14-15px, weight 500
+        "button": ["0.875rem", { lineHeight: "1.2", fontWeight: "500" }],
+        // Navigation
         "nav": ["0.875rem", { lineHeight: "1.2" }],
-        "button": ["0.9375rem", { lineHeight: "1.2" }],
-        // H3: 22px desktop / 20px mobile
-        "xl": ["1.25rem", { lineHeight: "1.25" }],
-        "2xl": ["1.375rem", { lineHeight: "1.25" }],
+        // Subheadline: 16-18px
+        "subhead": ["1rem", { lineHeight: "1.4" }],
+        // H3: 24px desktop / 20px mobile
+        "xl": ["1.25rem", { lineHeight: "1.2" }],
+        "2xl": ["1.5rem", { lineHeight: "1.2" }],
         // H2: 32px desktop / 26px mobile
-        "3xl": ["1.625rem", { lineHeight: "1.2" }],
-        "4xl": ["2rem", { lineHeight: "1.2" }],
-        // H1: 48px desktop / 34px mobile
-        "5xl": ["2.125rem", { lineHeight: "1.1" }],
-        "6xl": ["3rem", { lineHeight: "1.1" }],
+        "3xl": ["1.625rem", { lineHeight: "1.15" }],
+        "4xl": ["2rem", { lineHeight: "1.15" }],
+        // H1: 54px desktop / 36px mobile - Hero
+        "5xl": ["2.25rem", { lineHeight: "1.08" }],
+        "6xl": ["3.375rem", { lineHeight: "1.08" }],
       },
       fontWeight: {
         normal: "400",
         medium: "500",
-        semibold: "600",
       },
       letterSpacing: {
         tighter: "-0.02em",
-        tight: "-0.01em",
+        tight: "-0.015em",
         normal: "0",
         wide: "0.01em",
         wider: "0.02em",
       },
       lineHeight: {
-        tight: "1.1",
+        tightest: "1.08",
+        tight: "1.15",
         snug: "1.2",
-        normal: "1.3",
-        relaxed: "1.5",
+        normal: "1.4",
+        relaxed: "1.55",
         loose: "1.6",
       },
       spacing: {
