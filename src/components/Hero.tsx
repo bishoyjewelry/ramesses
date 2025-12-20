@@ -25,11 +25,11 @@ export const Hero = () => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-display text-white mb-4 sm:mb-5 font-normal text-[3rem] sm:text-[4rem] md:text-[4.5rem] tracking-tight leading-[1.05]">
+            <h1 className="font-hero text-white mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[3.75rem] tracking-[0.04em] leading-[1.1]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="text-lg sm:text-xl text-white/80 mb-8 sm:mb-10 font-normal tracking-wide">
+            <p className="font-sans text-base sm:text-lg text-white/60 mb-10 sm:mb-12 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
