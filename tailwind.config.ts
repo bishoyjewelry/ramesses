@@ -88,6 +88,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        display: ["Playfair Display", "Georgia", "serif"],
       },
       fontSize: {
         // Small/helper text: 13-14px
