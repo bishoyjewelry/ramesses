@@ -24,26 +24,17 @@ export const Hero = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] sm:min-h-[65vh] flex items-center justify-center overflow-hidden bg-background pt-16 sm:pt-20">
-        <div className="container mx-auto px-4 py-12 sm:py-16 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Eyebrow */}
-            <p className="text-xs sm:text-sm font-medium tracking-widest uppercase text-primary mb-6 sm:mb-8">
-              NYC Diamond District Craftsmanship
-            </p>
-
-            {/* H1 Headline - SEO optimized */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-foreground mb-6 sm:mb-8 leading-[1.2] sm:leading-[1.25] tracking-tight">
-              Custom Jewelry & Engagement Rings
-              <br className="hidden sm:block" />
-              <span className="block sm:inline"> by a 47th Street Master Jeweler</span>
+      <section className="relative min-h-[50vh] sm:min-h-[55vh] flex items-center justify-center overflow-hidden bg-background pt-16 sm:pt-20">
+        <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
+          <div className="max-w-3xl mx-auto text-center">
+            {/* H1 Headline */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-foreground mb-8 sm:mb-12 leading-[1.1] tracking-tight">
+              Custom Jewelry & Repairs
             </h1>
             
-            {/* Subheadline with SEO keywords */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-10 sm:mb-12 leading-relaxed font-body max-w-2xl mx-auto">
-              Design from anywhere. Repair with confidence.
-              <br />
-              Handcrafted in New York's Diamond District.
+            {/* Subheadline */}
+            <p className="text-base sm:text-lg text-muted-foreground/80 font-body max-w-xl mx-auto leading-relaxed">
+              Design and nationwide repair, handled in New York's Diamond District.
             </p>
           </div>
         </div>
