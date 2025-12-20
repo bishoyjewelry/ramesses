@@ -149,71 +149,96 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.65;
     font-weight: 400;
     letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.0625rem; /* 17px on desktop */
+    }
+  }
+
   /* ============================================
-     TYPOGRAPHY HIERARCHY - Luxury Editorial
-     Headlines: Playfair Display (serif)
-     Body/UI: Inter (sans-serif)
+     TYPOGRAPHY HIERARCHY - Clean & Scannable
+     Single font: Inter
      ============================================ */
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', Georgia, serif;
-    letter-spacing: -0.02em;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.01em;
     color: hsl(var(--foreground));
+    font-weight: 600;
   }
 
-  /* H1: 56-64px desktop / 36-40px mobile */
+  /* H1: 48px desktop / 34px mobile */
   h1 {
-    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-size: 2.125rem; /* 34px mobile */
     line-height: 1.1;
-    font-weight: 500;
   }
 
-  /* H2: 36-40px */
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 3rem; /* 48px desktop */
+    }
+  }
+
+  /* H2: 32px desktop / 26px mobile */
   h2 {
-    font-size: clamp(2rem, 3.5vw, 2.5rem);
+    font-size: 1.625rem; /* 26px mobile */
     line-height: 1.2;
-    font-weight: 500;
   }
 
-  /* H3: 22-24px */
+  @media (min-width: 768px) {
+    h2 {
+      font-size: 2rem; /* 32px desktop */
+    }
+  }
+
+  /* H3: 22px desktop / 20px mobile */
   h3 {
-    font-size: clamp(1.375rem, 2vw, 1.5rem);
-    line-height: 1.3;
-    font-weight: 500;
+    font-size: 1.25rem; /* 20px mobile */
+    line-height: 1.25;
+  }
+
+  @media (min-width: 768px) {
+    h3 {
+      font-size: 1.375rem; /* 22px desktop */
+    }
   }
 
   h4 {
-    font-size: 1.25rem;
-    line-height: 1.35;
-    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.3;
   }
 
   h5 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.4;
-    font-weight: 500;
   }
 
   h6 {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     line-height: 1.4;
-    font-weight: 500;
   }
 
-  /* Body text: 16-18px, muted gray */
+  /* Body text: 17px desktop / 16px mobile */
   p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.65;
     font-weight: 400;
     color: hsl(var(--muted-foreground));
+    max-width: 65ch; /* Optimal reading width */
+  }
+
+  @media (min-width: 768px) {
+    p {
+      font-size: 1.0625rem;
+    }
   }
 
   /* Links - understated */
@@ -224,17 +249,16 @@
 
   /* UI Labels / Helper text: 13-14px */
   label {
-    font-family: 'Inter', sans-serif;
     font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-weight: 500;
+    letter-spacing: 0;
     color: hsl(var(--foreground));
   }
 
   small {
     font-size: 0.8125rem;
     line-height: 1.5;
-    letter-spacing: 0.02em;
+    font-weight: 400;
   }
 
   .text-sm {
@@ -252,40 +276,45 @@
    TYPOGRAPHY UTILITIES
    ============================================ */
 
-/* Eyebrow text - small uppercase labels */
+/* Eyebrow text - small labels (minimal uppercase) */
 .eyebrow {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: hsl(var(--primary));
+  letter-spacing: 0.02em;
+  color: hsl(var(--muted-foreground));
 }
 
 /* Body text utility */
 .body-text {
-  font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
   font-weight: 400;
   color: hsl(var(--muted-foreground));
+  max-width: 65ch;
 }
 
-/* Heading styles - unified */
-.heading-serif {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 500;
-  color: hsl(var(--foreground));
-  letter-spacing: -0.02em;
+@media (min-width: 768px) {
+  .body-text {
+    font-size: 1.0625rem;
+  }
 }
 
-/* Legacy heading classes (deprecated - use heading-serif) */
+/* Prose container for long-form text */
+.prose-container {
+  max-width: 72ch;
+}
+
+.prose-container p {
+  max-width: 100%;
+}
+
+/* Legacy heading classes - now sans-serif */
+.heading-serif,
 .service-heading,
 .luxury-heading {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 500;
+  font-weight: 600;
   color: hsl(var(--foreground));
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* ============================================
@@ -307,24 +336,38 @@
    SPACING UTILITIES
    ============================================ */
 
-/* Section spacing - more breathing room */
+/* Section spacing - generous breathing room */
 .section-spacing {
-  padding-top: clamp(4rem, 8vw, 7rem);
-  padding-bottom: clamp(4rem, 8vw, 7rem);
+  padding-top: clamp(4rem, 10vw, 8rem);
+  padding-bottom: clamp(4rem, 10vw, 8rem);
 }
 
 .section-spacing-sm {
-  padding-top: clamp(2.5rem, 5vw, 4rem);
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.section-spacing-lg {
+  padding-top: clamp(5rem, 12vw, 10rem);
+  padding-bottom: clamp(5rem, 12vw, 10rem);
 }
 
 /* Content spacing */
 .content-spacing > * + * {
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 .content-spacing-lg > * + * {
-  margin-top: 2.5rem;
+  margin-top: 3rem;
+}
+
+/* Mobile-friendly padding */
+@media (max-width: 767px) {
+  .section-spacing,
+  .section-spacing-sm {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
 }
 
 /* ============================================
