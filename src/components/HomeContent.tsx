@@ -207,6 +207,23 @@ export const HomeContent = () => {
         </div>
       </section>
 
+      {/* ==================== CREATOR MARKETPLACE ==================== */}
+      <section className="py-12 sm:py-14 bg-secondary/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-xl mx-auto text-center">
+            <span className="inline-block text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 mb-4">
+              Coming Soon
+            </span>
+            <h2 className="font-display text-foreground mb-3 font-normal text-lg sm:text-xl tracking-tight">
+              Creator Marketplace
+            </h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Shop exclusive designs from independent jewelry creators, crafted and fulfilled by Ramesses.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ==================== AUTHORITY BAND ==================== */}
       <section className="py-10 sm:py-12 bg-secondary/20">
         <div className="container mx-auto px-4">
