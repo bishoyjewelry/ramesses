@@ -237,35 +237,6 @@ export const HomeContent = () => {
           </div>
         </div>
       </section>
-
-      {/* ==================== FINAL CTA ==================== */}
-      <section className="py-14 sm:py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto text-center">
-            <h2 className="font-display text-foreground mb-6 sm:mb-8 font-normal text-2xl sm:text-[1.75rem] tracking-tight">
-              Begin Your Custom Piece
-            </h2>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
-              <Link to="/custom">
-                <Button 
-                  size="lg" 
-                  className="bg-foreground text-background hover:bg-foreground/90 font-medium px-10 py-6 text-sm tracking-wide rounded-none min-w-[200px]"
-                >
-                  Start a Custom Design
-                </Button>
-              </Link>
-              <Button 
-                variant="ghost"
-                onClick={handleStartRepair}
-                className="text-muted-foreground hover:text-foreground hover:bg-transparent font-normal text-sm tracking-wide"
-              >
-                Mail-In Repair
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 };
