@@ -25,28 +25,28 @@ export const Hero = () => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-hero text-white mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[3.75rem] tracking-[0.04em] leading-[1.1]">
+            <h1 className="font-hero text-white mb-8 sm:mb-10 font-light text-[2.25rem] sm:text-[3rem] md:text-[3.5rem] uppercase tracking-[0.12em] leading-[1.05]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="font-sans text-base sm:text-lg text-white/60 mb-10 sm:mb-12 font-normal tracking-wide">
+            <p className="font-sans text-base sm:text-lg text-white/55 mb-12 sm:mb-14 font-normal tracking-wide">
               Handled in New York's Diamond District
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
               <Link to="/custom">
                 <Button 
                   size="lg" 
-                  className="bg-white text-foreground hover:bg-white/95 font-medium px-12 py-7 text-[15px] tracking-wide rounded-none min-w-[220px] shadow-lg"
+                  className="bg-[hsl(38,45%,42%)] hover:bg-[hsl(38,45%,35%)] text-white font-medium px-10 py-6 text-[14px] tracking-widest uppercase rounded-none border-0"
                 >
                   Start a Custom Design
                 </Button>
               </Link>
               <Button 
                 size="lg" 
-                variant="ghost"
+                variant="link"
                 onClick={handleStartRepair}
-                className="text-white/70 hover:text-white hover:bg-transparent font-normal px-6 py-6 text-sm tracking-wide"
+                className="text-white/65 hover:text-white font-normal px-4 py-6 text-[13px] tracking-wide underline underline-offset-4 decoration-white/30 hover:decoration-white/60"
               >
                 Mail-In Repair
               </Button>
