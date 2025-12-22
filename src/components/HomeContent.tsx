@@ -12,51 +12,35 @@ export const HomeContent = () => {
   return (
     <>
       {/* ==================== SERVICE ROUTING ==================== */}
-      <section className="py-12 sm:py-14 bg-background">
+      <section className="py-14 sm:py-18 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
-            {/* Custom Jewelry */}
+          <div className="grid md:grid-cols-2 gap-5 md:gap-6 max-w-4xl mx-auto">
+            {/* Custom Jewelry & Engagement Rings */}
             <Link 
               to="/custom" 
-              className="group block text-center p-8 sm:p-10 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
+              className="group block p-10 sm:p-12 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
             >
-              <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-3 font-normal tracking-tight leading-tight">
-                Custom Jewelry
+              <h2 className="font-display text-[1.6rem] sm:text-[1.85rem] text-foreground mb-4 font-normal tracking-tight leading-tight">
+                Custom Jewelry & Engagement Rings
               </h2>
-              <p className="text-muted-foreground text-sm mb-6">
-                Designed from scratch. Crafted to last.
+              <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
+                From bespoke engagement rings to one-of-a-kind pieces—designed from scratch, crafted by master jewelers.
               </p>
               <span className="inline-block border border-foreground/30 text-foreground group-hover:bg-foreground group-hover:text-background font-medium px-6 py-3 text-sm tracking-wide transition-all duration-300">
                 Start a Custom Design
               </span>
             </Link>
 
-            {/* Engagement Rings */}
-            <Link 
-              to="/engagement-rings" 
-              className="group block text-center p-8 sm:p-10 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
-            >
-              <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-3 font-normal tracking-tight leading-tight">
-                Engagement Rings
-              </h2>
-              <p className="text-muted-foreground text-sm mb-6">
-                Bespoke rings, made by master jewelers.
-              </p>
-              <span className="inline-block border border-foreground/30 text-foreground group-hover:bg-foreground group-hover:text-background font-medium px-6 py-3 text-sm tracking-wide transition-all duration-300">
-                Design an Engagement Ring
-              </span>
-            </Link>
-
             {/* Mail-In Repairs */}
             <div 
               onClick={handleStartRepair}
-              className="group cursor-pointer block text-center p-8 sm:p-10 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
+              className="group cursor-pointer block p-10 sm:p-12 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
             >
-              <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-3 font-normal tracking-tight leading-tight">
+              <h2 className="font-display text-[1.6rem] sm:text-[1.85rem] text-foreground mb-4 font-normal tracking-tight leading-tight">
                 Mail-In Repairs
               </h2>
-              <p className="text-muted-foreground text-sm mb-6">
-                Expert repairs, fully insured, handled in NYC.
+              <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
+                Expert repairs for rings, chains, and heirloom pieces. Fully insured, handled in NYC's Diamond District.
               </p>
               <span className="inline-block border border-foreground/30 text-foreground group-hover:bg-foreground group-hover:text-background font-medium px-6 py-3 text-sm tracking-wide transition-all duration-300">
                 Start a Repair
