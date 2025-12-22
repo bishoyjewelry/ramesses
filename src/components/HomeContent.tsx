@@ -30,6 +30,28 @@ const customCreations = [
   },
 ];
 
+// Placeholder testimonials - replace with dynamic data later
+const testimonials = [
+  {
+    id: 1,
+    quote: "They restored my grandmother's ring exactly how I imagined. The craftsmanship is exceptional.",
+    author: "Sarah M.",
+    location: "Los Angeles, CA",
+  },
+  {
+    id: 2,
+    quote: "From design to delivery, the entire process was seamless. My engagement ring is absolutely perfect.",
+    author: "Michael T.",
+    location: "Chicago, IL",
+  },
+  {
+    id: 3,
+    quote: "I've sent three pieces for repair. Every time, they come back better than new. Truly professional.",
+    author: "Jennifer L.",
+    location: "Miami, FL",
+  },
+];
+
 export const HomeContent = () => {
   const navigate = useNavigate();
 
@@ -143,6 +165,43 @@ export const HomeContent = () => {
               </CarouselContent>
               <CarouselPrevious className="left-0 sm:-left-4 bg-background/80 hover:bg-background border-border/40" />
               <CarouselNext className="right-0 sm:-right-4 bg-background/80 hover:bg-background border-border/40" />
+            </Carousel>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TESTIMONIALS ==================== */}
+      <section className="py-14 sm:py-18 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <Carousel
+              opts={{
+                align: "center",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-0">
+                {testimonials.map((testimonial) => (
+                  <CarouselItem key={testimonial.id} className="pl-0">
+                    <div className="text-center px-4 sm:px-8">
+                      <blockquote className="font-display text-foreground text-lg sm:text-xl md:text-2xl font-normal leading-relaxed mb-8 italic">
+                        "{testimonial.quote}"
+                      </blockquote>
+                      <div>
+                        <p className="text-foreground text-sm font-medium tracking-wide">
+                          {testimonial.author}
+                        </p>
+                        <p className="text-muted-foreground text-xs mt-1">
+                          {testimonial.location}
+                        </p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 sm:-left-8 bg-background/80 hover:bg-background border-border/40" />
+              <CarouselNext className="right-0 sm:-right-8 bg-background/80 hover:bg-background border-border/40" />
             </Carousel>
           </div>
         </div>
