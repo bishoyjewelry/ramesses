@@ -1,5 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import bannerPendant from "@/assets/banner-pendant.png";
+import bannerRing from "@/assets/banner-ring.png";
+
+// Placeholder creations - replace with dynamic data later
+const customCreations = [
+  {
+    id: 1,
+    image: bannerPendant,
+    title: "Sapphire Halo Pendant",
+  },
+  {
+    id: 2,
+    image: bannerRing,
+    title: "Vintage Emerald Ring",
+  },
+  {
+    id: 3,
+    image: bannerPendant,
+    title: "Custom Diamond Necklace",
+  },
+];
 
 export const HomeContent = () => {
   const navigate = useNavigate();
@@ -46,6 +74,46 @@ export const HomeContent = () => {
                 Start a Repair
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== RECENT CUSTOM CREATIONS ==================== */}
+      <section className="py-14 sm:py-18 bg-secondary/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-display text-center text-foreground mb-10 sm:mb-12 font-normal text-xl sm:text-2xl tracking-tight">
+              Recent Custom Creations
+            </h2>
+            
+            <Carousel
+              opts={{
+                align: "center",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-0">
+                {customCreations.map((creation) => (
+                  <CarouselItem key={creation.id} className="pl-0">
+                    <div className="flex flex-col items-center">
+                      <div className="w-full max-w-md aspect-square bg-secondary/20 overflow-hidden">
+                        <img
+                          src={creation.image}
+                          alt={creation.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="mt-6 text-muted-foreground text-sm tracking-wide">
+                        {creation.title}
+                      </p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 sm:-left-4 bg-background/80 hover:bg-background border-border/40" />
+              <CarouselNext className="right-0 sm:-right-4 bg-background/80 hover:bg-background border-border/40" />
+            </Carousel>
           </div>
         </div>
       </section>
