@@ -16,37 +16,37 @@ export const Hero = () => {
       <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-end justify-center pt-8 pb-20 sm:pb-28">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-no-repeat bg-[position:50%_40%]"
           style={{ backgroundImage: `url(${heroCraftsmanship})` }}
         />
-        {/* Dark Overlay - stronger for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/75" />
+        {/* Dark Overlay - subtle but reliable behind type */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/80" />
         
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-hero text-white mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.95]">
+          <div className="max-w-3xl mx-auto text-center bg-foreground/15 backdrop-blur-[2px] px-5 sm:px-8 py-8 sm:py-10 rounded-sm">
+            <h1 className="font-hero text-primary-foreground mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.92]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="font-sans text-sm sm:text-base text-white/40 mb-14 sm:mb-16 font-normal tracking-wide text-center">
+            <p className="font-sans text-sm sm:text-base text-primary-foreground/60 mb-14 sm:mb-16 font-normal tracking-wide text-center mx-auto">
               Crafted and restored by master jewelers in NYC's Diamond District
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-4 sm:gap-6">
               <Link to="/custom">
-                <Button 
-                  size="lg" 
-                  className="bg-primary hover:bg-primary/85 text-primary-foreground font-medium px-10 py-6 text-[13px] tracking-widest uppercase rounded-sm"
+                <Button
+                  size="lg"
+                  className="px-10 rounded-sm text-[13px] tracking-widest uppercase"
                 >
                   Start a Custom Design
                 </Button>
               </Link>
-              <Button 
-                size="lg" 
-                variant="ghost"
+              <Button
+                size="lg"
+                variant="outline"
                 onClick={handleStartRepair}
-                className="text-white/60 hover:text-white hover:bg-white/10 font-normal px-6 py-6 text-[13px] tracking-wide"
+                className="bg-transparent border-primary-foreground/25 text-primary-foreground/75 hover:text-primary-foreground hover:bg-primary-foreground/10 px-8 rounded-sm text-[13px] tracking-wide"
               >
                 Mail-In Repair
               </Button>
