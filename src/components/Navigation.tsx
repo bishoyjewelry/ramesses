@@ -50,7 +50,7 @@ export const Navigation = () => {
   const navLinks = [
     { to: "/custom", label: "Create Custom Jewelry" },
     { to: "/engagement-rings", label: "Create Engagement Ring" },
-    { to: "/repairs", label: "Start Repair / Services" },
+    { to: "/repairs", label: "Start Repairs" },
     { to: "/shop", label: "Shop" },
   ];
 

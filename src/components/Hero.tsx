@@ -48,7 +48,7 @@ export const Hero = () => {
                 onClick={handleStartRepair}
                 className="bg-transparent border-primary-foreground/25 text-primary-foreground/75 hover:text-primary-foreground hover:bg-primary-foreground/10 px-8 rounded-sm text-[13px] tracking-wide"
               >
-                Mail-In Repair
+                Start Repairs
               </Button>
             </div>
           </div>
