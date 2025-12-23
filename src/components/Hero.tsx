@@ -13,40 +13,40 @@ export const Hero = () => {
   return (
     <>
       {/* ==================== 1. HERO SECTION ==================== */}
-      <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-end justify-center pt-16 pb-16 sm:pb-20">
+      <section className="relative min-h-[80vh] sm:min-h-[85vh] flex items-end justify-center pt-8 pb-20 sm:pb-28">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroCraftsmanship})` }}
         />
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/70" />
+        {/* Dark Overlay - stronger for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/75" />
         
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-hero text-white mb-8 sm:mb-10 font-light text-[2.25rem] sm:text-[3rem] md:text-[3.5rem] uppercase tracking-[0.12em] leading-[1.05]">
+            <h1 className="font-hero text-white mb-5 sm:mb-6 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.95]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="font-sans text-base sm:text-lg text-white/55 mb-12 sm:mb-14 font-normal tracking-wide">
-              Handled in New York's Diamond District
+            <p className="font-sans text-sm sm:text-base text-white/50 mb-14 sm:mb-16 font-normal tracking-wide">
+              Crafted and restored by master jewelers in NYC's Diamond District
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link to="/custom">
                 <Button 
                   size="lg" 
-                  className="bg-[hsl(38,45%,42%)] hover:bg-[hsl(38,45%,35%)] text-white font-medium px-10 py-6 text-[14px] tracking-widest uppercase rounded-none border-0"
+                  className="bg-primary hover:bg-primary/85 text-primary-foreground font-medium px-10 py-6 text-[13px] tracking-widest uppercase rounded-sm"
                 >
                   Start a Custom Design
                 </Button>
               </Link>
               <Button 
                 size="lg" 
-                variant="link"
+                variant="ghost"
                 onClick={handleStartRepair}
-                className="text-white/65 hover:text-white font-normal px-4 py-6 text-[13px] tracking-wide underline underline-offset-4 decoration-white/30 hover:decoration-white/60"
+                className="text-white/60 hover:text-white hover:bg-white/10 font-normal px-6 py-6 text-[13px] tracking-wide"
               >
                 Mail-In Repair
               </Button>
