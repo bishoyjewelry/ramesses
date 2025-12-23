@@ -82,13 +82,13 @@ export const HomeContent = () => {
               </span>
             </Link>
 
-            {/* Mail-In Repairs */}
+            {/* Repairs */}
             <div 
               onClick={handleStartRepair}
               className="group cursor-pointer block p-10 sm:p-12 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
             >
               <h2 className="font-display text-[1.6rem] sm:text-[1.85rem] text-foreground mb-4 font-normal tracking-tight leading-tight">
-                Mail-In Repairs
+                Jewelry Repairs
               </h2>
               <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
                 Expert repairs for rings, chains, and heirloom pieces. Fully insured, handled in NYC's Diamond District.

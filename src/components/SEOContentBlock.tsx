@@ -4,7 +4,7 @@ interface SEOContentBlockProps {
   className?: string;
 }
 
-const defaultTitle = "Nationwide Mail-In Jewelry Repair | Ramessés 47th Street Jewelers";
+const defaultTitle = "Nationwide Jewelry Repair | Ramessés 47th Street Jewelers";
 
 const defaultContent = `Ramessés provides insured, nationwide mail-in jewelry repair performed by a 47th Street master jeweler with over 30 years of experience. Our services include ring resizing, prong repair, chain soldering, rhodium plating, polishing, stone replacement, antique restoration, and engagement ring refurbishment. Every item is documented with high-resolution photography and video intake. Customers can choose mail-in service, NYC drop-off, or local courier pickup. Repairs are quoted digitally, approved online, and completed within 3–5 days. Trusted nationwide for precision craftsmanship and transparent service.`;
 

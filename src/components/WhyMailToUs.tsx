@@ -40,7 +40,7 @@ export const WhyMailToUs = ({ className = "" }: WhyMailToUsProps) => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-luxury-text mb-4">
-            Why People Mail Their Jewelry to Us Instead of a Local Shop
+            Why People Trust Us With Their Jewelry
           </h2>
           <div className="w-20 h-1 bg-service-gold mx-auto"></div>
         </div>

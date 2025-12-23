@@ -12,22 +12,22 @@ const translations: Record<Language, Record<string, string>> = {
   en: {
     // Navigation
     'nav.home': 'Home',
-    'nav.repairs': 'Mail-In Repairs',
+    'nav.repairs': 'Repairs',
     'nav.custom': 'Custom Jewelry',
     'nav.shop': 'Shop',
     'nav.contact': 'Contact',
     'nav.language': 'Español',
     
     // Hero
-    'hero.title': 'Nationwide Mail-In Jewelry Repair by a 47th Street Master Jeweler',
+    'hero.title': 'Nationwide Jewelry Repair by a 47th Street Master Jeweler',
     'hero.subtitle': 'Ship your jewelry from anywhere in the U.S. 30+ years of experience on NYC\'s Diamond District.',
-    'hero.cta.primary': 'Start Mail-In Repair',
+    'hero.cta.primary': 'Start Repairs',
     'hero.cta.custom': 'Custom Jewelry',
     'hero.cta.shop': 'Shop Jewelry',
     'hero.cta.secondary': 'NYC In-Person Appointments',
     
-    // Mail-In Steps
-    'mailin.title': 'How Mail-In Repairs Work',
+    // Repair Steps
+    'mailin.title': 'How Repairs Work',
     'mailin.step1.title': 'Request a Quote',
     'mailin.step1.text': 'Upload photos and describe the issue for a free estimate.',
     'mailin.step2.title': 'Shipping Instructions',
@@ -43,9 +43,9 @@ const translations: Record<Language, Record<string, string>> = {
     'video.placeholder': 'Video coming soon',
     
     // Services
-    'services.repairs.title': 'Mail-In Jewelry Repairs',
+    'services.repairs.title': 'Jewelry Repairs',
     'services.repairs.text': 'Ship from anywhere in the U.S. Ring resizing, prong repair, chain soldering, laser welding, polishing, and more.',
-    'services.repairs.button': 'Start Mail-In Repair',
+    'services.repairs.button': 'Start Repairs',
     'services.custom.title': 'Custom Jewelry & Engagement Rings',
     'services.custom.text': 'Custom engagement rings, pendants, nameplates and more. We work with clients nationwide by mail.',
     'services.custom.button': 'Start a Custom Design',
@@ -79,11 +79,11 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.rights': 'All rights reserved.',
     
     // Repairs Page
-    'repairs.title': 'Mail-In Jewelry Repair Services',
+    'repairs.title': 'Jewelry Repair Services',
     'repairs.subtitle': 'Send your jewelry from anywhere in the U.S. for expert repair, resizing, and restoration.',
     'repairs.howitworks': 'How It Works',
     'repairs.services.title': 'Our Services',
-    'repairs.form.title': 'Request Mail-In Repair Quote',
+    'repairs.form.title': 'Request Repair Quote',
     'repairs.form.name': 'Name',
     'repairs.form.email': 'Email',
     'repairs.form.phone': 'Phone',
@@ -92,11 +92,11 @@ const translations: Record<Language, Record<string, string>> = {
     'repairs.form.contact.phone': 'Phone',
     'repairs.form.contact.whatsapp': 'WhatsApp',
     'repairs.form.repairType': 'Repair Type',
-    'repairs.form.repairType.mailin': 'Mail-In Repair (Nationwide)',
+    'repairs.form.repairType.mailin': 'Nationwide Repair',
     'repairs.form.repairType.inperson': 'In-Person Repair (NYC)',
     'repairs.form.description': 'Describe the issue',
     'repairs.form.photos': 'Upload Photos',
-    'repairs.form.submit': 'Request Mail-In Repair Quote',
+    'repairs.form.submit': 'Request Repair Quote',
     'repairs.form.success': 'Quote request submitted! We\'ll contact you with shipping instructions.',
     
     // In-Person Section
@@ -155,22 +155,22 @@ const translations: Record<Language, Record<string, string>> = {
   es: {
     // Navigation
     'nav.home': 'Inicio',
-    'nav.repairs': 'Reparaciones por Correo',
+    'nav.repairs': 'Reparaciones',
     'nav.custom': 'Joyería Personalizada',
     'nav.shop': 'Tienda',
     'nav.contact': 'Contacto',
     'nav.language': 'English',
     
     // Hero
-    'hero.title': 'Reparación de Joyas por Correo en Todo EE.UU.',
+    'hero.title': 'Reparación de Joyas en Todo EE.UU.',
     'hero.subtitle': 'Puedes enviarnos tus joyas desde cualquier parte de Estados Unidos para reparación profesional. 30+ años de experiencia en el Distrito de Diamantes de NYC.',
-    'hero.cta.primary': 'Iniciar Reparación por Correo',
+    'hero.cta.primary': 'Iniciar Reparación',
     'hero.cta.custom': 'Joyería Personalizada',
     'hero.cta.shop': 'Comprar Joyería',
     'hero.cta.secondary': 'Cita en Persona en NYC',
     
-    // Mail-In Steps
-    'mailin.title': 'Cómo Funcionan las Reparaciones por Correo',
+    // Repair Steps
+    'mailin.title': 'Cómo Funcionan las Reparaciones',
     'mailin.step1.title': 'Solicita Cotización',
     'mailin.step1.text': 'Sube fotos y describe el problema para una estimación gratis.',
     'mailin.step2.title': 'Instrucciones de Envío',
@@ -186,9 +186,9 @@ const translations: Record<Language, Record<string, string>> = {
     'video.placeholder': 'Video próximamente',
     
     // Services
-    'services.repairs.title': 'Reparaciones por Correo',
+    'services.repairs.title': 'Reparaciones de Joyas',
     'services.repairs.text': 'Envía desde cualquier lugar de EE.UU. Ajuste de anillos, reparación de puntas, soldadura de cadenas, soldadura láser, pulido, y más.',
-    'services.repairs.button': 'Iniciar Reparación por Correo',
+    'services.repairs.button': 'Iniciar Reparación',
     'services.custom.title': 'Joyería Personalizada y Anillos de Compromiso',
     'services.custom.text': 'Anillos de compromiso, colgantes, placas con nombre y más. Trabajamos con clientes en todo el país por correo.',
     'services.custom.button': 'Iniciar Diseño Personalizado',
@@ -222,11 +222,11 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.rights': 'Todos los derechos reservados.',
     
     // Repairs Page
-    'repairs.title': 'Servicios de Reparación de Joyería por Correo',
+    'repairs.title': 'Servicios de Reparación de Joyería',
     'repairs.subtitle': 'Envía tu joyería desde cualquier lugar de EE.UU. para reparación experta, ajuste y restauración.',
     'repairs.howitworks': 'Cómo Funciona',
     'repairs.services.title': 'Nuestros Servicios',
-    'repairs.form.title': 'Solicitar Cotización de Reparación por Correo',
+    'repairs.form.title': 'Solicitar Cotización de Reparación',
     'repairs.form.name': 'Nombre',
     'repairs.form.email': 'Correo Electrónico',
     'repairs.form.phone': 'Teléfono',
@@ -235,11 +235,11 @@ const translations: Record<Language, Record<string, string>> = {
     'repairs.form.contact.phone': 'Teléfono',
     'repairs.form.contact.whatsapp': 'WhatsApp',
     'repairs.form.repairType': 'Tipo de Reparación',
-    'repairs.form.repairType.mailin': 'Reparación por Correo (Nacional)',
+    'repairs.form.repairType.mailin': 'Reparación Nacional',
     'repairs.form.repairType.inperson': 'Reparación en Persona (NYC)',
     'repairs.form.description': 'Describe el problema',
     'repairs.form.photos': 'Subir Fotos',
-    'repairs.form.submit': 'Solicitar Cotización por Correo',
+    'repairs.form.submit': 'Solicitar Cotización',
     'repairs.form.success': '¡Solicitud enviada! Te contactaremos con instrucciones de envío.',
     
     // In-Person Section

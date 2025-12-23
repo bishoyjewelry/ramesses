@@ -54,7 +54,7 @@ export const LandingRepairHero = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-text mb-6 leading-tight">
-              Nationwide Mail-In Jewelry Repair by a 47th Street Master Jeweler
+              Nationwide Jewelry Repair by a 47th Street Master Jeweler
             </h1>
             <p className="text-xl md:text-2xl text-luxury-text-muted mb-10 font-body max-w-3xl mx-auto">
               Ship your jewelry from anywhere in the U.S., or choose NYC drop-off and local courier pickup.
