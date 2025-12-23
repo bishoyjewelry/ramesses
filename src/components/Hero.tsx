@@ -25,11 +25,11 @@ export const Hero = () => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-hero text-white mb-5 sm:mb-6 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.95]">
+            <h1 className="font-hero text-white mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.95]">
               Custom Jewelry & Repairs
             </h1>
             
-            <p className="font-sans text-sm sm:text-base text-white/50 mb-14 sm:mb-16 font-normal tracking-wide">
+            <p className="font-sans text-sm sm:text-base text-white/40 mb-14 sm:mb-16 font-normal tracking-wide text-center">
               Crafted and restored by master jewelers in NYC's Diamond District
             </p>
             
