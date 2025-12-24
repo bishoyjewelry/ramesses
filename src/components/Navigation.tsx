@@ -51,6 +51,7 @@ export const Navigation = () => {
     { to: "/custom", label: "Create Custom Jewelry" },
     { to: "/engagement-rings", label: "Create Engagement Ring" },
     { to: "/repairs", label: "Start Repairs" },
+    { to: "/creator-marketplace", label: "Creator Marketplace" },
     { to: "/shop", label: "Shop" },
   ];
 
