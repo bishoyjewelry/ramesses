@@ -545,6 +545,27 @@ const Custom = () => {
         </div>
       </section>
 
+      {/* ==================== CREATOR MARKETPLACE ALTERNATIVE ==================== */}
+      <section className="py-10 sm:py-12 bg-luxury-bg">
+        <div className="container mx-auto px-4">
+          <div className="max-w-xl mx-auto text-center">
+            <p className="text-sm text-luxury-text-muted mb-2">
+              Prefer to start from an existing design?
+            </p>
+            <p className="text-xs text-luxury-text-muted/70 mb-4">
+              Explore curated designs from the Ramesses community and customize them further.
+            </p>
+            <Link 
+              to="/creator-marketplace"
+              className="inline-flex items-center text-sm text-luxury-champagne hover:text-luxury-champagne-hover transition-colors font-medium"
+            >
+              Explore the Creator Marketplace
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* FORM SECTION */}
       <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
