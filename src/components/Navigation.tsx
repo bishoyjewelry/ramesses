@@ -93,7 +93,7 @@ export const Navigation = () => {
                 }`}
               >
                 {link.label}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-foreground transition-all duration-300 ${
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
                   location.pathname === link.to ? 'w-full' : 'w-0 group-hover:w-full'
                 }`} />
               </Link>
