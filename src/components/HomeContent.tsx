@@ -76,16 +76,16 @@ export const HomeContent = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link 
                   to="/custom"
-                  className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide text-center
-                    hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                  className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
                     active:scale-[0.98] active:shadow-sm transition-all duration-150"
                 >
                   Start a Custom Design
                 </Link>
                 <Link 
                   to="/engagement-rings"
-                  className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide text-center
-                    hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                  className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
                     active:scale-[0.98] active:shadow-sm transition-all duration-150"
                 >
                   Design an Engagement Ring
@@ -104,8 +104,8 @@ export const HomeContent = () => {
               <Link 
                 to="/repairs"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide
-                  hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide
+                  hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
                   active:scale-[0.98] active:shadow-sm transition-all duration-150"
               >
                 Start Repairs
