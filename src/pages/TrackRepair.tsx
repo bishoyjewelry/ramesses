@@ -56,7 +56,7 @@ const STATUS_LABELS: Record<string, { label: string; color: string; icon: React.
 };
 
 const FULFILLMENT_LABELS: Record<string, string> = {
-  mail_in: "Mail-In",
+  mail_in: "Shipped",
   drop_off: "Drop-Off",
   courier: "Courier Pickup"
 };
