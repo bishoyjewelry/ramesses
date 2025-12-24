@@ -74,7 +74,7 @@ const translations: Record<Language, Record<string, string>> = {
     'spanish.button': 'Ver Sitio en Español',
     
     // Footer
-    'footer.tagline': 'Nationwide mail-in jewelry repair and custom design by a 47th Street master jeweler.',
+    'footer.tagline': 'Nationwide jewelry repair and custom design by a 47th Street master jeweler.',
     'footer.hours': 'Mon–Sat 10am–6pm',
     'footer.rights': 'All rights reserved.',
     
@@ -129,14 +129,14 @@ const translations: Record<Language, Record<string, string>> = {
     // Shop Page
     'shop.title': 'Shop Gold & Silver Jewelry',
     'shop.subtitle': 'Curated collection of fine jewelry, shipped nationwide.',
-    'shop.mailin.note': 'We also offer mail-in repairs and custom work for clients across the U.S.',
+    'shop.mailin.note': 'We also offer repairs and custom work for clients across the U.S.',
     'shop.empty': 'No products found',
     'shop.addToCart': 'Add to Cart',
     'shop.viewDetails': 'View Details',
     
     // Contact Page
     'contact.title': 'Contact Us',
-    'contact.subtitle': 'Visit us in NYC or reach out online for mail-in repairs.',
+    'contact.subtitle': 'Visit us in NYC or reach out online for repairs.',
     'contact.form.title': 'Send a Message',
     'contact.form.message': 'Message',
     'contact.form.submit': 'Send Message',
@@ -272,14 +272,14 @@ const translations: Record<Language, Record<string, string>> = {
     // Shop Page
     'shop.title': 'Tienda de Joyería de Oro y Plata',
     'shop.subtitle': 'Colección curada de joyería fina, enviada a todo el país.',
-    'shop.mailin.note': 'También ofrecemos reparaciones por correo y trabajo personalizado para clientes en todo EE.UU.',
+    'shop.mailin.note': 'También ofrecemos reparaciones y trabajo personalizado para clientes en todo EE.UU.',
     'shop.empty': 'No se encontraron productos',
     'shop.addToCart': 'Agregar al Carrito',
     'shop.viewDetails': 'Ver Detalles',
     
     // Contact Page
     'contact.title': 'Contáctanos',
-    'contact.subtitle': 'Visítanos en NYC o comunícate en línea para reparaciones por correo.',
+    'contact.subtitle': 'Visítanos en NYC o comunícate en línea para reparaciones.',
     'contact.form.title': 'Enviar un Mensaje',
     'contact.form.message': 'Mensaje',
     'contact.form.submit': 'Enviar Mensaje',
