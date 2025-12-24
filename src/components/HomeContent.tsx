@@ -102,28 +102,25 @@ export const HomeContent = () => {
       </section>
 
       {/* ==================== DIAMOND DISTRICT CRAFTSMANSHIP ==================== */}
-      <section className="py-16 sm:py-20 bg-background">
+      <section className="py-20 sm:py-28 bg-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
-            {/* Image */}
-            <div className="aspect-[4/5] overflow-hidden bg-secondary/20">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-8 md:gap-16 items-center">
+            {/* Image - carries the weight */}
+            <div className="aspect-[4/5] overflow-hidden">
               <img
                 src={masterJeweler}
-                alt="Master jeweler at work in NYC Diamond District"
+                alt="Master jeweler crafting jewelry at the bench in NYC's Diamond District"
                 className="w-full h-full object-cover"
               />
             </div>
             
-            {/* Copy */}
-            <div className="text-center md:text-left">
-              <h2 className="font-display text-foreground mb-6 font-normal text-2xl sm:text-[1.85rem] tracking-tight leading-tight">
+            {/* Copy - minimal, trust-anchoring */}
+            <div className="md:pr-4">
+              <h2 className="font-display text-foreground mb-8 font-normal text-[1.65rem] sm:text-[2rem] tracking-tight leading-[1.15]">
                 Diamond District Craftsmanship
               </h2>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-4">
-                Every piece that passes through our hands is crafted or restored by a master jeweler with over 40 years on NYC's 47th Street.
-              </p>
-              <p className="text-muted-foreground/70 text-sm leading-relaxed">
-                No outsourcing. No shortcuts. Just decades of precision, passed from bench to bench in the heart of the Diamond District.
+              <p className="text-muted-foreground text-[15px] sm:text-base leading-relaxed">
+                Every piece is crafted or restored by the same hands that have worked New York's Diamond District for over four decades.
               </p>
             </div>
           </div>
