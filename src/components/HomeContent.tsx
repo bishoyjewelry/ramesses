@@ -63,38 +63,38 @@ export const HomeContent = () => {
   return (
     <>
       {/* ==================== SERVICE ROUTING ==================== */}
-      <section className="py-14 sm:py-18 bg-background">
+      <section className="py-8 sm:py-10 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-5 md:gap-6 max-w-4xl mx-auto">
-            {/* Custom Jewelry & Engagement Rings */}
+          <div className="grid md:grid-cols-2 gap-4 md:gap-5 max-w-4xl mx-auto">
+            {/* Custom Jewelry & Engagement Rings - Dominant */}
             <Link 
               to="/custom" 
-              className="group block p-10 sm:p-12 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
+              className="group block p-10 sm:p-14 bg-secondary/40 border border-border/30 hover:border-border/50 transition-colors duration-200"
             >
-              <h2 className="font-display text-[1.6rem] sm:text-[1.85rem] text-foreground mb-4 font-normal tracking-tight leading-tight">
+              <h2 className="font-display text-[1.75rem] sm:text-[2.1rem] text-foreground mb-5 font-normal tracking-tight leading-[1.1]">
                 Custom Jewelry & Engagement Rings
               </h2>
-              <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-                From bespoke engagement rings to one-of-a-kind pieces—designed from scratch, crafted by master jewelers.
+              <p className="text-muted-foreground text-sm mb-10">
+                Designed from scratch by a 47th Street master jeweler.
               </p>
-              <span className="inline-block border border-foreground/30 text-foreground group-hover:bg-foreground group-hover:text-background font-medium px-6 py-3 text-sm tracking-wide transition-all duration-300">
+              <span className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide">
                 Start a Custom Design
               </span>
             </Link>
 
-            {/* Repairs */}
+            {/* Repairs - Parallel but quieter */}
             <div 
               onClick={handleStartRepair}
-              className="group cursor-pointer block p-10 sm:p-12 bg-secondary/30 hover:bg-secondary/50 border border-border/20 hover:border-border/40 transition-all duration-300"
+              className="group cursor-pointer block p-10 sm:p-14 bg-secondary/25 border border-border/20 hover:border-border/40 transition-colors duration-200"
             >
-              <h2 className="font-display text-[1.6rem] sm:text-[1.85rem] text-foreground mb-4 font-normal tracking-tight leading-tight">
+              <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-5 font-normal tracking-tight leading-[1.15]">
                 Jewelry Repairs
               </h2>
-              <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-                Expert repairs for rings, chains, and heirloom pieces. Fully insured, handled in NYC's Diamond District.
+              <p className="text-muted-foreground text-sm mb-10">
+                Nationwide service, fully insured, handled in NYC.
               </p>
-              <span className="inline-block border border-foreground/30 text-foreground group-hover:bg-foreground group-hover:text-background font-medium px-6 py-3 text-sm tracking-wide transition-all duration-300">
-                Start a Repair
+              <span className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide">
+                Start Repairs
               </span>
             </div>
           </div>
