@@ -37,8 +37,7 @@ export const Hero = () => {
               <Link to="/custom">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-foreground text-background hover:bg-foreground/90 border-foreground px-10 rounded-sm text-[13px] tracking-widest uppercase"
+                  className="bg-primary text-primary-foreground hover:bg-[hsl(var(--color-gold-hover))] border-primary px-10 rounded-sm text-[13px] tracking-widest uppercase"
                 >
                   Start a Custom Design
                 </Button>
@@ -47,7 +46,7 @@ export const Hero = () => {
                 size="lg"
                 variant="outline"
                 onClick={handleStartRepair}
-                className="bg-transparent border-primary-foreground/25 text-primary-foreground/75 hover:text-primary-foreground hover:bg-primary-foreground/10 px-8 rounded-sm text-[13px] tracking-wide"
+                className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:text-primary-foreground hover:bg-primary-foreground/15 px-8 rounded-sm text-[13px] tracking-wide"
               >
                 Start Repairs
               </Button>
