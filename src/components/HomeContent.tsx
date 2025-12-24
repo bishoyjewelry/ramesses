@@ -230,15 +230,20 @@ export const HomeContent = () => {
       <section className="py-14 sm:py-18 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
-            <span className="inline-block text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 mb-4">
-              Coming Soon
-            </span>
-            <h2 className="font-display text-foreground mb-3 font-normal text-lg sm:text-xl tracking-tight">
+            <h2 className="font-display text-foreground mb-4 font-normal text-lg sm:text-xl tracking-tight">
               Creator Marketplace
             </h2>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Shop exclusive designs from independent jewelry creators, crafted and fulfilled by Ramesses.
+            <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+              A curated selection of designs created by the Ramesses community — available to order as-is or customize further.
             </p>
+            <Link 
+              to="/creator-marketplace"
+              className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3 text-sm tracking-wide
+                hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
+                active:scale-[0.98] active:shadow-sm transition-all duration-150"
+            >
+              Explore the Marketplace
+            </Link>
           </div>
         </div>
       </section>
