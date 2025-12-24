@@ -1,5 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -53,13 +52,6 @@ const testimonials = [
 ];
 
 export const HomeContent = () => {
-  const navigate = useNavigate();
-
-  const handleStartRepair = () => {
-    navigate("/repairs");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <>
       {/* ==================== SERVICE ROUTING ==================== */}
@@ -67,35 +59,50 @@ export const HomeContent = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-4 md:gap-5 max-w-4xl mx-auto">
             {/* Custom Jewelry & Engagement Rings - Dominant */}
-            <Link 
-              to="/custom" 
-              className="group block p-10 sm:p-14 bg-secondary/40 border border-border/30 hover:border-border/50 transition-colors duration-200"
-            >
+            <div className="p-10 sm:p-14 bg-secondary/40 border border-border/30">
               <h2 className="font-display text-[1.75rem] sm:text-[2.1rem] text-foreground mb-5 font-normal tracking-tight leading-[1.1]">
                 Custom Jewelry & Engagement Rings
               </h2>
               <p className="text-muted-foreground text-sm mb-10">
                 Designed from scratch by a 47th Street master jeweler.
               </p>
-              <span className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide">
-                Start a Custom Design
-              </span>
-            </Link>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link 
+                  to="/custom"
+                  className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150"
+                >
+                  Start a Custom Design
+                </Link>
+                <Link 
+                  to="/engagement-rings"
+                  className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150"
+                >
+                  Design an Engagement Ring
+                </Link>
+              </div>
+            </div>
 
             {/* Repairs - Parallel but quieter */}
-            <div 
-              onClick={handleStartRepair}
-              className="group cursor-pointer block p-10 sm:p-14 bg-secondary/25 border border-border/20 hover:border-border/40 transition-colors duration-200"
-            >
+            <div className="p-10 sm:p-14 bg-secondary/25 border border-border/20">
               <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-5 font-normal tracking-tight leading-[1.15]">
                 Jewelry Repairs
               </h2>
               <p className="text-muted-foreground text-sm mb-10">
                 Nationwide service, fully insured, handled in NYC.
               </p>
-              <span className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide">
+              <Link 
+                to="/repairs"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="inline-block bg-foreground text-background font-medium px-7 py-3.5 text-sm tracking-wide
+                  hover:bg-foreground/85 focus:outline-none focus:ring-2 focus:ring-foreground/50 focus:ring-offset-2 focus:ring-offset-background
+                  active:scale-[0.98] active:shadow-sm transition-all duration-150"
+              >
                 Start Repairs
-              </span>
+              </Link>
             </div>
           </div>
         </div>
