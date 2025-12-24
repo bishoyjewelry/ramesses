@@ -51,11 +51,18 @@ const testimonials = [
   },
 ];
 
+// Reusable section divider component
+const SectionDivider = () => (
+  <div className="py-6 sm:py-8">
+    <div className="max-w-xs mx-auto border-t border-border/30" />
+  </div>
+);
+
 export const HomeContent = () => {
   return (
     <>
       {/* ==================== SERVICE ROUTING ==================== */}
-      <section className="py-8 sm:py-10 bg-background">
+      <section className="pt-12 sm:pt-16 pb-16 sm:pb-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-4 md:gap-5 max-w-4xl mx-auto">
             {/* Custom Jewelry & Engagement Rings - Dominant */}
@@ -108,8 +115,10 @@ export const HomeContent = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ==================== DIAMOND DISTRICT CRAFTSMANSHIP ==================== */}
-      <section className="py-20 sm:py-28 bg-background">
+      <section className="pt-8 sm:pt-12 pb-20 sm:pb-28 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-8 md:gap-16 items-center">
             {/* Image - carries the weight */}
@@ -134,8 +143,10 @@ export const HomeContent = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ==================== RECENT CUSTOM CREATIONS ==================== */}
-      <section className="py-14 sm:py-18 bg-secondary/10">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-display text-center text-foreground mb-10 sm:mb-12 font-normal text-xl sm:text-2xl tracking-tight">
@@ -174,8 +185,10 @@ export const HomeContent = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ==================== TESTIMONIALS ==================== */}
-      <section className="py-14 sm:py-18 bg-background">
+      <section className="py-16 sm:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <Carousel
@@ -211,8 +224,10 @@ export const HomeContent = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ==================== CREATOR MARKETPLACE ==================== */}
-      <section className="py-12 sm:py-14 bg-secondary/10">
+      <section className="py-14 sm:py-18 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
             <span className="inline-block text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 mb-4">
@@ -229,7 +244,7 @@ export const HomeContent = () => {
       </section>
 
       {/* ==================== AUTHORITY BAND ==================== */}
-      <section className="py-10 sm:py-12 bg-secondary/20">
+      <section className="py-12 sm:py-16 bg-secondary/10 border-t border-border/20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-foreground/80 text-sm sm:text-base font-normal leading-relaxed">
