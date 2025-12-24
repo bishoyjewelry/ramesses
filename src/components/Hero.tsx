@@ -37,7 +37,8 @@ export const Hero = () => {
               <Link to="/custom">
                 <Button
                   size="lg"
-                  className="px-10 rounded-sm text-[13px] tracking-widest uppercase"
+                  variant="outline"
+                  className="bg-foreground text-background hover:bg-foreground/90 border-foreground px-10 rounded-sm text-[13px] tracking-widest uppercase"
                 >
                   Start a Custom Design
                 </Button>
