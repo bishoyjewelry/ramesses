@@ -18,6 +18,14 @@ import {
   Palette, FileCheck, Package, Loader2, Wand2, ImagePlus, HelpCircle, Camera
 } from "lucide-react";
 
+// Ring style images
+import ringSolitaire from "@/assets/ring-style-solitaire.png";
+import ringHalo from "@/assets/ring-style-halo.png";
+import ringHiddenHalo from "@/assets/ring-style-hidden-halo.png";
+import ringThreeStone from "@/assets/ring-style-three-stone.png";
+import ringPave from "@/assets/ring-style-pave.png";
+import ringOther from "@/assets/ring-style-other.png";
+
 type DesignFlow = "general" | "engagement" | null;
 
 interface Concept {
@@ -59,12 +67,12 @@ const jewelryTypeOptions = [
 ];
 
 const ringStyleOptions = [
-  { value: "solitaire", label: "Solitaire", description: "Classic & timeless" },
-  { value: "halo", label: "Halo", description: "Extra sparkle" },
-  { value: "hidden-halo", label: "Hidden Halo", description: "Subtle brilliance" },
-  { value: "three-stone", label: "Three-Stone", description: "Symbolic trio" },
-  { value: "pave", label: "Pavé", description: "Diamond-encrusted" },
-  { value: "other", label: "Other / Unsure", description: "Open to ideas" },
+  { value: "solitaire", label: "Solitaire", description: "Classic & timeless", image: ringSolitaire },
+  { value: "halo", label: "Halo", description: "Extra sparkle", image: ringHalo },
+  { value: "hidden-halo", label: "Hidden Halo", description: "Subtle brilliance", image: ringHiddenHalo },
+  { value: "three-stone", label: "Three-Stone", description: "Symbolic trio", image: ringThreeStone },
+  { value: "pave", label: "Pavé", description: "Diamond-encrusted", image: ringPave },
+  { value: "other", label: "Other / Unsure", description: "Open to ideas", image: ringOther },
 ];
 
 const stoneShapeOptions = [
@@ -695,13 +703,20 @@ const Custom = () => {
                                 key={option.value}
                                 type="button"
                                 onClick={() => setEngagementForm({...engagementForm, style: option.value})}
-                                className={`p-4 rounded-xl border-2 transition-all text-left ${
+                                className={`p-3 rounded-xl border-2 transition-all text-center ${
                                   engagementForm.style === option.value
                                     ? "border-luxury-champagne bg-luxury-champagne/10"
                                     : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
                                 }`}
                               >
-                                <span className="text-sm font-semibold text-luxury-text block mb-1">{option.label}</span>
+                                <div className="w-16 h-16 mx-auto mb-2 rounded-lg overflow-hidden bg-white">
+                                  <img 
+                                    src={option.image} 
+                                    alt={option.label}
+                                    className="w-full h-full object-contain"
+                                  />
+                                </div>
+                                <span className="text-sm font-semibold text-luxury-text block mb-0.5">{option.label}</span>
                                 <span className="text-xs text-luxury-text-muted">{option.description}</span>
                               </button>
                             ))}

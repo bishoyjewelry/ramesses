@@ -28,14 +28,22 @@ import {
   Send
 } from "lucide-react";
 
+// Ring style images
+import ringSolitaire from "@/assets/ring-style-solitaire.png";
+import ringHalo from "@/assets/ring-style-halo.png";
+import ringHiddenHalo from "@/assets/ring-style-hidden-halo.png";
+import ringThreeStone from "@/assets/ring-style-three-stone.png";
+import ringPave from "@/assets/ring-style-pave.png";
+import ringOther from "@/assets/ring-style-other.png";
+
 // Style options with visual representations
 const styleOptions = [
-  { id: "solitaire", name: "Solitaire", description: "Timeless elegance", icon: CircleDot },
-  { id: "hidden-halo", name: "Hidden Halo", description: "Subtle sparkle beneath", icon: Circle },
-  { id: "halo", name: "Halo", description: "Maximum brilliance", icon: Sparkles },
-  { id: "three-stone", name: "Three-Stone", description: "Past, present, future", icon: Triangle },
-  { id: "vintage", name: "Vintage / Heirloom", description: "Classic intricate details", icon: Hexagon },
-  { id: "modern", name: "Modern / Minimal", description: "Clean contemporary lines", icon: Star },
+  { id: "solitaire", name: "Solitaire", description: "Timeless elegance", icon: CircleDot, image: ringSolitaire },
+  { id: "hidden-halo", name: "Hidden Halo", description: "Subtle sparkle beneath", icon: Circle, image: ringHiddenHalo },
+  { id: "halo", name: "Halo", description: "Maximum brilliance", icon: Sparkles, image: ringHalo },
+  { id: "three-stone", name: "Three-Stone", description: "Past, present, future", icon: Triangle, image: ringThreeStone },
+  { id: "vintage", name: "Vintage / Heirloom", description: "Classic intricate details", icon: Hexagon, image: ringPave },
+  { id: "modern", name: "Modern / Minimal", description: "Clean contemporary lines", icon: Star, image: ringOther },
 ];
 
 // Stone shape options
@@ -440,23 +448,23 @@ export default function EngagementRings() {
                 <button
                   key={style.id}
                   onClick={() => setSelectedStyle(style.id)}
-                  className={`p-4 sm:p-6 rounded-xl border-2 transition-all text-left ${
+                  className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-center ${
                     selectedStyle === style.id
                       ? 'border-luxury-champagne bg-luxury-champagne/10 shadow-lg'
                       : 'border-luxury-divider bg-white hover:border-luxury-champagne/50'
                   }`}
                 >
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-3 ${
-                    selectedStyle === style.id ? 'bg-luxury-champagne' : 'bg-luxury-champagne/20'
-                  }`}>
-                    <style.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${
-                      selectedStyle === style.id ? 'text-luxury-text' : 'text-luxury-champagne'
-                    }`} />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-white">
+                    <img 
+                      src={style.image} 
+                      alt={style.name}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   <h3 className="font-serif text-luxury-text text-sm sm:text-base mb-1">{style.name}</h3>
                   <p className="text-xs text-luxury-text-muted">{style.description}</p>
                   {selectedStyle === style.id && (
-                    <Check className="w-5 h-5 text-luxury-champagne mt-2" />
+                    <Check className="w-5 h-5 text-luxury-champagne mt-2 mx-auto" />
                   )}
                 </button>
               ))}
