@@ -709,7 +709,7 @@ const Custom = () => {
                                     : "border-luxury-divider hover:border-luxury-champagne/50 bg-white"
                                 }`}
                               >
-                                <div className="w-16 h-16 mx-auto mb-2 rounded-lg overflow-hidden bg-white">
+                                <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-2 rounded-lg overflow-hidden bg-white p-1">
                                   <img 
                                     src={option.image} 
                                     alt={option.label}
