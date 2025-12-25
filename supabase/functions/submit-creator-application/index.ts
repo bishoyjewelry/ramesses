@@ -145,7 +145,7 @@ serve(async (req: Request) => {
     // Send confirmation email to applicant
     try {
       await resend.emails.send({
-        from: "Ramessés Jewelry <onboarding@resend.dev>",
+        from: "Ramesses Jewelry <onboarding@resend.dev>",
         to: [email],
         subject: "Your Creator Application Has Been Received",
         html: `
@@ -158,7 +158,7 @@ serve(async (req: Request) => {
             <p style="color: #333; font-size: 16px; line-height: 1.6;">Dear ${name},</p>
             
             <p style="color: #333; font-size: 16px; line-height: 1.6;">
-              Thank you for applying to become a creator on the Ramessés Creator Marketplace. 
+              Thank you for applying to become a creator on the Ramesses Creator Marketplace. 
               We're excited to review your application and designs.
             </p>
             
@@ -182,12 +182,12 @@ serve(async (req: Request) => {
             
             <p style="color: #333; font-size: 16px; line-height: 1.6;">
               Best regards,<br>
-              <strong style="color: #0B1B36;">The Ramessés Team</strong>
+              <strong style="color: #0B1B36;">The Ramesses Team</strong>
             </p>
             
             <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
               <p style="color: #888; font-size: 12px;">
-                © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                © ${new Date().getFullYear()} Ramesses Jewelry. All rights reserved.
               </p>
             </div>
           </div>
@@ -202,7 +202,7 @@ serve(async (req: Request) => {
     // Send notification to admin (you can customize this email)
     try {
       await resend.emails.send({
-        from: "Ramessés System <onboarding@resend.dev>",
+        from: "Ramesses System <onboarding@resend.dev>",
         to: ["admin@ramesses.com"], // Update with actual admin email
         subject: `New Creator Application: ${name}`,
         html: `

@@ -243,7 +243,7 @@ serve(async (req: Request) => {
         if (creatorUser?.user?.email) {
           try {
             await resend.emails.send({
-              from: "Ramessés Jewelry <onboarding@resend.dev>",
+              from: "Ramesses Jewelry <onboarding@resend.dev>",
               to: [creatorUser.user.email],
               subject: "Your design is now live on the Ramessés Marketplace",
               html: `
@@ -259,7 +259,7 @@ serve(async (req: Request) => {
                   
                   <p style="color: #333; font-size: 16px; line-height: 1.6;">
                     Great news! Your design <strong>"${designData.title}"</strong> has been approved and is now 
-                    live on the Ramessés Creator Marketplace.
+                    live on the Ramesses Creator Marketplace.
                   </p>
                   
                   <div style="background: linear-gradient(135deg, #0B1B36 0%, #15233E 100%); padding: 30px; border-radius: 12px; margin: 30px 0; text-align: center;">
@@ -289,12 +289,12 @@ serve(async (req: Request) => {
                   
                   <p style="color: #333; font-size: 16px; line-height: 1.6;">
                     Congratulations on this milestone!<br>
-                    <strong style="color: #0B1B36;">The Ramessés Team</strong>
+                    <strong style="color: #0B1B36;">The Ramesses Team</strong>
                   </p>
                   
                   <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                     <p style="color: #888; font-size: 12px;">
-                      © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                      © ${new Date().getFullYear()} Ramesses Jewelry. All rights reserved.
                     </p>
                   </div>
                 </div>

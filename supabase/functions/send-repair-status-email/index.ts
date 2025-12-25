@@ -26,7 +26,7 @@ const getEmailContent = (
     pending: {
       subject: "We've Received Your Repair Request",
       heading: "Your Repair Request Has Been Received",
-      message: `Thank you for choosing Ramessés Jewelry for your repair needs. We've received your request and our team will review it shortly. You'll receive another email once we've received your item at our workshop.`,
+      message: `Thank you for choosing Ramesses Jewelry for your repair needs. We've received your request and our team will review it shortly. You'll receive another email once we've received your item at our workshop.`,
     },
     received: {
       subject: "Your Jewelry Has Arrived at Our Workshop",
@@ -108,7 +108,7 @@ const generateEmailHtml = (
           <tr>
             <td style="padding: 40px 40px 20px; text-align: center; border-bottom: 1px solid #e5e5e5;">
               <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #1a1a1a; font-family: Georgia, serif;">
-                Ramessés Jewelry
+                Ramesses Jewelry
               </h1>
               <p style="margin: 8px 0 0; color: #C6A962; font-size: 14px; letter-spacing: 1px;">
                 MASTER JEWELER SINCE 1990
@@ -182,7 +182,7 @@ const generateEmailHtml = (
               </p>
               <hr style="margin: 20px 0; border: none; border-top: 1px solid #333;">
               <p style="margin: 0; font-size: 12px; color: #888; text-align: center;">
-                Ramessés Jewelry · Diamond District, NYC<br>
+                Ramesses Jewelry · Diamond District, NYC<br>
                 47th Street · 30+ Years of Master Craftsmanship
               </p>
             </td>
@@ -257,7 +257,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email via Resend
     const emailResponse = await resend.emails.send({
-      from: "Ramessés Jewelry <onboarding@resend.dev>",
+      from: "Ramesses Jewelry <onboarding@resend.dev>",
       to: [repair.email],
       subject: subject,
       html: html,

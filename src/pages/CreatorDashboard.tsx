@@ -225,7 +225,7 @@ const CreatorDashboard = () => {
                 <Palette className="w-10 h-10 text-luxury-champagne" />
               </div>
               <h1 className="text-3xl font-serif luxury-heading text-luxury-text mb-4">
-                You are not an active Ramessés Creator yet.
+                You are not an active Ramesses Creator yet.
               </h1>
               <p className="text-luxury-text-muted mb-8">
                 Join our creator community to publish your custom designs and earn commissions when others order them.

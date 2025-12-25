@@ -377,7 +377,7 @@ const Custom = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-luxury-champagne/15 border border-luxury-champagne/20 rounded-full mb-6 sm:mb-8">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-luxury-champagne" />
-              <span className="text-xs sm:text-sm font-medium text-luxury-text">Ramessés Custom Lab</span>
+              <span className="text-xs sm:text-sm font-medium text-luxury-text">Ramesses Custom Lab</span>
             </div>
             
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-4 sm:mb-6 leading-tight px-2">
