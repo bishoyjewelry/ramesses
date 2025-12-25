@@ -454,7 +454,7 @@ export default function EngagementRings() {
                       : 'border-luxury-divider bg-white hover:border-luxury-champagne/50'
                   }`}
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-white">
+                  <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 rounded-lg overflow-hidden bg-white p-1">
                     <img 
                       src={style.image} 
                       alt={style.name}
