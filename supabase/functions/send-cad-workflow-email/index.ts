@@ -66,7 +66,7 @@ function wrapEmailHtml(content: string): string {
         <!-- Header -->
         <div style="background-color: ${BRAND_COLORS.dark}; padding: 32px; text-align: center;">
           <h1 style="color: ${BRAND_COLORS.primary}; margin: 0; font-size: 28px; font-weight: normal; letter-spacing: 2px;">
-            RAMESSÉS
+            RAMESSES
           </h1>
           <p style="color: #a0a0a0; margin: 8px 0 0 0; font-size: 12px; letter-spacing: 1px;">
             MASTER JEWELER • EST. 47TH STREET
@@ -81,7 +81,7 @@ function wrapEmailHtml(content: string): string {
         <!-- Footer -->
         <div style="background-color: ${BRAND_COLORS.dark}; padding: 24px; text-align: center;">
           <p style="color: ${BRAND_COLORS.primary}; margin: 0 0 8px 0; font-size: 14px;">
-            Ramessés Jewelry
+            Ramesses Jewelry
           </p>
           <p style="color: #a0a0a0; margin: 0; font-size: 12px;">
             47th Street Diamond District • New York
@@ -419,7 +419,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Ramessés Jewelry <onboarding@resend.dev>",
+        from: "Ramesses Jewelry <onboarding@resend.dev>",
         to: [to_email],
         subject,
         html,

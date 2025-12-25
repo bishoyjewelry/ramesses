@@ -86,7 +86,7 @@ const Admin = () => {
       {/* Top Bar */}
       <header className="bg-white border-b border-luxury-divider px-6 py-4">
         <h1 className="text-2xl font-serif text-luxury-text">
-          Ramessés Admin Dashboard
+          Ramesses Admin Dashboard
         </h1>
       </header>
 

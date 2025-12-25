@@ -129,9 +129,9 @@ serve(async (req: Request) => {
       // Send approval email
       try {
         await resend.emails.send({
-          from: "Ramessés Jewelry <onboarding@resend.dev>",
+          from: "Ramesses Jewelry <onboarding@resend.dev>",
           to: [application.email],
-          subject: "🎉 Welcome to the Ramessés Creator Marketplace!",
+          subject: "🎉 Welcome to the Ramesses Creator Marketplace!",
           html: `
             <div style="font-family: 'Montserrat', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
               <div style="text-align: center; margin-bottom: 40px;">
@@ -142,8 +142,8 @@ serve(async (req: Request) => {
               <p style="color: #333; font-size: 16px; line-height: 1.6;">Dear ${application.name},</p>
               
               <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                We're thrilled to welcome you to the <strong>Ramessés Creator Marketplace</strong>! 
-                Your application has been approved, and you're now officially a Ramessés Creator.
+                We're thrilled to welcome you to the <strong>Ramesses Creator Marketplace</strong>! 
+                Your application has been approved, and you're now officially a Ramesses Creator.
               </p>
               
               <div style="background: linear-gradient(135deg, #0B1B36 0%, #15233E 100%); padding: 30px; border-radius: 12px; margin: 30px 0; text-align: center;">
@@ -154,7 +154,7 @@ serve(async (req: Request) => {
                   <li>Submit your custom jewelry designs for publication</li>
                   <li>Earn commissions when customers order your designs</li>
                   <li>Track your earnings in your Creator Dashboard</li>
-                  <li>Build your portfolio within the Ramessés ecosystem</li>
+                  <li>Build your portfolio within the Ramesses ecosystem</li>
                 </ul>
               </div>
               
@@ -171,12 +171,12 @@ serve(async (req: Request) => {
               
               <p style="color: #333; font-size: 16px; line-height: 1.6;">
                 Welcome to the family!<br>
-                <strong style="color: #0B1B36;">The Ramessés Team</strong>
+                <strong style="color: #0B1B36;">The Ramesses Team</strong>
               </p>
               
               <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                 <p style="color: #888; font-size: 12px;">
-                  © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                  © ${new Date().getFullYear()} Ramesses Jewelry. All rights reserved.
                 </p>
               </div>
             </div>
@@ -211,7 +211,7 @@ serve(async (req: Request) => {
       // Send rejection email
       try {
         await resend.emails.send({
-          from: "Ramessés Jewelry <onboarding@resend.dev>",
+          from: "Ramesses Jewelry <onboarding@resend.dev>",
           to: [application.email],
           subject: "Update on Your Creator Application",
           html: `
@@ -224,7 +224,7 @@ serve(async (req: Request) => {
               <p style="color: #333; font-size: 16px; line-height: 1.6;">Dear ${application.name},</p>
               
               <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                Thank you for your interest in becoming a Ramessés Creator. After careful review, 
+                Thank you for your interest in becoming a Ramesses Creator. After careful review, 
                 we've decided not to move forward with your application at this time.
               </p>
               
@@ -244,12 +244,12 @@ serve(async (req: Request) => {
               
               <p style="color: #333; font-size: 16px; line-height: 1.6;">
                 Thank you for your understanding.<br>
-                <strong style="color: #0B1B36;">The Ramessés Team</strong>
+                <strong style="color: #0B1B36;">The Ramesses Team</strong>
               </p>
               
               <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                 <p style="color: #888; font-size: 12px;">
-                  © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                  © ${new Date().getFullYear()} Ramesses Jewelry. All rights reserved.
                 </p>
               </div>
             </div>

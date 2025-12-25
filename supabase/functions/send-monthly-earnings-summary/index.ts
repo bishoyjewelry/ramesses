@@ -138,9 +138,9 @@ serve(async (req: Request) => {
       // Send monthly summary email
       try {
         await resend.emails.send({
-          from: "Ramessés Jewelry <onboarding@resend.dev>",
+          from: "Ramesses Jewelry <onboarding@resend.dev>",
           to: [userData.user.email],
-          subject: `Your Ramessés Creator earnings for ${monthName} ${year}`,
+          subject: `Your Ramesses Creator earnings for ${monthName} ${year}`,
           html: `
             <div style="font-family: 'Montserrat', sans-serif; max-width: 700px; margin: 0 auto; padding: 40px 20px;">
               <div style="text-align: center; margin-bottom: 40px;">
@@ -219,13 +219,13 @@ serve(async (req: Request) => {
               </div>
               
               <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                Thank you for being part of the Ramessés Creator community!<br>
-                <strong style="color: #0B1B36;">The Ramessés Team</strong>
+                Thank you for being part of the Ramesses Creator community!<br>
+                <strong style="color: #0B1B36;">The Ramesses Team</strong>
               </p>
               
               <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
                 <p style="color: #888; font-size: 12px;">
-                  © ${new Date().getFullYear()} Ramessés Jewelry. All rights reserved.
+                  © ${new Date().getFullYear()} Ramesses Jewelry. All rights reserved.
                 </p>
               </div>
             </div>

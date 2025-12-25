@@ -26,7 +26,7 @@ export const AuthCallout = ({ redirectTo = "/custom" }: AuthCalloutProps) => {
             </h3>
             <p className="text-luxury-text-muted font-body">
               You can explore the Custom Lab freely, but to submit a design for a quote, save your ideas, 
-              or publish your finished piece to the Ramessés Creator Marketplace, you'll need to sign in 
+              or publish your finished piece to the Ramesses Creator Marketplace, you'll need to sign in 
               or create a free account.
             </p>
           </div>

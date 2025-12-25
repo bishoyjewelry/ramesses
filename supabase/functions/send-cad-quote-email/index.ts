@@ -52,7 +52,7 @@ const handler = async (req: Request): Promise<Response> => {
           <!-- Header -->
           <div style="background-color: #1a1a2e; padding: 32px; text-align: center;">
             <h1 style="color: #d4af37; margin: 0; font-size: 28px; font-weight: normal; letter-spacing: 2px;">
-              RAMESSÉS
+              RAMESSES
             </h1>
             <p style="color: #a0a0a0; margin: 8px 0 0 0; font-size: 12px; letter-spacing: 1px;">
               MASTER JEWELER • EST. 47TH STREET
@@ -66,7 +66,7 @@ const handler = async (req: Request): Promise<Response> => {
             </p>
             
             <p style="color: #333; font-size: 16px; line-height: 1.6; margin: 0 0 24px 0;">
-              Thank you for your interest in creating a custom piece with Ramessés. 
+              Thank you for your interest in creating a custom piece with Ramesses. 
               We've reviewed your ${design_name || 'custom jewelry'} request and are pleased to provide you with a quote.
             </p>
             
@@ -114,7 +114,7 @@ const handler = async (req: Request): Promise<Response> => {
           <!-- Footer -->
           <div style="background-color: #1a1a2e; padding: 24px; text-align: center;">
             <p style="color: #d4af37; margin: 0 0 8px 0; font-size: 14px;">
-              Ramessés Jewelry
+              Ramesses Jewelry
             </p>
             <p style="color: #a0a0a0; margin: 0; font-size: 12px;">
               47th Street Diamond District • New York
@@ -132,7 +132,7 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Ramessés Jewelry <onboarding@resend.dev>",
+        from: "Ramesses Jewelry <onboarding@resend.dev>",
         to: [customer_email],
         subject: `Your Custom Jewelry Quote - $${quote_amount.toLocaleString()}`,
         html: emailHtml,
