@@ -4,14 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { toast } from "sonner";
 import { Link, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { LoginModal } from "@/components/LoginModal";
 import { ConceptCard } from "@/components/ConceptCard";
+import { DraftRestoreBanner } from "@/components/DraftRestoreBanner";
 import { useAuth } from "@/hooks/useAuth";
+import { useCustomDraft, CustomDraft } from "@/hooks/useCustomDraft";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, 
@@ -99,9 +101,22 @@ const Custom = () => {
   const modeParam = searchParams.get('mode');
   const styleParam = searchParams.get('style');
   
+  // Draft management
+  const {
+    showRestoreBanner,
+    draftData,
+    saveDraft,
+    clearDraft,
+    restoreDraft,
+    discardDraft,
+    DEFAULT_GENERAL_FORM,
+    DEFAULT_ENGAGEMENT_FORM,
+  } = useCustomDraft();
+  
   const [activeFlow, setActiveFlow] = useState<DesignFlow>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showDirectUploadModal, setShowDirectUploadModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"generate" | "surprise" | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const conceptsRef = useRef<HTMLDivElement>(null);
   
@@ -121,6 +136,81 @@ const Custom = () => {
   });
   const [isSubmittingDirect, setIsSubmittingDirect] = useState(false);
   
+  // General jewelry form state
+  const [generalForm, setGeneralForm] = useState(DEFAULT_GENERAL_FORM);
+  
+  // Engagement ring form state
+  const [engagementForm, setEngagementForm] = useState({
+    ...DEFAULT_ENGAGEMENT_FORM,
+    style: styleParam || "",
+  });
+  
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+
+  // Auto-save draft when form changes
+  const saveDraftDebounced = useCallback(() => {
+    const draft: CustomDraft = {
+      activeFlow,
+      generalForm,
+      engagementForm,
+      concepts,
+      timestamp: Date.now(),
+    };
+    saveDraft(draft);
+  }, [activeFlow, generalForm, engagementForm, concepts, saveDraft]);
+
+  // Save draft whenever meaningful state changes
+  useEffect(() => {
+    // Only save if there's actual content
+    const hasContent = 
+      activeFlow !== null ||
+      concepts.length > 0 ||
+      generalForm.pieceType !== "" ||
+      engagementForm.style !== "";
+    
+    if (hasContent) {
+      const timeoutId = setTimeout(saveDraftDebounced, 500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [activeFlow, generalForm, engagementForm, concepts, saveDraftDebounced]);
+
+  // Handle draft restoration
+  const handleRestoreDraft = () => {
+    const draft = restoreDraft();
+    if (draft) {
+      setActiveFlow(draft.activeFlow);
+      setGeneralForm(draft.generalForm);
+      setEngagementForm(draft.engagementForm);
+      setConcepts(draft.concepts);
+      
+      if (draft.activeFlow) {
+        setTimeout(() => {
+          formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+      
+      toast.success("Draft restored!");
+    }
+  };
+
+  const handleDiscardDraft = () => {
+    discardDraft();
+    toast("Draft discarded");
+  };
+
+  // Handle pending action after login
+  useEffect(() => {
+    if (user && pendingAction) {
+      const action = pendingAction;
+      setPendingAction(null);
+      
+      // Small delay to ensure state is ready
+      setTimeout(() => {
+        handleGenerateConcepts(action === "surprise");
+      }, 100);
+    }
+  }, [user, pendingAction]);
+  
   // Set mode from URL params on mount
   useEffect(() => {
     if (modeParam === 'engagement') {
@@ -138,30 +228,6 @@ const Custom = () => {
       }, 100);
     }
   }, [modeParam, styleParam]);
-  
-  // General jewelry form state
-  const [generalForm, setGeneralForm] = useState({
-    pieceType: "",
-    metal: "",
-    style: "",
-    stonePreferences: "",
-    budget: "",
-    description: "",
-  });
-  
-  // Engagement ring form state
-  const [engagementForm, setEngagementForm] = useState({
-    style: styleParam || "",
-    stoneShape: "",
-    centerStoneType: "",
-    centerStoneSize: "",
-    metal: "",
-    ringSize: "",
-    budget: "",
-    specialRequests: "",
-  });
-  
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -188,6 +254,7 @@ const Custom = () => {
 
   const handleGenerateConcepts = async (surpriseMe = false) => {
     if (!user) {
+      setPendingAction(surpriseMe ? "surprise" : "generate");
       setShowLoginModal(true);
       return;
     }
@@ -271,7 +338,7 @@ const Custom = () => {
           name: concept.name,
           overview: concept.overview,
           flow_type: activeFlow || 'engagement',
-          form_inputs: formInputs,
+          form_inputs: JSON.parse(JSON.stringify(formInputs)),
           spec_sheet: {
             metal: concept.metal,
             center_stone: concept.center_stone,
@@ -291,6 +358,9 @@ const Custom = () => {
         .single();
 
       if (error) throw error;
+
+      // Clear draft after successful save
+      clearDraft();
 
       toast.success(
         <div className="flex flex-col gap-1">
@@ -578,6 +648,13 @@ const Custom = () => {
       <section ref={formRef} className="py-10 sm:py-16 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
+            {/* Draft Restore Banner */}
+            {showRestoreBanner && (
+              <DraftRestoreBanner
+                onResume={handleRestoreDraft}
+                onDiscard={handleDiscardDraft}
+              />
+            )}
             {activeFlow ? (
               <Card className="border border-luxury-divider shadow-luxury rounded-xl sm:rounded-2xl bg-white">
                 <CardContent className="p-5 sm:p-8 md:p-10">
