@@ -172,6 +172,9 @@ export default function EngagementRings() {
                 I Already Have a Design
               </Button>
             </div>
+            <p className="text-xs text-luxury-text-muted/70 mt-4">
+              Use AI to visualize your idea — final details are always refined by hand.
+            </p>
           </div>
         </div>
       </section>
@@ -278,6 +281,9 @@ export default function EngagementRings() {
                 Create Your Engagement Ring
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+              <p className="text-xs text-luxury-text-muted/70 mt-3">
+                Use AI to visualize your idea — final details are always refined by hand.
+              </p>
             </div>
           </div>
         </div>
