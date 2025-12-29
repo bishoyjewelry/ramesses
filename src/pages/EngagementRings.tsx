@@ -1,11 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { LoginModal } from "@/components/LoginModal";
-import { ConceptCard } from "@/components/ConceptCard";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -20,9 +19,6 @@ import {
   Triangle,
   Star,
   Loader2,
-  Upload,
-  Wand2,
-  Check,
   ChevronRight,
   Camera,
   Send
@@ -46,58 +42,12 @@ const styleOptions = [
   { id: "modern", name: "Modern / Minimal", description: "Clean contemporary lines", icon: Star, image: ringOther },
 ];
 
-// Stone shape options
-const stoneShapeOptions = [
-  { id: "round", name: "Round", tooltip: "Classic, maximum sparkle" },
-  { id: "oval", name: "Oval", tooltip: "Elongates the finger" },
-  { id: "emerald", name: "Emerald", tooltip: "Sophisticated step cuts" },
-  { id: "cushion", name: "Cushion", tooltip: "Soft, romantic" },
-  { id: "princess", name: "Princess", tooltip: "Modern square brilliance" },
-  { id: "pear", name: "Pear", tooltip: "Unique teardrop shape" },
-  { id: "radiant", name: "Radiant", tooltip: "Bold and brilliant" },
-  { id: "marquise", name: "Marquise", tooltip: "Maximizes carat size" },
-];
-
-// Metal options
-const metalOptions = [
-  { id: "14k-yellow", name: "Yellow Gold", color: "#FFD700" },
-  { id: "14k-white", name: "White Gold", color: "#E8E8E8" },
-  { id: "14k-rose", name: "Rose Gold", color: "#E8B4B8" },
-  { id: "platinum", name: "Platinum", color: "#D4D4D4" },
-];
-
-interface Concept {
-  id: string;
-  name: string;
-  overview: string;
-  metal: string;
-  center_stone: { shape: string; size_mm: string; type: string };
-  setting_style: string;
-  band: { width_mm: string; style: string; pave: string; shoulders: string };
-  gallery_details: string;
-  prongs: string;
-  accent_stones: string;
-  manufacturing_notes: string;
-  images: { hero: string; side: string; top: string };
-}
-
 export default function EngagementRings() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const resultsRef = useRef<HTMLDivElement>(null);
   const bypassRef = useRef<HTMLDivElement>(null);
   
-  // Builder state
-  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
-  const [selectedShape, setSelectedShape] = useState<string | null>(null);
-  const [selectedMetal, setSelectedMetal] = useState<string | null>(null);
-  const [pave, setPave] = useState(false);
-  const [hiddenDetails, setHiddenDetails] = useState(false);
-  
-  // Generation state
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [concepts, setConcepts] = useState<Concept[]>([]);
-  const [savingId, setSavingId] = useState<string | null>(null);
+  // Login modal state
   const [showLoginModal, setShowLoginModal] = useState(false);
   
   // Bypass upload state
@@ -105,168 +55,17 @@ export default function EngagementRings() {
   const [bypassDescription, setBypassDescription] = useState("");
   const [isSubmittingBypass, setIsSubmittingBypass] = useState(false);
 
-  const canGenerate = selectedStyle && selectedShape && selectedMetal;
-
   const scrollToBypass = () => {
     bypassRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleGenerateConcepts = async (surpriseMe = false) => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
+  // Navigate to Custom Lab with engagement mode and optional style pre-selected
+  const goToCustomLab = (style?: string) => {
+    const params = new URLSearchParams({ mode: 'engagement' });
+    if (style) {
+      params.set('style', style);
     }
-    
-    setIsGenerating(true);
-    setConcepts([]);
-    
-    try {
-      const formInputs = {
-        flowType: "engagement",
-        style: surpriseMe ? "surprise" : selectedStyle,
-        stoneShape: surpriseMe ? "" : selectedShape,
-        metal: surpriseMe ? "" : selectedMetal,
-        pave: pave ? "yes" : "no",
-        hiddenDetails: hiddenDetails ? "yes" : "no",
-      };
-
-      const { data, error } = await supabase.functions.invoke('generate-ring-concepts', {
-        body: { formInputs, surpriseMe }
-      });
-
-      if (error) throw error;
-      
-      if (data?.concepts) {
-        setConcepts(data.concepts);
-        toast.success(`Generated ${data.concepts.length} concept${data.concepts.length > 1 ? 's' : ''}!`);
-        
-        setTimeout(() => {
-          resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      } else {
-        throw new Error("No concepts returned");
-      }
-    } catch (error) {
-      console.error('Error generating concepts:', error);
-      toast.error("Failed to generate concepts. Please try again.");
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleSaveConcept = async (concept: Concept) => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
-    }
-    
-    setSavingId(concept.id);
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_designs')
-        .insert([{
-          user_id: user.id,
-          name: concept.name,
-          overview: concept.overview,
-          flow_type: 'engagement',
-          form_inputs: {
-            style: selectedStyle,
-            stoneShape: selectedShape,
-            metal: selectedMetal,
-            pave,
-            hiddenDetails,
-          },
-          spec_sheet: {
-            metal: concept.metal,
-            center_stone: concept.center_stone,
-            setting_style: concept.setting_style,
-            band: concept.band,
-            gallery_details: concept.gallery_details,
-            prongs: concept.prongs,
-            accent_stones: concept.accent_stones,
-            manufacturing_notes: concept.manufacturing_notes,
-          },
-          hero_image_url: concept.images.hero,
-          side_image_url: concept.images.side,
-          top_image_url: concept.images.top,
-          status: 'saved',
-        }])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      toast.success(
-        <div className="flex flex-col gap-1">
-          <span>Design saved!</span>
-          <Link to={`/my-designs/${data.id}`} className="text-luxury-champagne underline text-sm">
-            View in My Designs →
-          </Link>
-        </div>,
-        { duration: 5000 }
-      );
-    } catch (error) {
-      console.error('Error saving design:', error);
-      toast.error("Failed to save design. Please try again.");
-    } finally {
-      setSavingId(null);
-    }
-  };
-
-  const handleSendToDesigner = async (concept: Concept) => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
-    }
-    
-    setSavingId(concept.id);
-    
-    try {
-      // First save the design
-      const { data: savedDesign, error: saveError } = await supabase
-        .from('user_designs')
-        .insert([{
-          user_id: user.id,
-          name: concept.name,
-          overview: concept.overview,
-          flow_type: 'engagement',
-          form_inputs: {
-            style: selectedStyle,
-            stoneShape: selectedShape,
-            metal: selectedMetal,
-            pave,
-            hiddenDetails,
-          },
-          spec_sheet: {
-            metal: concept.metal,
-            center_stone: concept.center_stone,
-            setting_style: concept.setting_style,
-            band: concept.band,
-            gallery_details: concept.gallery_details,
-            prongs: concept.prongs,
-            accent_stones: concept.accent_stones,
-            manufacturing_notes: concept.manufacturing_notes,
-          },
-          hero_image_url: concept.images.hero,
-          side_image_url: concept.images.side,
-          top_image_url: concept.images.top,
-          status: 'submitted_for_cad',
-          cad_submitted_at: new Date().toISOString(),
-        }])
-        .select()
-        .single();
-
-      if (saveError) throw saveError;
-
-      toast.success("Design sent to our master jeweler! We'll be in touch soon.");
-      navigate(`/my-designs/${savedDesign.id}`);
-    } catch (error) {
-      console.error('Error sending to designer:', error);
-      toast.error("Failed to submit. Please try again.");
-    } finally {
-      setSavingId(null);
-    }
+    navigate(`/custom?${params.toString()}`);
   };
 
   const handleBypassImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -359,7 +158,7 @@ export default function EngagementRings() {
               <Button 
                 size="lg" 
                 className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8"
-                onClick={() => document.getElementById('style-selection')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => goToCustomLab()}
               >
                 Start Designing
                 <Sparkles className="ml-2 h-5 w-5" />
@@ -434,242 +233,57 @@ export default function EngagementRings() {
         </div>
       </section>
 
-      {/* STEP 1: STYLE SELECTION */}
-      <section id="style-selection" className="py-12 bg-luxury-bg-warm">
+      {/* RING STYLES PREVIEW - Click to go to Custom Lab with style pre-selected */}
+      <section className="py-12 bg-luxury-bg-warm">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-luxury-champagne text-luxury-text flex items-center justify-center font-bold text-sm">1</div>
-              <h2 className="text-xl sm:text-2xl font-serif text-luxury-text">Choose Your Ring Style</h2>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Explore Ring Styles</h2>
+              <p className="text-luxury-text-muted">
+                Select a style to start building your ring in our Custom Lab.
+              </p>
             </div>
             
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {styleOptions.map((style) => (
                 <button
                   key={style.id}
-                  onClick={() => setSelectedStyle(style.id)}
-                  className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-center ${
-                    selectedStyle === style.id
-                      ? 'border-luxury-champagne bg-luxury-champagne/10 shadow-lg'
-                      : 'border-luxury-divider bg-white hover:border-luxury-champagne/50'
-                  }`}
+                  onClick={() => goToCustomLab(style.id)}
+                  className="p-3 sm:p-4 rounded-xl border-2 border-luxury-divider bg-white hover:border-luxury-champagne/50 hover:shadow-lg transition-all text-center group"
                 >
                   <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 rounded-lg overflow-hidden bg-white p-1">
                     <img 
                       src={style.image} 
                       alt={style.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                     />
                   </div>
                   <h3 className="font-serif text-luxury-text text-sm sm:text-base mb-1">{style.name}</h3>
                   <p className="text-xs text-luxury-text-muted">{style.description}</p>
-                  {selectedStyle === style.id && (
-                    <Check className="w-5 h-5 text-luxury-champagne mt-2 mx-auto" />
-                  )}
+                  <div className="mt-2 flex items-center justify-center gap-1 text-xs text-luxury-champagne opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>Start with this style</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </div>
                 </button>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* STEP 2: STONE SHAPE */}
-      <section className="py-12 bg-luxury-bg">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                selectedStyle ? 'bg-luxury-champagne text-luxury-text' : 'bg-luxury-divider text-luxury-text-muted'
-              }`}>2</div>
-              <h2 className="text-xl sm:text-2xl font-serif text-luxury-text">Select Center Stone Shape</h2>
-            </div>
-            
-            <div className="grid grid-cols-4 gap-2 sm:gap-4">
-              {stoneShapeOptions.map((shape) => (
-                <button
-                  key={shape.id}
-                  onClick={() => setSelectedShape(shape.id)}
-                  title={shape.tooltip}
-                  className={`p-3 sm:p-4 rounded-xl border-2 transition-all text-center ${
-                    selectedShape === shape.id
-                      ? 'border-luxury-champagne bg-luxury-champagne/10'
-                      : 'border-luxury-divider bg-white hover:border-luxury-champagne/50'
-                  }`}
-                >
-                  <Gem className={`w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 ${
-                    selectedShape === shape.id ? 'text-luxury-champagne' : 'text-luxury-text-muted'
-                  }`} />
-                  <span className="text-xs sm:text-sm font-medium text-luxury-text">{shape.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* STEP 3: METAL & PREFERENCES */}
-      <section className="py-12 bg-luxury-bg-warm">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                selectedShape ? 'bg-luxury-champagne text-luxury-text' : 'bg-luxury-divider text-luxury-text-muted'
-              }`}>3</div>
-              <h2 className="text-xl sm:text-2xl font-serif text-luxury-text">Metal & Setting Preferences</h2>
-            </div>
-
-            {/* Metal Selection */}
-            <div className="mb-8">
-              <h3 className="text-sm font-medium text-luxury-text mb-3">Metal</h3>
-              <div className="flex flex-wrap gap-3">
-                {metalOptions.map((metal) => (
-                  <button
-                    key={metal.id}
-                    onClick={() => setSelectedMetal(metal.id)}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
-                      selectedMetal === metal.id
-                        ? 'border-luxury-champagne bg-luxury-champagne/10'
-                        : 'border-luxury-divider bg-white hover:border-luxury-champagne/50'
-                    }`}
-                  >
-                    <div 
-                      className="w-5 h-5 rounded-full border border-luxury-divider" 
-                      style={{ backgroundColor: metal.color }}
-                    />
-                    <span className="text-sm font-medium text-luxury-text">{metal.name}</span>
-                    {selectedMetal === metal.id && <Check className="w-4 h-4 text-luxury-champagne" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Optional Toggles */}
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => setPave(!pave)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
-                  pave ? 'border-luxury-champagne bg-luxury-champagne/10' : 'border-luxury-divider bg-white'
-                }`}
+            {/* CTA to go to full Custom Lab */}
+            <div className="text-center mt-8">
+              <Button 
+                size="lg"
+                onClick={() => goToCustomLab()}
+                className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8"
               >
-                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                  pave ? 'border-luxury-champagne bg-luxury-champagne' : 'border-luxury-divider'
-                }`}>
-                  {pave && <Check className="w-3 h-3 text-white" />}
-                </div>
-                <span className="text-sm text-luxury-text">Pavé Band</span>
-              </button>
-              
-              <button
-                onClick={() => setHiddenDetails(!hiddenDetails)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-lg border-2 transition-all ${
-                  hiddenDetails ? 'border-luxury-champagne bg-luxury-champagne/10' : 'border-luxury-divider bg-white'
-                }`}
-              >
-                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                  hiddenDetails ? 'border-luxury-champagne bg-luxury-champagne' : 'border-luxury-divider'
-                }`}>
-                  {hiddenDetails && <Check className="w-3 h-3 text-white" />}
-                </div>
-                <span className="text-sm text-luxury-text">Hidden Details</span>
-              </button>
+                Create Your Engagement Ring
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* GENERATE SECTION */}
-      <section className="py-12 bg-luxury-bg">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-white rounded-2xl p-8 border border-luxury-divider shadow-luxury">
-              <Sparkles className="w-12 h-12 text-luxury-champagne mx-auto mb-4" />
-              <h2 className="text-2xl font-serif text-luxury-text mb-2">Ready to See Your Ring?</h2>
-              <p className="text-luxury-text-muted mb-2">
-                {canGenerate 
-                  ? "We'll generate a few concepts based on your choices. Not sure about something? That's okay — pick what feels right and we'll refine from there."
-                  : "Complete the selections above to generate your custom ring concepts."
-                }
-              </p>
-              <p className="text-sm text-luxury-text-muted/70 mb-2">
-                These are starting points for exploration — not final designs. A master jeweler reviews every piece before production begins.
-              </p>
-              <p className="text-xs text-luxury-text-muted/70 mb-6">
-                You're not committing to anything. No work starts without your approval.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  onClick={() => handleGenerateConcepts(false)}
-                  disabled={!canGenerate || isGenerating}
-                  className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold px-8"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      Generate My Ring Concepts
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </>
-                  )}
-                </Button>
-                
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => handleGenerateConcepts(true)}
-                  disabled={isGenerating}
-                  className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text font-medium px-8"
-                >
-                  <Wand2 className="w-5 h-5 mr-2" />
-                  Surprise Me
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* RESULTS SECTION */}
-      {concepts.length > 0 && (
-        <section ref={resultsRef} className="py-12 bg-luxury-bg-warm">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Ring Concepts</h2>
-                <p className="text-luxury-text-muted mb-1">
-                  Like one? Save it to refine later. Want changes? Let us know — nothing is final until you say so.
-                </p>
-                <p className="text-sm text-luxury-text-muted/70 mb-1">
-                  These AI concepts are for exploration. Our master jeweler refines every detail before anything is made.
-                </p>
-                <p className="text-sm text-luxury-text-muted/70">
-                  All designs are saved to{" "}
-                  <Link to="/my-designs" className="text-luxury-champagne underline">My Designs</Link>
-                  {" "}— revisit anytime.
-                </p>
-              </div>
-              
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {concepts.map((concept) => (
-                  <ConceptCard
-                    key={concept.id}
-                    concept={concept}
-                    onChoose={() => handleSaveConcept(concept)}
-                    onRegenerate={() => handleSendToDesigner(concept)}
-                    isSaving={savingId === concept.id}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* BYPASS SECTION */}
+      {/* BYPASS SECTION - Direct to designer without AI generation */}
       <section ref={bypassRef} id="bypass-section" className="py-16 bg-luxury-bg">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
@@ -767,9 +381,8 @@ export default function EngagementRings() {
                 to="/custom?mode=general" 
                 className="text-luxury-text-muted hover:text-luxury-champagne text-sm inline-flex items-center gap-1"
               >
-                Looking to design something else?
+                Looking to design something other than an engagement ring?
                 <ArrowRight className="w-4 h-4" />
-                Design Any Jewelry
               </Link>
             </div>
           </div>
@@ -780,8 +393,7 @@ export default function EngagementRings() {
       
       <LoginModal 
         isOpen={showLoginModal} 
-        onClose={() => setShowLoginModal(false)}
-        redirectTo="/engagement-rings"
+        onClose={() => setShowLoginModal(false)} 
       />
     </div>
   );
