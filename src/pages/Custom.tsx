@@ -12,6 +12,7 @@ import { Footer } from "@/components/Footer";
 import { LoginModal } from "@/components/LoginModal";
 import { ConceptCard } from "@/components/ConceptCard";
 import { DraftRestoreBanner } from "@/components/DraftRestoreBanner";
+import { SubmitDesignModal } from "@/components/SubmitDesignModal";
 import { useAuth } from "@/hooks/useAuth";
 import { useCustomDraft, CustomDraft } from "@/hooks/useCustomDraft";
 import { supabase } from "@/integrations/supabase/client";
@@ -125,6 +126,11 @@ const Custom = () => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
   const [regeneratingId, setRegeneratingId] = useState<string | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
+  
+  // Submit design state
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [conceptToSubmit, setConceptToSubmit] = useState<Concept | null>(null);
+  const [isSubmittingDesign, setIsSubmittingDesign] = useState(false);
   
   // Direct upload state
   const [directUploadImages, setDirectUploadImages] = useState<File[]>([]);
@@ -376,6 +382,100 @@ const Custom = () => {
       toast.error("Failed to save design. Please try again.");
     } finally {
       setSavingId(null);
+    }
+  };
+
+  // Open submit modal for a concept
+  const handleOpenSubmitModal = (concept: Concept) => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    setConceptToSubmit(concept);
+    setShowSubmitModal(true);
+  };
+
+  // Submit design (with optional notes)
+  const handleSubmitDesign = async (notes?: string, contactPreference?: string, bestTime?: string) => {
+    if (!user || !conceptToSubmit) return;
+
+    setIsSubmittingDesign(true);
+
+    try {
+      const formInputs = activeFlow === "engagement" ? engagementForm : generalForm;
+      
+      // First save to user_designs with 'submitted' status
+      const { data: designData, error: designError } = await supabase
+        .from('user_designs')
+        .insert([{
+          user_id: user.id,
+          name: conceptToSubmit.name,
+          overview: conceptToSubmit.overview,
+          flow_type: activeFlow || 'engagement',
+          form_inputs: JSON.parse(JSON.stringify(formInputs)),
+          spec_sheet: {
+            metal: conceptToSubmit.metal,
+            center_stone: conceptToSubmit.center_stone,
+            setting_style: conceptToSubmit.setting_style,
+            band: conceptToSubmit.band,
+            gallery_details: conceptToSubmit.gallery_details,
+            prongs: conceptToSubmit.prongs,
+            accent_stones: conceptToSubmit.accent_stones,
+            manufacturing_notes: conceptToSubmit.manufacturing_notes,
+          },
+          hero_image_url: conceptToSubmit.images.hero,
+          side_image_url: conceptToSubmit.images.side,
+          top_image_url: conceptToSubmit.images.top,
+          status: 'submitted',
+        }])
+        .select()
+        .single();
+
+      if (designError) throw designError;
+
+      // Create custom_inquiry for admin review
+      const description = [
+        `Design: ${conceptToSubmit.name}`,
+        `Overview: ${conceptToSubmit.overview}`,
+        `Metal: ${conceptToSubmit.metal}`,
+        `Stone: ${conceptToSubmit.center_stone.type} ${conceptToSubmit.center_stone.shape} (${conceptToSubmit.center_stone.size_mm})`,
+        `Setting: ${conceptToSubmit.setting_style}`,
+        notes ? `\nCustomer Notes:\n${notes}` : '',
+        contactPreference ? `\nPreferred Contact: ${contactPreference}` : '',
+        bestTime ? `\nBest Time to Reach: ${bestTime}` : '',
+      ].filter(Boolean).join('\n');
+
+      const { error: inquiryError } = await supabase
+        .from('custom_inquiries')
+        .insert([{
+          piece_type: activeFlow === 'engagement' ? 'Engagement Ring' : (generalForm.pieceType || 'Custom Jewelry'),
+          description,
+          budget_range: activeFlow === 'engagement' ? engagementForm.budget : generalForm.budget,
+          name: user.email?.split('@')[0] || 'Customer',
+          email: user.email || '',
+          user_id: user.id,
+        }]);
+
+      if (inquiryError) throw inquiryError;
+
+      // Clear draft after successful submission
+      clearDraft();
+
+      toast.success(
+        <div className="flex flex-col gap-1">
+          <span>Design submitted for review!</span>
+          <span className="text-sm text-luxury-text-muted">A master jeweler will contact you soon.</span>
+        </div>,
+        { duration: 5000 }
+      );
+
+      setShowSubmitModal(false);
+      setConceptToSubmit(null);
+    } catch (error) {
+      console.error('Error submitting design:', error);
+      toast.error("Failed to submit design. Please try again.");
+    } finally {
+      setIsSubmittingDesign(false);
     }
   };
 
@@ -1045,8 +1145,10 @@ const Custom = () => {
                     concept={concept}
                     onChoose={handleChooseConcept}
                     onRegenerate={handleRegenerateConcept}
+                    onSubmit={handleOpenSubmitModal}
                     isRegenerating={regeneratingId === concept.id}
                     isSaving={savingId === concept.id}
+                    isSubmitting={isSubmittingDesign && conceptToSubmit?.id === concept.id}
                   />
                 ))}
               </div>
@@ -1301,6 +1403,18 @@ const Custom = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Submit Design Modal */}
+      <SubmitDesignModal
+        isOpen={showSubmitModal}
+        onClose={() => {
+          setShowSubmitModal(false);
+          setConceptToSubmit(null);
+        }}
+        onSubmit={handleSubmitDesign}
+        isSubmitting={isSubmittingDesign}
+        designName={conceptToSubmit?.name || ""}
+      />
     </div>
   );
 };

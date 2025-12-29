@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2, Send } from "lucide-react";
 
 interface ConceptSpec {
   name: string;
@@ -38,16 +38,20 @@ interface ConceptCardProps {
   concept: Concept;
   onChoose: (concept: Concept) => void;
   onRegenerate: (concept: Concept) => void;
+  onSubmit: (concept: Concept) => void;
   isRegenerating?: boolean;
   isSaving?: boolean;
+  isSubmitting?: boolean;
 }
 
 export const ConceptCard = ({ 
   concept, 
   onChoose, 
-  onRegenerate, 
+  onRegenerate,
+  onSubmit,
   isRegenerating = false,
-  isSaving = false 
+  isSaving = false,
+  isSubmitting = false,
 }: ConceptCardProps) => {
   const [showSpecs, setShowSpecs] = useState(false);
   const [activeImage, setActiveImage] = useState<'hero' | 'side' | 'top'>('hero');
@@ -178,34 +182,58 @@ export const ConceptCard = ({
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3">
+          <div className="space-y-3">
+            {/* Primary actions row */}
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => onSubmit(concept)}
+                disabled={isSubmitting || isSaving}
+                className="flex-1 bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Submit Design
+                  </>
+                )}
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => onRegenerate(concept)}
+                disabled={isRegenerating || isSubmitting}
+                className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text tap-target"
+                title="Generate variations"
+              >
+                {isRegenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+            
+            {/* Save to account */}
             <Button 
+              variant="ghost"
               onClick={() => onChoose(concept)}
-              disabled={isSaving}
-              className="flex-1 bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
+              disabled={isSaving || isSubmitting}
+              className="w-full text-luxury-text-muted hover:text-luxury-text hover:bg-luxury-bg h-9 text-sm"
             >
               {isSaving ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 mr-2" />
-                  Choose This Concept
+                  <Check className="w-3.5 h-3.5 mr-2" />
+                  Save to My Designs (decide later)
                 </>
-              )}
-            </Button>
-            <Button 
-              variant="outline"
-              onClick={() => onRegenerate(concept)}
-              disabled={isRegenerating}
-              className="border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text tap-target"
-            >
-              {isRegenerating ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <RefreshCw className="w-4 h-4" />
               )}
             </Button>
           </div>
