@@ -952,6 +952,9 @@ const Custom = () => {
                         </>
                       )}
                     </Button>
+                    <p className="text-center text-xs text-luxury-text-muted/80 -mt-2">
+                      All details can be adjusted by your jeweler.
+                    </p>
                     
                     {/* Surprise Me Button */}
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -1026,7 +1029,7 @@ const Custom = () => {
                 <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Custom Concepts</h2>
                 <p className="text-luxury-text-muted mb-1">Like one? Save it. Want changes? Request variations — nothing is final until you approve.</p>
                 <p className="text-sm text-luxury-text-muted/70 mb-1">
-                  These AI concepts are for exploration. Our master jeweler refines every detail before anything is made.
+                  AI renderings are a starting point. Your jeweler will refine every detail before anything is made.
                 </p>
                 <p className="text-sm text-luxury-text-muted/70">
                   All saved designs live in{" "}
