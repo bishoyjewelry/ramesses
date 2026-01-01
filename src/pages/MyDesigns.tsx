@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { RevisionRequestModal } from "@/components/RevisionRequestModal";
+import { ProgressTracker, mapDesignStatusToProgress } from "@/components/ProgressTracker";
 
 interface UserDesign {
   id: string;
@@ -331,7 +332,19 @@ const MyDesigns = () => {
                         </span>
                       </div>
                       <h3 className="font-serif text-luxury-text truncate mb-1">{design.name}</h3>
-                      {design.overview && (
+                      
+                      {/* Progress Tracker for submitted designs */}
+                      {design.status !== 'draft' && design.status !== 'saved' && (
+                        <div className="my-3 py-3 border-t border-b border-luxury-divider">
+                          <ProgressTracker 
+                            currentStep={mapDesignStatusToProgress(design.status)}
+                            showReassurance={false}
+                            variant="compact"
+                          />
+                        </div>
+                      )}
+                      
+                      {design.overview && (design.status === 'draft' || design.status === 'saved') && (
                         <p className="text-xs text-luxury-text-muted mb-3 line-clamp-2">
                           {design.overview.slice(0, 80)}{design.overview.length > 80 ? '...' : ''}
                         </p>
