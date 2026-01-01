@@ -496,6 +496,9 @@ export type Database = {
           inspiration_image_urls: string[] | null
           name: string
           overview: string | null
+          revision_contact_preference: string | null
+          revision_notes: string | null
+          revision_requested_at: string | null
           side_image_url: string | null
           spec_sheet: Json | null
           status: string
@@ -514,6 +517,9 @@ export type Database = {
           inspiration_image_urls?: string[] | null
           name: string
           overview?: string | null
+          revision_contact_preference?: string | null
+          revision_notes?: string | null
+          revision_requested_at?: string | null
           side_image_url?: string | null
           spec_sheet?: Json | null
           status?: string
@@ -532,6 +538,9 @@ export type Database = {
           inspiration_image_urls?: string[] | null
           name?: string
           overview?: string | null
+          revision_contact_preference?: string | null
+          revision_notes?: string | null
+          revision_requested_at?: string | null
           side_image_url?: string | null
           spec_sheet?: Json | null
           status?: string

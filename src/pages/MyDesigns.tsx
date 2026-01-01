@@ -7,13 +7,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Sparkles, Plus, Loader2, ArrowLeft, Filter, SortAsc, SortDesc } from "lucide-react";
+import { Sparkles, Plus, Loader2, ArrowLeft, Filter, SortAsc, SortDesc, Edit3 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RevisionRequestModal } from "@/components/RevisionRequestModal";
 
 interface UserDesign {
   id: string;
@@ -27,6 +28,8 @@ interface UserDesign {
   top_image_url: string | null;
   status: string;
   created_at: string;
+  revision_notes?: string | null;
+  revision_requested_at?: string | null;
 }
 
 const MyDesigns = () => {
@@ -97,7 +100,9 @@ const MyDesigns = () => {
     const statusMap: Record<string, string> = {
       draft: 'Draft',
       saved: 'Draft',
+      submitted: 'Submitted',
       submitted_for_cad: 'Sent to Designer',
+      revision_requested: 'Revision Requested',
       in_cad: 'In CAD',
       quoted: 'Quoted',
       completed: 'Completed'
@@ -110,8 +115,11 @@ const MyDesigns = () => {
       case 'draft':
       case 'saved':
         return 'bg-luxury-champagne/20 text-luxury-text';
+      case 'submitted':
       case 'submitted_for_cad':
         return 'bg-blue-100 text-blue-700';
+      case 'revision_requested':
+        return 'bg-orange-100 text-orange-700';
       case 'in_cad':
         return 'bg-amber-100 text-amber-700';
       case 'quoted':
@@ -121,6 +129,19 @@ const MyDesigns = () => {
       default:
         return 'bg-gray-100 text-gray-700';
     }
+  };
+
+  // State for revision modal
+  const [revisionModalOpen, setRevisionModalOpen] = useState(false);
+  const [selectedDesignForRevision, setSelectedDesignForRevision] = useState<UserDesign | null>(null);
+
+  const canRequestRevision = (status: string) => {
+    return ['submitted', 'submitted_for_cad', 'quoted', 'in_cad'].includes(status);
+  };
+
+  const handleOpenRevisionModal = (design: UserDesign) => {
+    setSelectedDesignForRevision(design);
+    setRevisionModalOpen(true);
   };
 
   const activeFiltersCount = (typeFilter !== "all" ? 1 : 0) + (statusFilter !== "all" ? 1 : 0);
@@ -218,6 +239,7 @@ const MyDesigns = () => {
                     <DropdownMenuItem onClick={() => setStatusFilter("all")}>All Statuses</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setStatusFilter("draft")}>Draft</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setStatusFilter("submitted_for_cad")}>Sent to Designer</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setStatusFilter("revision_requested")}>Revision Requested</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setStatusFilter("in_cad")}>In CAD</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setStatusFilter("quoted")}>Quoted</DropdownMenuItem>
                   </DropdownMenuContent>
@@ -337,6 +359,19 @@ const MyDesigns = () => {
                             {isSubmittingCAD ? 'Submitting...' : 'Send to Designer'}
                           </Button>
                         )}
+                        {canRequestRevision(design.status) && (
+                          <Button 
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenRevisionModal(design);
+                            }}
+                            className="w-full border-orange-400 text-orange-600 hover:bg-orange-50 text-sm"
+                          >
+                            <Edit3 className="w-3 h-3 mr-1" />
+                            Request Changes
+                          </Button>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -346,6 +381,17 @@ const MyDesigns = () => {
           </div>
         </div>
       </section>
+
+      {/* Revision Request Modal */}
+      {selectedDesignForRevision && (
+        <RevisionRequestModal
+          open={revisionModalOpen}
+          onOpenChange={setRevisionModalOpen}
+          designId={selectedDesignForRevision.id}
+          designName={selectedDesignForRevision.name}
+          onSuccess={fetchDesigns}
+        />
+      )}
 
       <Footer />
     </div>
