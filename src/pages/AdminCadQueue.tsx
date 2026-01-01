@@ -63,19 +63,24 @@ interface UserDesign {
   spec_sheet: Record<string, unknown> | null;
   inspiration_image_urls: string[] | null;
   flow_type: string;
+  status: string;
+  revision_notes: string | null;
+  revision_requested_at: string | null;
+  revision_contact_preference: string | null;
 }
 
 // STRICT STATUS ENUM - Manual changes only
 const CAD_STATUSES = {
   new: { label: "New — Needs Review", slaHours: 24, order: 1 },
-  reviewed: { label: "Reviewed — Needs Quote", slaHours: 24, order: 2 },
-  quoted: { label: "Quote Sent — Waiting Customer", slaHours: null, order: 3 },
-  approved: { label: "Approved — Send to CAD", slaHours: 48, order: 4 },
-  in_cad: { label: "In CAD", slaHours: 120, order: 5 }, // 5 business days
-  cad_complete: { label: "CAD Complete — Awaiting Approval", slaHours: null, order: 6 },
-  production_ready: { label: "Production Ready", slaHours: null, order: 7 },
-  completed: { label: "Completed", slaHours: null, order: 8 },
-  declined: { label: "Closed / Declined", slaHours: null, order: 9 },
+  revision_requested: { label: "Revision Requested", slaHours: 24, order: 2 },
+  reviewed: { label: "Reviewed — Needs Quote", slaHours: 24, order: 3 },
+  quoted: { label: "Quote Sent — Waiting Customer", slaHours: null, order: 4 },
+  approved: { label: "Approved — Send to CAD", slaHours: 48, order: 5 },
+  in_cad: { label: "In CAD", slaHours: 120, order: 6 }, // 5 business days
+  cad_complete: { label: "CAD Complete — Awaiting Approval", slaHours: null, order: 7 },
+  production_ready: { label: "Production Ready", slaHours: null, order: 8 },
+  completed: { label: "Completed", slaHours: null, order: 9 },
+  declined: { label: "Closed / Declined", slaHours: null, order: 10 },
 } as const;
 
 type CadStatus = keyof typeof CAD_STATUSES;
@@ -134,6 +139,8 @@ function getStatusBadgeVariant(status: string | null): "default" | "secondary" |
   switch (statusKey) {
     case "new":
       return "secondary";
+    case "revision_requested":
+      return "destructive";
     case "reviewed":
       return "outline";
     case "quoted":
@@ -159,6 +166,7 @@ function getNextAction(status: string | null): string {
   const statusKey = (status || 'new') as CadStatus;
   switch (statusKey) {
     case "new": return "Review design";
+    case "revision_requested": return "Review revision request";
     case "reviewed": return "Send quote";
     case "quoted": return "Waiting for customer";
     case "approved": return "Start CAD work";
@@ -662,11 +670,12 @@ const AdminCadQueue = () => {
                   const design = linkedDesigns.get(inquiry.id);
                   const sla = calculateSlaStatus(inquiry.status, inquiry.status_updated_at);
                   const thumbnail = design?.hero_image_url || (inquiry.image_urls && inquiry.image_urls[0]);
+                  const hasRevisionRequest = design?.status === 'revision_requested';
                   
                   return (
                     <TableRow 
                       key={inquiry.id} 
-                      className={`cursor-pointer hover:bg-muted/30 ${sla.state === 'red' ? 'bg-red-50 dark:bg-red-950/20' : ''}`}
+                      className={`cursor-pointer hover:bg-muted/30 ${sla.state === 'red' ? 'bg-red-50 dark:bg-red-950/20' : ''} ${hasRevisionRequest ? 'bg-orange-50 dark:bg-orange-950/20' : ''}`}
                       onClick={() => openDetailPanel(inquiry)}
                     >
                       {/* SLA Indicator */}
@@ -716,9 +725,16 @@ const AdminCadQueue = () => {
 
                       {/* Status */}
                       <TableCell>
-                        <Badge variant={getStatusBadgeVariant(inquiry.status)}>
-                          {CAD_STATUSES[(inquiry.status || 'new') as CadStatus]?.label || inquiry.status}
-                        </Badge>
+                        <div className="flex flex-col gap-1">
+                          <Badge variant={getStatusBadgeVariant(inquiry.status)}>
+                            {CAD_STATUSES[(inquiry.status || 'new') as CadStatus]?.label || inquiry.status}
+                          </Badge>
+                          {hasRevisionRequest && (
+                            <Badge variant="destructive" className="bg-orange-500 hover:bg-orange-600 text-xs">
+                              Revision Requested
+                            </Badge>
+                          )}
+                        </div>
                       </TableCell>
 
                       {/* Next Action */}
@@ -793,7 +809,26 @@ const AdminCadQueue = () => {
                 return null;
               })()}
 
-              {/* Inquiry Metadata */}
+              {/* Revision Request Banner - Show prominently when revision is requested */}
+              {selectedDesign && selectedDesign.status === 'revision_requested' && selectedDesign.revision_notes && (
+                <div className="bg-orange-100 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-orange-600" />
+                    <h3 className="font-semibold text-orange-800 dark:text-orange-200">Revision Requested</h3>
+                  </div>
+                  <div className="bg-white/50 dark:bg-black/20 rounded p-3 text-sm">
+                    <p className="text-orange-900 dark:text-orange-100 whitespace-pre-wrap">{selectedDesign.revision_notes}</p>
+                  </div>
+                  <div className="flex gap-4 text-xs text-orange-700 dark:text-orange-300">
+                    {selectedDesign.revision_requested_at && (
+                      <span>Requested: {new Date(selectedDesign.revision_requested_at).toLocaleString()}</span>
+                    )}
+                    {selectedDesign.revision_contact_preference && (
+                      <span>Prefers: {selectedDesign.revision_contact_preference}</span>
+                    )}
+                  </div>
+                </div>
+              )}
               <div className="space-y-2">
                 <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Inquiry Info</h3>
                 <div className="bg-muted/30 rounded-lg p-4 space-y-2 text-sm">
