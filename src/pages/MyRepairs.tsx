@@ -35,6 +35,7 @@ import {
   ExternalLink
 } from "lucide-react";
 import { format } from "date-fns";
+import { ProgressTracker, mapRepairStatusToProgress } from "@/components/ProgressTracker";
 
 interface RepairQuote {
   id: string;
@@ -348,6 +349,14 @@ const MyRepairs = () => {
               </SheetHeader>
               
               <div className="space-y-8 py-6">
+                {/* Progress Tracker - Horizontal Bar */}
+                <div className="bg-muted/30 rounded-lg p-6">
+                  <ProgressTracker 
+                    currentStep={mapRepairStatusToProgress(selectedRepair.status)}
+                    showReassurance={true}
+                  />
+                </div>
+
                 {/* Repair ID & Dates */}
                 <div className="bg-service-neutral/30 rounded-lg p-4">
                   <div className="grid grid-cols-2 gap-4 text-sm">
