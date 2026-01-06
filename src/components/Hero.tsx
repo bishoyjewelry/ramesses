@@ -1,15 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import heroCraftsmanship from "@/assets/hero-craftsmanship.jpg";
 
 export const Hero = () => {
-  const navigate = useNavigate();
-
-  const handleStartRepair = () => {
-    navigate("/repairs");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <>
       {/* ==================== 1. HERO SECTION ==================== */}
@@ -26,30 +19,42 @@ export const Hero = () => {
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center bg-foreground/15 backdrop-blur-[2px] px-5 sm:px-8 py-8 sm:py-10 rounded-sm">
             <h1 className="font-hero text-primary-foreground mb-6 sm:mb-8 font-normal text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] uppercase tracking-[0.15em] leading-[0.92]">
-              Custom Jewelry & Repairs
+              Your Vision, Masterfully Crafted
             </h1>
             
-            <p className="font-sans text-sm sm:text-base text-primary-foreground/60 mb-14 sm:mb-16 font-normal tracking-wide text-center mx-auto">
-              Crafted and restored by master jewelers in NYC's Diamond District
+            <p className="font-sans text-sm sm:text-base text-primary-foreground/60 mb-10 sm:mb-12 font-normal tracking-wide text-center mx-auto max-w-xl">
+              Bespoke jewelry designed and handcrafted by master jewelers in NYC's Diamond District
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-4 sm:gap-6">
+            {/* Primary CTA */}
+            <div className="flex flex-col items-center gap-5">
               <Link to="/custom">
                 <Button
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-[hsl(var(--color-gold-hover))] border-primary px-10 rounded-sm text-[13px] tracking-widest uppercase"
+                  className="bg-primary text-primary-foreground hover:bg-[hsl(var(--color-gold-hover))] border-primary px-12 py-6 rounded-sm text-[14px] tracking-widest uppercase font-medium"
                 >
-                  Start a Custom Design
+                  Start Your Design
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={handleStartRepair}
-                className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:text-primary-foreground hover:bg-primary-foreground/15 px-8 rounded-sm text-[13px] tracking-wide"
+              
+              {/* Repairs text link */}
+              <Link 
+                to="/repairs" 
+                className="text-primary-foreground/50 hover:text-primary-foreground/70 text-sm underline underline-offset-4 transition-colors"
               >
-                Start Repairs
-              </Button>
+                Looking for repairs? Browse services with transparent pricing →
+              </Link>
+            </div>
+            
+            {/* Trust Bar */}
+            <div className="mt-10 pt-6 border-t border-primary-foreground/10">
+              <p className="text-primary-foreground/40 text-xs sm:text-sm tracking-wide">
+                <span>★★★★★ 500+ Reviews</span>
+                <span className="mx-3 text-primary-foreground/20">•</span>
+                <span>30-Day Guarantee</span>
+                <span className="mx-3 text-primary-foreground/20">•</span>
+                <span>NYC Diamond District</span>
+              </p>
             </div>
           </div>
         </div>
