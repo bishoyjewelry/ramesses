@@ -27,14 +27,12 @@ export const AccountDropdown = () => {
 
   if (!user) {
     return (
-      <Link to="/auth?mode=login">
-        <Button 
-          variant="ghost" 
-          size="sm"
-          className="text-muted-foreground hover:text-foreground font-medium h-9"
-        >
-          Sign In
-        </Button>
+      <Link 
+        to="/auth?mode=login"
+        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+      >
+        <User className="h-4 w-4" />
+        Account
       </Link>
     );
   }
@@ -42,14 +40,12 @@ export const AccountDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="sm"
-          className="text-muted-foreground hover:text-foreground font-medium flex items-center gap-1.5 h-9"
+        <button 
+          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
         >
           <User className="h-4 w-4" />
-          My Account
-        </Button>
+          Account
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-background border-border">
         <DropdownMenuItem asChild>
