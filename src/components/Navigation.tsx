@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CartDrawer } from "./CartDrawer";
@@ -46,12 +46,11 @@ export const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Primary navigation links - all text-only with equal styling
+  // Primary navigation links - simplified as requested
   const navLinks = [
-    { to: "/custom", label: "Create Custom Jewelry" },
-    { to: "/engagement-rings", label: "Create Engagement Ring" },
-    { to: "/repairs", label: "Start Repairs" },
-    { to: "/creator-marketplace", label: "Creator Marketplace" },
+    { to: "/custom", label: "Custom Jewelry" },
+    { to: "/engagement-rings", label: "Engagement Rings" },
+    { to: "/repairs", label: "Repairs" },
     { to: "/shop", label: "Shop" },
   ];
 
@@ -65,70 +64,60 @@ export const Navigation = () => {
         ? 'bg-white shadow-md' 
         : 'bg-white/95 backdrop-blur-sm'
     }`}>
-      <div className="container mx-auto px-3 sm:px-4">
-        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img 
-              src={logoIcon} 
-              alt="Ramesses Jewelry" 
-              className="h-8 sm:h-9 w-auto"
-            />
-            <img 
-              src={logoText} 
-              alt="Ramesses Jewelry" 
-              className="h-4 sm:h-5 w-auto hidden sm:block"
-            />
-          </Link>
+      <div className="container mx-auto px-4 lg:px-6">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-[72px]">
+          {/* Left side: Logo + Nav Links */}
+          <div className="flex items-center">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 shrink-0">
+              <img 
+                src={logoIcon} 
+                alt="Ramesses Jewelry" 
+                className="h-8 sm:h-9 w-auto"
+              />
+              <img 
+                src={logoText} 
+                alt="Ramesses Jewelry" 
+                className="h-4 sm:h-5 w-auto hidden sm:block"
+              />
+            </Link>
 
-          {/* Desktop Navigation - Primary Links (all text-only) */}
-          <nav className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`text-sm font-medium leading-tight transition-colors relative group ${
-                  location.pathname === link.to 
-                    ? 'text-foreground' 
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {link.label}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
-                  location.pathname === link.to ? 'w-full' : 'w-0 group-hover:w-full'
-                }`} />
-              </Link>
-            ))}
-          </nav>
+            {/* Desktop Navigation - Primary Links with 32px gap */}
+            <nav className="hidden lg:flex items-center ml-12" style={{ gap: '32px' }}>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`text-sm font-medium transition-colors relative group whitespace-nowrap ${
+                    location.pathname === link.to 
+                      ? 'text-foreground' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {link.label}
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                    location.pathname === link.to ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-          {/* Right side actions */}
-          <div className="flex items-center gap-1 sm:gap-2">
-            {/* My Designs - Conditional (logged in only) - Desktop */}
-            {user && (
-              <Link
-                to="/my-designs"
-                className={`hidden lg:flex text-sm font-medium transition-colors items-center h-9 px-2 ${
-                  location.pathname === '/my-designs'
-                    ? 'text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                My Designs
-              </Link>
-            )}
-
-            {/* Track Repair - Desktop */}
-            <Button
-              variant="ghost"
-              size="sm"
+          {/* Right side actions with consistent spacing */}
+          <div className="flex items-center" style={{ gap: '24px' }}>
+            {/* Track Repair - Desktop (text only, no icon) */}
+            <button
               onClick={handleTrackRepair}
-              className="hidden lg:flex text-muted-foreground hover:text-foreground font-medium items-center gap-1.5 h-9"
+              className={`hidden lg:block text-sm font-medium transition-colors whitespace-nowrap ${
+                location.pathname === '/my-repairs' || location.pathname === '/track-repair'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
-              <Search className="h-4 w-4" />
               Track Repair
-            </Button>
+            </button>
 
-            {/* Account Dropdown - Desktop */}
+            {/* Account - Desktop */}
             <div className="hidden lg:block">
               <AccountDropdown />
             </div>
@@ -172,27 +161,11 @@ export const Navigation = () => {
                 </Link>
               ))}
 
-              {/* My Designs - Conditional (logged in only) - Mobile */}
-              {user && (
-                <Link
-                  to="/my-designs"
-                  className={`px-4 py-3.5 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center ${
-                    location.pathname === '/my-designs'
-                      ? 'text-foreground bg-muted/50'
-                      : 'text-muted-foreground'
-                  }`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  My Designs
-                </Link>
-              )}
-
               {/* Track Repair - Mobile */}
               <button
                 onClick={handleTrackRepair}
-                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-muted text-muted-foreground tap-target flex items-center gap-2"
+                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-muted text-muted-foreground tap-target flex items-center"
               >
-                <Search className="h-4 w-4" />
                 Track Repair
               </button>
               
@@ -212,7 +185,14 @@ export const Navigation = () => {
                       className="px-4 py-3.5 text-base font-medium text-muted-foreground hover:bg-muted block tap-target"
                       onClick={() => setIsOpen(false)}
                     >
-                      Repairs
+                      My Repairs
+                    </Link>
+                    <Link
+                      to="/my-designs"
+                      className="px-4 py-3.5 text-base font-medium text-muted-foreground hover:bg-muted block tap-target"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      My Designs
                     </Link>
                     <button
                       onClick={handleMobileSignOut}
@@ -231,16 +211,6 @@ export const Navigation = () => {
                   </Link>
                 )}
               </div>
-              
-              <button
-                onClick={() => {
-                  toggleLanguage();
-                  setIsOpen(false);
-                }}
-                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-muted text-muted-foreground tap-target"
-              >
-                {t('nav.language')}
-              </button>
             </nav>
           </div>
         )}
