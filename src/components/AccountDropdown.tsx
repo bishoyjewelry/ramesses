@@ -1,21 +1,16 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { User, Sparkles, Wrench, LogOut } from "lucide-react";
+import { User, Sparkles, Settings, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const AccountDropdown = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSignOut = async () => {
+    setIsOpen(false);
     const { error } = await signOut();
     if (error) {
       toast.error("Failed to sign out");
@@ -25,60 +20,69 @@ export const AccountDropdown = () => {
     }
   };
 
+  // Not logged in - show user icon that links to auth
   if (!user) {
     return (
       <Link 
         to="/auth?mode=login"
-        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
+        className="text-muted-foreground hover:text-foreground transition-colors flex items-center"
       >
-        <User className="h-4 w-4" />
-        Account
+        <User className="h-5 w-5" />
       </Link>
     );
   }
 
+  // Logged in - show user icon with dropdown
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button 
-          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
-        >
-          <User className="h-4 w-4" />
-          Account
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 bg-background border-border">
-        <DropdownMenuItem asChild>
-          <Link to="/account" className="flex items-center gap-2 cursor-pointer">
-            <User className="w-4 h-4" />
-            Account Settings
+    <div 
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <button 
+        className="text-muted-foreground hover:text-foreground transition-colors flex items-center"
+      >
+        <User className="h-5 w-5" />
+      </button>
+
+      {/* Dropdown Menu */}
+      <div 
+        className={`absolute top-full right-0 pt-2 transition-all duration-200 ${
+          isOpen 
+            ? 'opacity-100 visible translate-y-0' 
+            : 'opacity-0 invisible -translate-y-1'
+        }`}
+      >
+        <div className="bg-white rounded-lg shadow-lg border border-border/50 py-2 min-w-[180px]">
+          <Link 
+            to="/account" 
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            <Settings className="w-4 h-4" />
+            My Account
           </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link to="/my-repairs" className="flex items-center gap-2 cursor-pointer">
-            <Wrench className="w-4 h-4" />
-            Track Repairs
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link to="/my-designs" className="flex items-center gap-2 cursor-pointer">
+          
+          <Link 
+            to="/my-designs" 
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
             <Sparkles className="w-4 h-4" />
-            Saved Designs
+            My Designs
           </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuSeparator className="bg-border" />
-        
-        <DropdownMenuItem 
-          onClick={handleSignOut}
-          className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
-        >
-          <LogOut className="w-4 h-4" />
-          Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          
+          <div className="my-1 mx-2 border-t border-border/50" />
+          
+          <button 
+            onClick={handleSignOut}
+            className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-destructive hover:bg-muted/50 transition-colors w-full text-left"
+          >
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
