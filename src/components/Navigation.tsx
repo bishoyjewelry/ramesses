@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { CartDrawer } from "./CartDrawer";
 import { AccountDropdown } from "./AccountDropdown";
 import { useAuth } from "@/hooks/useAuth";
@@ -13,7 +12,7 @@ import logoText from "@/assets/logo-text-only.png";
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,17 +45,14 @@ export const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Primary navigation links - simplified as requested
+  // Primary navigation links (excluding Shop which has dropdown)
   const navLinks = [
     { to: "/custom", label: "Custom Jewelry" },
     { to: "/engagement-rings", label: "Engagement Rings" },
     { to: "/repairs", label: "Repairs" },
-    { to: "/shop", label: "Shop" },
   ];
 
-  const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'es' : 'en');
-  };
+  const isShopActive = location.pathname === '/shop' || location.pathname === '/creator-marketplace';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-area-top ${
@@ -100,12 +96,60 @@ export const Navigation = () => {
                   }`} />
                 </Link>
               ))}
+
+              {/* Shop with Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setShopDropdownOpen(true)}
+                onMouseLeave={() => setShopDropdownOpen(false)}
+              >
+                <button
+                  className={`text-sm font-medium transition-colors relative group whitespace-nowrap flex items-center gap-1 ${
+                    isShopActive
+                      ? 'text-foreground' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  Shop
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${shopDropdownOpen ? 'rotate-180' : ''}`} />
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                    isShopActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
+                </button>
+
+                {/* Shop Dropdown Menu */}
+                <div 
+                  className={`absolute top-full left-0 pt-2 transition-all duration-200 ${
+                    shopDropdownOpen 
+                      ? 'opacity-100 visible translate-y-0' 
+                      : 'opacity-0 invisible -translate-y-1'
+                  }`}
+                >
+                  <div className="bg-white rounded-lg shadow-lg border border-border/50 py-2 min-w-[200px]">
+                    <Link
+                      to="/shop"
+                      className="block px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                      onClick={() => setShopDropdownOpen(false)}
+                    >
+                      Our Collection
+                    </Link>
+                    <Link
+                      to="/creator-marketplace"
+                      className="block px-4 py-2.5 text-sm transition-colors hover:bg-muted/50"
+                      onClick={() => setShopDropdownOpen(false)}
+                    >
+                      <span className="font-medium text-muted-foreground hover:text-foreground">Community Designs</span>
+                      <span className="block text-xs text-primary mt-0.5">Earn commission</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </nav>
           </div>
 
           {/* Right side actions with consistent spacing */}
           <div className="flex items-center" style={{ gap: '24px' }}>
-            {/* Track Repair - Desktop (text only, no icon) */}
+            {/* Track Repair - Desktop (text only) */}
             <button
               onClick={handleTrackRepair}
               className={`hidden lg:block text-sm font-medium transition-colors whitespace-nowrap ${
@@ -145,7 +189,7 @@ export const Navigation = () => {
         {isOpen && (
           <div className="lg:hidden bg-white border-t border-border max-h-[calc(100vh-56px)] overflow-y-auto">
             <nav className="flex flex-col py-2">
-              {/* Primary Nav Links - all equal styling */}
+              {/* Primary Nav Links */}
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -161,10 +205,38 @@ export const Navigation = () => {
                 </Link>
               ))}
 
+              {/* Shop Section - Mobile */}
+              <div className="px-4 py-2">
+                <span className="text-xs font-medium text-muted-foreground/70 uppercase tracking-wide">Shop</span>
+              </div>
+              <Link
+                to="/shop"
+                className={`px-6 py-3 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center ${
+                  location.pathname === '/shop' 
+                    ? 'text-foreground bg-muted/50' 
+                    : 'text-muted-foreground'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                Our Collection
+              </Link>
+              <Link
+                to="/creator-marketplace"
+                className={`px-6 py-3 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center justify-between ${
+                  location.pathname === '/creator-marketplace' 
+                    ? 'text-foreground bg-muted/50' 
+                    : 'text-muted-foreground'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <span>Community Designs</span>
+                <span className="text-xs text-primary">Earn commission</span>
+              </Link>
+
               {/* Track Repair - Mobile */}
               <button
                 onClick={handleTrackRepair}
-                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-muted text-muted-foreground tap-target flex items-center"
+                className="px-4 py-3.5 text-base font-medium text-left transition-colors hover:bg-muted text-muted-foreground tap-target flex items-center mt-2 border-t border-border"
               >
                 Track Repair
               </button>
