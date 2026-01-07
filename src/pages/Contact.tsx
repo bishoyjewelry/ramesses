@@ -148,7 +148,7 @@ const Contact = () => {
       <section className="pt-28 pb-12 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-serif text-foreground mb-4">
-            How Can We Help?
+            Contact Us
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
             Choose the option that best fits your request so we can assist you faster.

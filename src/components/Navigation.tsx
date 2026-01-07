@@ -50,6 +50,7 @@ export const Navigation = () => {
     { to: "/custom", label: "Custom Jewelry" },
     { to: "/engagement-rings", label: "Engagement Rings" },
     { to: "/repairs", label: "Repairs" },
+    { to: "/contact", label: "Contact" },
   ];
 
   const isShopActive = location.pathname === '/shop' || location.pathname === '/creator-marketplace';
