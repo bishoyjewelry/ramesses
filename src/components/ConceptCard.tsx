@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2, Send } from "lucide-react";
+import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2, Send, Pencil } from "lucide-react";
+import { PriceEstimate } from "@/components/PriceEstimate";
 
 interface ConceptSpec {
   name: string;
@@ -32,6 +33,17 @@ interface Concept extends ConceptSpec {
     side: string;
     top: string;
   };
+  estimated_price?: {
+    low: number;
+    high: number;
+    breakdown?: {
+      metal_weight_grams: number;
+      metal_cost: number;
+      center_stone_cost: string;
+      accent_stones_cost: number;
+      labor_cost: number;
+    };
+  };
 }
 
 interface ConceptCardProps {
@@ -39,6 +51,7 @@ interface ConceptCardProps {
   onChoose: (concept: Concept) => void;
   onRegenerate: (concept: Concept) => void;
   onSubmit: (concept: Concept) => void;
+  onRefine?: (concept: Concept) => void;
   isRegenerating?: boolean;
   isSaving?: boolean;
   isSubmitting?: boolean;
@@ -49,6 +62,7 @@ export const ConceptCard = ({
   onChoose, 
   onRegenerate,
   onSubmit,
+  onRefine,
   isRegenerating = false,
   isSaving = false,
   isSubmitting = false,
@@ -181,6 +195,13 @@ export const ConceptCard = ({
             </div>
           )}
 
+          {/* Price Estimate */}
+          {concept.estimated_price && (
+            <div className="mb-4">
+              <PriceEstimate estimate={concept.estimated_price} />
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="space-y-3">
             {/* Primary actions row */}
@@ -202,6 +223,16 @@ export const ConceptCard = ({
                   </>
                 )}
               </Button>
+              {onRefine && (
+                <Button 
+                  variant="outline"
+                  onClick={() => onRefine(concept)}
+                  className="border-luxury-divider hover:border-luxury-champagne"
+                  title="Refine this design"
+                >
+                  <Pencil className="w-4 h-4" />
+                </Button>
+              )}
               <Button 
                 variant="outline"
                 onClick={() => onRegenerate(concept)}

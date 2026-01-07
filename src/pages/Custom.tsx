@@ -13,6 +13,8 @@ import { LoginModal } from "@/components/LoginModal";
 import { ConceptCard } from "@/components/ConceptCard";
 import { DraftRestoreBanner } from "@/components/DraftRestoreBanner";
 import { SubmitDesignModal } from "@/components/SubmitDesignModal";
+import { ImageToDesign } from "@/components/ImageToDesign";
+import { ConceptRefinement } from "@/components/ConceptRefinement";
 import { useAuth } from "@/hooks/useAuth";
 import { useCustomDraft, CustomDraft } from "@/hooks/useCustomDraft";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,6 +58,17 @@ interface Concept {
     hero: string;
     side: string;
     top: string;
+  };
+  estimated_price?: {
+    low: number;
+    high: number;
+    breakdown?: {
+      metal_weight_grams: number;
+      metal_cost: number;
+      center_stone_cost: string;
+      accent_stones_cost: number;
+      labor_cost: number;
+    };
   };
 }
 
@@ -131,6 +144,10 @@ const Custom = () => {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [conceptToSubmit, setConceptToSubmit] = useState<Concept | null>(null);
   const [isSubmittingDesign, setIsSubmittingDesign] = useState(false);
+  
+  // Image to design state
+  const [showImageToDesign, setShowImageToDesign] = useState(false);
+  const [conceptToRefine, setConceptToRefine] = useState<Concept | null>(null);
   
   // Direct upload state
   const [directUploadImages, setDirectUploadImages] = useState<File[]>([]);
@@ -477,6 +494,22 @@ const Custom = () => {
     } finally {
       setIsSubmittingDesign(false);
     }
+  };
+
+  // Image-to-design handler
+  const handleImageToDesignResult = (concept: Concept) => {
+    setConcepts(prev => [concept, ...prev]);
+    toast.success("Design created from your image!");
+    setTimeout(() => {
+      conceptsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  // Refinement handler
+  const handleRefinementResult = (refinedConcept: Concept) => {
+    setConcepts(prev => prev.map(c => 
+      c.id === conceptToRefine?.id ? refinedConcept : c
+    ));
   };
 
   // Direct upload handlers
@@ -1070,7 +1103,7 @@ const Custom = () => {
                       </Button>
                       <Button 
                         type="button"
-                        onClick={() => setShowDirectUploadModal(true)}
+                        onClick={() => setShowImageToDesign(true)}
                         variant="outline"
                         className="flex-1 border-luxury-divider text-luxury-text-muted hover:border-luxury-champagne hover:text-luxury-champagne py-4"
                       >
@@ -1138,6 +1171,17 @@ const Custom = () => {
                 </p>
               </div>
               
+              {/* Refinement Panel */}
+              {conceptToRefine && (
+                <div className="mb-8">
+                  <ConceptRefinement
+                    concept={conceptToRefine}
+                    onRefined={handleRefinementResult}
+                    onClose={() => setConceptToRefine(null)}
+                  />
+                </div>
+              )}
+              
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {concepts.map((concept) => (
                   <ConceptCard
@@ -1146,6 +1190,7 @@ const Custom = () => {
                     onChoose={handleChooseConcept}
                     onRegenerate={handleRegenerateConcept}
                     onSubmit={handleOpenSubmitModal}
+                    onRefine={(concept) => setConceptToRefine(concept)}
                     isRegenerating={regeneratingId === concept.id}
                     isSaving={savingId === concept.id}
                     isSubmitting={isSubmittingDesign && conceptToSubmit?.id === concept.id}
@@ -1414,6 +1459,13 @@ const Custom = () => {
         onSubmit={handleSubmitDesign}
         isSubmitting={isSubmittingDesign}
         designName={conceptToSubmit?.name || ""}
+      />
+
+      {/* Image to Design Modal */}
+      <ImageToDesign
+        isOpen={showImageToDesign}
+        onClose={() => setShowImageToDesign(false)}
+        onDesignGenerated={handleImageToDesignResult}
       />
     </div>
   );
