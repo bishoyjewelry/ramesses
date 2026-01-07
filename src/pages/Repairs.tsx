@@ -197,14 +197,23 @@ const Repairs = () => {
                     key={service.id}
                     className="bg-card border border-border rounded-lg p-4 hover:border-primary/40 hover:shadow-sm transition-all"
                   >
-                    <span className="text-2xl mb-3 block">{service.icon}</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs text-muted-foreground/70 uppercase tracking-wide">
+                        {service.turnaroundDays} days
+                      </span>
+                      {service.popular && (
+                        <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                          Popular
+                        </span>
+                      )}
+                    </div>
                     <h3 className="font-medium text-foreground mb-1 text-sm">{service.name}</h3>
                     <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
                       {service.shortDescription}
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-primary">
-                        From ${service.basePrice}
+                        {service.basePrice > 0 ? `From $${service.basePrice}` : 'Free'}
                       </span>
                       <Button
                         size="sm"
@@ -341,10 +350,9 @@ const Repairs = () => {
             {selectedService && (
               <div className="text-center mb-4">
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm">
-                  <span>{selectedService.icon}</span>
                   <span>{selectedService.name}</span>
                   <span>•</span>
-                  <span>From ${selectedService.basePrice}</span>
+                  <span>{selectedService.basePrice > 0 ? `From $${selectedService.basePrice}` : 'Quote'}</span>
                   <button
                     onClick={() => setSelectedService(null)}
                     className="ml-1 hover:bg-primary/20 rounded-full p-0.5"
