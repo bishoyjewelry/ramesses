@@ -7,7 +7,11 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: "1.5rem",    /* 24px mobile */
+        md: "3rem",           /* 48px tablet */
+        lg: "4rem",           /* 64px desktop */
+      },
       screens: {
         "2xl": "1400px",
       },
@@ -137,6 +141,15 @@ export default {
         "22": "5.5rem",
         "26": "6.5rem",
         "30": "7.5rem",
+        /* Section spacing values */
+        "section-mobile": "4rem",    /* 64px - py-16 */
+        "section-desktop": "6rem",   /* 96px - py-24 */
+      },
+      maxWidth: {
+        /* Content max-widths */
+        "content": "72rem",          /* 1152px - max-w-6xl */
+        "prose": "48rem",            /* 768px - max-w-3xl - text-heavy content */
+        "form": "36rem",             /* 576px - max-w-xl - forms */
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -364,20 +364,35 @@
    SPACING UTILITIES
    ============================================ */
 
-/* Section spacing - generous, calm breathing room */
+/* Section vertical padding - primary utility */
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+/* Legacy section spacing - maps to new system */
 .section-spacing {
-  padding-top: var(--section-padding);
-  padding-bottom: var(--section-padding);
+  @apply py-16 md:py-24;
 }
 
 .section-spacing-sm {
-  padding-top: var(--section-padding-sm);
-  padding-bottom: var(--section-padding-sm);
+  @apply py-12 md:py-16;
 }
 
 .section-spacing-lg {
-  padding-top: var(--section-padding-lg);
-  padding-bottom: var(--section-padding-lg);
+  @apply py-20 md:py-28;
+}
+
+/* Content max-width utilities */
+.content-width {
+  @apply max-w-6xl mx-auto;  /* 1152px - default content */
+}
+
+.prose-width {
+  @apply max-w-3xl mx-auto;  /* 768px - text-heavy content */
+}
+
+.form-width {
+  @apply max-w-xl mx-auto;   /* 576px - forms */
 }
 
 /* Content spacing - relaxed */
@@ -387,15 +402,6 @@
 
 .content-spacing-lg > * + * {
   margin-top: 3.5rem;
-}
-
-/* Mobile-friendly padding */
-@media (max-width: 767px) {
-  .section-spacing,
-  .section-spacing-sm {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
 }
 
 /* ============================================
