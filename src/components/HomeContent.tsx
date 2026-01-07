@@ -51,22 +51,15 @@ const testimonials = [
   },
 ];
 
-// Reusable section divider component
-const SectionDivider = () => (
-  <div className="py-6 sm:py-8">
-    <div className="max-w-xs mx-auto border-t border-border/30" />
-  </div>
-);
-
 export const HomeContent = () => {
   return (
     <>
       {/* ==================== SERVICE ROUTING ==================== */}
-      <section className="pt-12 sm:pt-16 pb-16 sm:pb-20 bg-background">
+      <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-4 md:gap-5 max-w-4xl mx-auto">
             {/* Custom Jewelry & Engagement Rings - Dominant */}
-            <div className="p-10 sm:p-14 bg-secondary/40 border border-border/30">
+            <div className="p-10 sm:p-14 bg-background border border-border/30">
               <h2 className="font-display text-[1.75rem] sm:text-[2.1rem] text-foreground mb-5 font-normal tracking-tight leading-[1.1]">
                 Custom Jewelry & Engagement Rings
               </h2>
@@ -94,7 +87,7 @@ export const HomeContent = () => {
             </div>
 
             {/* Repairs - Parallel but quieter */}
-            <div className="p-10 sm:p-14 bg-secondary/25 border border-border/20">
+            <div className="p-10 sm:p-14 bg-background border border-border/20">
               <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-5 font-normal tracking-tight leading-[1.15]">
                 Jewelry Repairs
               </h2>
@@ -115,10 +108,8 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      <SectionDivider />
-
       {/* ==================== DIAMOND DISTRICT CRAFTSMANSHIP ==================== */}
-      <section className="pt-8 sm:pt-12 pb-20 sm:pb-28 bg-background">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-8 md:gap-16 items-center">
             {/* Image - carries the weight */}
@@ -143,10 +134,8 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      <SectionDivider />
-
       {/* ==================== RECENT CUSTOM CREATIONS ==================== */}
-      <section className="py-16 sm:py-20 bg-background">
+      <section className="py-16 md:py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-display text-center text-foreground mb-10 sm:mb-12 font-normal text-xl sm:text-2xl tracking-tight">
@@ -164,7 +153,7 @@ export const HomeContent = () => {
                 {customCreations.map((creation) => (
                   <CarouselItem key={creation.id} className="pl-0">
                     <div className="flex flex-col items-center">
-                      <div className="w-full max-w-md aspect-square bg-secondary/20 overflow-hidden">
+                      <div className="w-full max-w-md aspect-square bg-background overflow-hidden">
                         <img
                           src={creation.image}
                           alt={creation.title}
@@ -185,10 +174,8 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      <SectionDivider />
-
       {/* ==================== TESTIMONIALS ==================== */}
-      <section className="py-16 sm:py-20 bg-background">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <Carousel
@@ -224,10 +211,8 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      <SectionDivider />
-
       {/* ==================== CREATOR MARKETPLACE ==================== */}
-      <section className="py-14 sm:py-18 bg-background">
+      <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
             <h2 className="font-display text-foreground mb-4 font-normal text-lg sm:text-xl tracking-tight">
@@ -249,7 +234,7 @@ export const HomeContent = () => {
       </section>
 
       {/* ==================== AUTHORITY BAND ==================== */}
-      <section className="py-12 sm:py-16 bg-secondary/10 border-t border-border/20">
+      <section className="py-16 md:py-24 bg-secondary/50">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-foreground/80 text-sm sm:text-base font-normal leading-relaxed">
