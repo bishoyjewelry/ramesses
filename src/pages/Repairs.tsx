@@ -10,14 +10,14 @@ import { Footer } from "@/components/Footer";
 import { SEOContentBlock } from "@/components/SEOContentBlock";
 import { RepairWizard } from "@/components/RepairWizard";
 
-// Common repair types for quick selection
+// Common repair types for quick selection with transparent pricing
 const commonRepairs = [
-  { value: "ring_resizing", label: "Ring Resizing", icon: "💍" },
-  { value: "broken_chain", label: "Broken Chain", icon: "⛓️" },
-  { value: "prong_repair", label: "Prong Repair", icon: "💎" },
-  { value: "stone_loose", label: "Stone Replacement", icon: "✨" },
-  { value: "clasp_repair", label: "Clasp Repair", icon: "🔗" },
-  { value: "polishing", label: "Polishing & Cleaning", icon: "✦" },
+  { value: "ring_resizing", label: "Ring Resizing", icon: "💍", price: "From $45" },
+  { value: "broken_chain", label: "Chain Repair", icon: "⛓️", price: "From $30" },
+  { value: "prong_repair", label: "Prong Repair", icon: "💎", price: "From $35" },
+  { value: "stone_loose", label: "Stone Setting", icon: "✨", price: "From $25" },
+  { value: "clasp_repair", label: "Clasp Repair", icon: "🔗", price: "From $25" },
+  { value: "polishing", label: "Polishing & Cleaning", icon: "✦", price: "From $30" },
 ];
 
 const Repairs = () => {
@@ -145,13 +145,20 @@ const Repairs = () => {
                       onClick={() => scrollToForm(repair.value)}
                       className="group bg-background hover:bg-primary/5 border border-border hover:border-primary/40 rounded-lg p-4 text-center transition-all duration-200"
                     >
-                      <span className="text-xl mb-1 block">{repair.icon}</span>
-                      <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                      <span className="text-xl mb-2 block">{repair.icon}</span>
+                      <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors block">
                         {repair.label}
+                      </span>
+                      <span className="text-xs text-muted-foreground mt-1 block">
+                        {repair.price}
                       </span>
                     </button>
                   ))}
                 </div>
+                
+                <p className="text-xs text-muted-foreground/80 text-center mt-4 font-body">
+                  Final pricing confirmed after inspection. No work begins without your approval.
+                </p>
               </div>
               
               {/* RIGHT — I'm Not Sure */}
