@@ -30,7 +30,7 @@ export const Footer = () => {
           </div>
 
           {/* Links - minimal horizontal layout */}
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-16 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-10 text-sm">
             <Link to="/repairs" className="text-muted-foreground/60 hover:text-foreground transition-colors">
               Repairs
             </Link>
@@ -45,6 +45,19 @@ export const Footer = () => {
             </Link>
             <Link to="/contact" className="text-muted-foreground/60 hover:text-foreground transition-colors">
               Contact
+            </Link>
+          </div>
+
+          {/* Legal Links */}
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 mb-16 text-xs">
+            <Link to="/shipping" className="text-muted-foreground/50 hover:text-foreground transition-colors">
+              Shipping & Returns
+            </Link>
+            <Link to="/privacy" className="text-muted-foreground/50 hover:text-foreground transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-muted-foreground/50 hover:text-foreground transition-colors">
+              Terms of Service
             </Link>
           </div>
 

@@ -31,6 +31,9 @@ const DesignView = React.lazy(() => import("./pages/DesignView"));
 const CreatorMarketplace = React.lazy(() => import("./pages/CreatorMarketplace"));
 const TrackRepair = React.lazy(() => import("./pages/TrackRepair"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
+const Shipping = React.lazy(() => import("./pages/Shipping"));
+const Privacy = React.lazy(() => import("./pages/Privacy"));
+const Terms = React.lazy(() => import("./pages/Terms"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -70,6 +73,9 @@ const App = () => (
             <Route path="/track-repair" element={<Suspense fallback={<PageLoader />}><TrackRepair /></Suspense>} />
             <Route path="/reset-password" element={<Suspense fallback={<PageLoader />}><ResetPassword /></Suspense>} />
             <Route path="/creator-marketplace" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
+            <Route path="/shipping" element={<Suspense fallback={<PageLoader />}><Shipping /></Suspense>} />
+            <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
+            <Route path="/terms" element={<Suspense fallback={<PageLoader />}><Terms /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Mobile Bottom Navigation */}
