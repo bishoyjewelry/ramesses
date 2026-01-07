@@ -60,10 +60,10 @@ export const HomeContent = () => {
           <div className="grid md:grid-cols-2 gap-4 md:gap-5 max-w-4xl mx-auto">
             {/* Custom Jewelry & Engagement Rings - Dominant */}
             <div className="p-10 sm:p-14 bg-background border border-border/30">
-              <h2 className="font-display text-[1.75rem] sm:text-[2.1rem] text-foreground mb-5 font-normal tracking-tight leading-[1.1]">
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 font-normal tracking-tight leading-tight">
                 Custom Jewelry & Engagement Rings
               </h2>
-              <p className="text-muted-foreground text-sm mb-10">
+              <p className="text-muted-foreground text-base leading-relaxed mb-8">
                 Designed from scratch by a 47th Street master jeweler.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -88,10 +88,10 @@ export const HomeContent = () => {
 
             {/* Repairs - Parallel but quieter */}
             <div className="p-10 sm:p-14 bg-background border border-border/20">
-              <h2 className="font-display text-[1.5rem] sm:text-[1.75rem] text-foreground mb-5 font-normal tracking-tight leading-[1.15]">
+              <h2 className="font-display text-xl md:text-2xl text-foreground mb-4 font-normal tracking-tight leading-tight">
                 Jewelry Repairs
               </h2>
-              <p className="text-muted-foreground text-sm mb-10">
+              <p className="text-muted-foreground text-base leading-relaxed mb-8">
                 Nationwide service, fully insured, handled in NYC.
               </p>
               <Link 
@@ -123,10 +123,10 @@ export const HomeContent = () => {
             
             {/* Copy - minimal, trust-anchoring */}
             <div className="md:pr-4">
-              <h2 className="font-display text-foreground mb-8 font-normal text-[1.65rem] sm:text-[2rem] tracking-tight leading-[1.15]">
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6 font-normal tracking-tight leading-tight">
                 Diamond District Craftsmanship
               </h2>
-              <p className="text-muted-foreground text-[15px] sm:text-base leading-relaxed">
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-prose">
                 Every piece is crafted or restored by the same hands that have worked New York's Diamond District for over four decades.
               </p>
             </div>
@@ -188,12 +188,12 @@ export const HomeContent = () => {
               <CarouselContent className="-ml-0">
                 {testimonials.map((testimonial) => (
                   <CarouselItem key={testimonial.id} className="pl-0">
-                    <div className="text-center px-4 sm:px-8">
-                      <blockquote className="font-display text-foreground text-lg sm:text-xl md:text-2xl font-normal leading-relaxed mb-8 italic">
+                    <div className="text-center px-6 sm:px-12 py-4">
+                      <blockquote className="font-display text-foreground text-xl md:text-2xl font-normal leading-relaxed mb-10 italic">
                         "{testimonial.quote}"
                       </blockquote>
                       <div>
-                        <p className="text-foreground text-sm font-medium tracking-wide">
+                        <p className="text-foreground text-sm font-semibold tracking-wide">
                           {testimonial.author}
                         </p>
                         <p className="text-muted-foreground text-xs mt-1">
@@ -215,11 +215,11 @@ export const HomeContent = () => {
       <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
-            <h2 className="font-display text-foreground mb-4 font-normal text-lg sm:text-xl tracking-tight">
+            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4 font-normal tracking-tight leading-tight">
               Creator Marketplace
             </h2>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-              A curated selection of designs created by the Ramesses community — available to order as-is or customize further.
+            <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md mx-auto">
+              Designs from the Ramesses community — order as-is or customize further.
             </p>
             <Link 
               to="/creator-marketplace"
