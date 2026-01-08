@@ -116,22 +116,17 @@ export function useCustomDraft() {
   // Save draft to localStorage
   const saveDraft = useCallback((draft: CustomDraft) => {
     try {
-      // Strip images from concepts to avoid localStorage quota exceeded error
-      // Images are large base64/URLs that can easily exceed the 5MB limit
       const draftToSave = {
         ...draft,
-        concepts: draft.concepts.map(concept => ({
-          ...concept,
-          images: { hero: '', side: '', top: '' } // Don't save images to localStorage
-        })),
+        concepts: [], // Never save concepts to localStorage - they're too large
         timestamp: Date.now(),
       };
       localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftToSave));
       setDraftData(draftToSave);
       setHasDraft(true);
     } catch (error) {
-      // Silently fail if localStorage is full - don't crash the app
-      console.warn("Could not save draft to localStorage:", error);
+      console.warn('Draft save failed:', error);
+      // Do nothing - don't crash
     }
   }, []);
 
