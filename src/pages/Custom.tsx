@@ -186,7 +186,11 @@ const Custom = () => {
   }, [activeFlow, generalForm, engagementForm, concepts, saveDraft]);
 
   // Save draft whenever meaningful state changes
+  // IMPORTANT: Skip auto-save while a save operation is in progress to prevent state conflicts
   useEffect(() => {
+    // Skip if currently saving a concept (prevents state conflicts)
+    if (savingId) return;
+    
     // Only save if there's actual content
     const hasContent = 
       activeFlow !== null ||
@@ -198,7 +202,7 @@ const Custom = () => {
       const timeoutId = setTimeout(saveDraftDebounced, 500);
       return () => clearTimeout(timeoutId);
     }
-  }, [activeFlow, generalForm, engagementForm, concepts, saveDraftDebounced]);
+  }, [activeFlow, generalForm, engagementForm, concepts, saveDraftDebounced, savingId]);
 
   // Handle draft restoration
   const handleRestoreDraft = () => {
