@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2, Send, Pencil } from "lucide-react";
+import { ChevronDown, ChevronUp, Sparkles, Check, RefreshCw, Loader2, Send, Pencil, CheckCircle2 } from "lucide-react";
 import { PriceEstimate } from "@/components/PriceEstimate";
 
 interface ConceptSpec {
@@ -44,6 +44,8 @@ interface Concept extends ConceptSpec {
       labor_cost: number;
     };
   };
+  savedToAccount?: boolean;
+  savedDesignId?: string;
 }
 
 interface ConceptCardProps {
@@ -123,7 +125,15 @@ export const ConceptCard = ({
 
         {/* Content Section */}
         <div className="p-5 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-serif text-luxury-text mb-2">{concept.name}</h3>
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-lg sm:text-xl font-serif text-luxury-text">{concept.name}</h3>
+            {concept.savedToAccount && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                <CheckCircle2 className="w-3 h-3" />
+                Saved
+              </span>
+            )}
+          </div>
           <p className="text-sm text-luxury-text-muted mb-4 leading-relaxed">{concept.overview}</p>
           
           {/* Quick Specs Preview */}
@@ -252,13 +262,22 @@ export const ConceptCard = ({
             <Button 
               variant="ghost"
               onClick={() => onChoose(concept)}
-              disabled={isSaving || isSubmitting}
-              className="w-full text-luxury-text-muted hover:text-luxury-text hover:bg-luxury-bg h-9 text-sm"
+              disabled={isSaving || isSubmitting || concept.savedToAccount}
+              className={`w-full h-9 text-sm ${
+                concept.savedToAccount 
+                  ? "bg-green-50 text-green-700 cursor-default" 
+                  : "text-luxury-text-muted hover:text-luxury-text hover:bg-luxury-bg"
+              }`}
             >
               {isSaving ? (
                 <>
                   <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
                   Saving...
+                </>
+              ) : concept.savedToAccount ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 mr-2" />
+                  Saved to My Designs
                 </>
               ) : (
                 <>
