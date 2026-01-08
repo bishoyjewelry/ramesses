@@ -70,6 +70,9 @@ interface Concept {
       labor_cost: number;
     };
   };
+  // Track saved state
+  savedToAccount?: boolean;
+  savedDesignId?: string;
 }
 
 // Visual selection options
@@ -382,8 +385,12 @@ const Custom = () => {
 
       if (error) throw error;
 
-      // Clear draft after successful save
-      clearDraft();
+      // Mark this concept as saved in the UI (don't clear concepts!)
+      setConcepts(prev => prev.map(c => 
+        c.id === concept.id 
+          ? { ...c, savedToAccount: true, savedDesignId: data.id }
+          : c
+      ));
 
       toast.success(
         <div className="flex flex-col gap-1">
@@ -1206,6 +1213,22 @@ const Custom = () => {
                   </Button>
                 </Link>
               </div>
+              
+              {concepts.length > 0 && (
+                <div className="text-center mt-6 pt-6 border-t border-luxury-divider">
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setConcepts([]);
+                      clearDraft();
+                      toast("Concepts cleared. Ready to start fresh!");
+                    }}
+                    className="text-luxury-text-muted hover:text-luxury-text"
+                  >
+                    Clear & Generate New Concepts
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </section>
