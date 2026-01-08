@@ -78,10 +78,39 @@ serve(async (req) => {
     const inspirationDescriptions = inputs?.inspirationImages?.length ? "Customer provided inspiration images" : "";
     const mode = surpriseMe ? "Surprise" : (inputs?.flowType || "engagement");
 
-    // Build the system prompt
+    // Build the system prompt with MANDATORY diversity requirements
     const systemPrompt = `You are a senior jewelry designer preparing structured design briefs for a CAD and bench jewelry team on NYC's 47th Street.
 
 Your job is to convert client preferences into ${numConcepts} manufacturable ring concepts in a strict JSON format. These briefs will go directly to a CAD jeweler, so they must be precise, realistic, and technically feasible.
+
+⚠️ CRITICAL REQUIREMENT: Each of the ${numConcepts} concepts MUST be VISUALLY DISTINCT ⚠️
+
+You MUST make these designs look DIFFERENT from each other. A customer should immediately see ${numConcepts} DIFFERENT rings, not ${numConcepts} variations of the same ring.
+
+MANDATORY DIFFERENCES - Each concept MUST differ in AT LEAST 2 of these categories:
+
+CONCEPT 1 (Classic/Minimal):
+- Plain band with NO accent stones or minimal accents
+- Standard 4-prong setting
+- Simple open gallery
+- Band width: 1.6-1.8mm (delicate)
+- Clean, understated elegance
+
+CONCEPT 2 (Detailed/Refined):  
+- MUST have DIFFERENT shoulder style (cathedral OR split shank OR twisted)
+- MUST have pavé OR side stones on the band
+- Different prong style (6-prong OR double claw OR compass prongs)
+- Band width: 2.0-2.2mm (medium)
+- More architectural interest
+
+CONCEPT 3 (Statement/Elaborate):
+- MUST have visible halo OR hidden halo OR three-stone design
+- MUST have the most accent stones of all concepts
+- Most elaborate gallery design (peek-a-boo diamonds, scrollwork, etc.)
+- Band width: 2.2-2.6mm OR split shank
+- Maximum visual impact
+
+DO NOT make 3 variations of the same basic ring. Make 3 DIFFERENT rings that happen to share the same metal and center stone.
 
 Client inputs:
 - project_type: ${projectType}
@@ -139,7 +168,7 @@ Important:
 - Follow the JSON schema exactly. Do not add extra top-level fields.
 - All numerical values must be realistic for fine jewelry (no absurd sizes).
 - Use consistent units: millimeters for dimensions, carats in approx_ct where relevant.
-- Designs should be diverse but all aligned with the client's taste and budget.
+- EACH design MUST be visually distinct - different silhouettes, different levels of embellishment.
 - If mode = "Surprise" or description is very vague, propose tasteful, versatile designs that are easy to wear daily.
 
 Respond ONLY with valid JSON, no additional text.`;
@@ -170,6 +199,7 @@ Maintain the same overall style but with subtle differences in details like band
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
+        temperature: 0.9, // Higher temperature for more creative variation
       }),
     });
 
