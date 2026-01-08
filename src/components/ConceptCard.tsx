@@ -72,7 +72,13 @@ export const ConceptCard = ({
   const [showSpecs, setShowSpecs] = useState(false);
   const [activeImage, setActiveImage] = useState<'hero' | 'side' | 'top'>('hero');
 
-  const currentImage = concept.images[activeImage];
+  // Defensive: ensure images object exists
+  const images = concept.images || { hero: '', side: '', top: '' };
+  const currentImage = images[activeImage] || '';
+  
+  // Defensive: ensure nested objects exist
+  const centerStone = concept.center_stone || { shape: '', size_mm: '', type: '' };
+  const band = concept.band || { width_mm: '', style: '', pave: '', shoulders: '' };
   
   return (
     <Card className="border border-luxury-divider shadow-luxury rounded-xl overflow-hidden bg-white">
@@ -107,9 +113,9 @@ export const ConceptCard = ({
                     : 'border-transparent hover:border-luxury-champagne/50'
                 }`}
               >
-                {concept.images[view] ? (
+                {images[view] ? (
                   <img 
-                    src={concept.images[view]} 
+                    src={images[view]} 
                     alt={`${view} view`}
                     className="w-full h-full object-cover"
                   />
@@ -140,19 +146,19 @@ export const ConceptCard = ({
           <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
             <div className="bg-luxury-bg px-3 py-2 rounded-lg">
               <span className="text-luxury-text-muted">Metal:</span>
-              <span className="block font-medium text-luxury-text">{concept.metal}</span>
+              <span className="block font-medium text-luxury-text">{concept.metal || 'N/A'}</span>
             </div>
             <div className="bg-luxury-bg px-3 py-2 rounded-lg">
               <span className="text-luxury-text-muted">Stone:</span>
-              <span className="block font-medium text-luxury-text">{concept.center_stone.type}</span>
+              <span className="block font-medium text-luxury-text">{centerStone.type || 'N/A'}</span>
             </div>
             <div className="bg-luxury-bg px-3 py-2 rounded-lg">
               <span className="text-luxury-text-muted">Setting:</span>
-              <span className="block font-medium text-luxury-text">{concept.setting_style}</span>
+              <span className="block font-medium text-luxury-text">{concept.setting_style || 'N/A'}</span>
             </div>
             <div className="bg-luxury-bg px-3 py-2 rounded-lg">
               <span className="text-luxury-text-muted">Band:</span>
-              <span className="block font-medium text-luxury-text">{concept.band.width_mm}</span>
+              <span className="block font-medium text-luxury-text">{band.width_mm || 'N/A'}</span>
             </div>
           </div>
 
@@ -170,19 +176,19 @@ export const ConceptCard = ({
               <div>
                 <span className="text-luxury-text-muted">Center Stone:</span>
                 <p className="font-medium text-luxury-text">
-                  {concept.center_stone.shape} {concept.center_stone.type}, {concept.center_stone.size_mm}
+                  {centerStone.shape} {centerStone.type}, {centerStone.size_mm}
                 </p>
               </div>
               <div>
                 <span className="text-luxury-text-muted">Band Details:</span>
                 <p className="font-medium text-luxury-text">
-                  {concept.band.style}, {concept.band.width_mm} width
-                  {concept.band.pave !== "None" && ` with ${concept.band.pave}`}
+                  {band.style}, {band.width_mm} width
+                  {band.pave && band.pave !== "None" && ` with ${band.pave}`}
                 </p>
               </div>
               <div>
                 <span className="text-luxury-text-muted">Shoulders:</span>
-                <p className="font-medium text-luxury-text">{concept.band.shoulders}</p>
+                <p className="font-medium text-luxury-text">{band.shoulders || 'Standard'}</p>
               </div>
               <div>
                 <span className="text-luxury-text-muted">Prongs:</span>
