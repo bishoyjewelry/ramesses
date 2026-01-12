@@ -185,24 +185,18 @@ const Custom = () => {
     saveDraft(draft);
   }, [activeFlow, generalForm, engagementForm, concepts, saveDraft]);
 
-  // Save draft whenever meaningful state changes
-  // IMPORTANT: Skip auto-save while a save operation is in progress to prevent state conflicts
+  // Save draft whenever form state changes (NOT concepts - they're too large for localStorage)
   useEffect(() => {
-    // Skip if currently saving a concept (prevents state conflicts)
-    if (savingId) return;
-    
-    // Only save if there's actual content
-    const hasContent = 
+    const hasFormContent = 
       activeFlow !== null ||
-      concepts.length > 0 ||
       generalForm.pieceType !== "" ||
       engagementForm.style !== "";
     
-    if (hasContent) {
+    if (hasFormContent) {
       const timeoutId = setTimeout(saveDraftDebounced, 500);
       return () => clearTimeout(timeoutId);
     }
-  }, [activeFlow, generalForm, engagementForm, concepts, saveDraftDebounced, savingId]);
+  }, [activeFlow, generalForm, engagementForm, saveDraftDebounced]);
 
   // Handle draft restoration
   const handleRestoreDraft = () => {
