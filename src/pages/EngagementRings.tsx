@@ -151,7 +151,7 @@ export default function EngagementRings() {
               Start with rough ideas — we'll help you refine them. No design experience needed.
             </p>
             <p className="text-sm text-luxury-text-muted/70 mb-8 max-w-xl mx-auto">
-              Every design you generate is saved to your account. Come back anytime to continue.
+              Every inspiration you create is saved to your account. Come back anytime to continue.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -173,7 +173,7 @@ export default function EngagementRings() {
               </Button>
             </div>
             <p className="text-xs text-luxury-text-muted/70 mt-4">
-              Use AI to visualize your idea — final details are always refined by hand.
+              Visualize your idea — final details are always refined by our master jewelers.
             </p>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function EngagementRings() {
                   <h3 className="text-sm font-semibold text-luxury-text">Design Together</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Generate concepts, then refine with a jeweler.
+                  Visualize inspirations, then refine with a jeweler.
                 </p>
               </div>
               
@@ -243,7 +243,7 @@ export default function EngagementRings() {
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Explore Ring Styles</h2>
               <p className="text-luxury-text-muted">
-                Select a style to start building your ring in our Custom Lab.
+                Select a style to start building your ring in our Design Studio.
               </p>
             </div>
             
@@ -282,7 +282,7 @@ export default function EngagementRings() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-luxury-text-muted/70 mt-3">
-                Use AI to visualize your idea — final details are always refined by hand.
+                Visualize your idea — final details are always refined by our master jewelers.
               </p>
             </div>
           </div>
@@ -296,7 +296,7 @@ export default function EngagementRings() {
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Already Have a Design?</h2>
               <p className="text-luxury-text-muted mb-1">
-                Send photos or sketches directly to our master jeweler — no AI step needed.
+                Send photos or sketches directly to our master jeweler — we'll provide a quote and work with you one-on-one.
               </p>
               <p className="text-sm text-luxury-text-muted/70">
                 We'll review and follow up within 24 hours. No commitment until you approve.

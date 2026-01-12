@@ -135,7 +135,7 @@ export const RevisionRequestModal = ({
 
           {/* Reassurance */}
           <p className="text-xs text-muted-foreground text-center">
-            AI renderings are a starting point. Every design is reviewed and refined by a master jeweler.
+            These are design inspirations. Every design is reviewed and handcrafted by a master jeweler.
           </p>
         </div>
 

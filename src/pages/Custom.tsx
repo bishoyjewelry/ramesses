@@ -303,7 +303,7 @@ const Custom = () => {
       
       if (data?.concepts) {
         setConcepts(data.concepts);
-        toast.success(`Generated ${data.concepts.length} concept${data.concepts.length > 1 ? 's' : ''}!`);
+        toast.success(`Created ${data.concepts.length} inspiration${data.concepts.length > 1 ? 's' : ''} for you!`);
         
         setTimeout(() => {
           conceptsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -313,7 +313,7 @@ const Custom = () => {
       }
     } catch (error) {
       console.error('Error generating concepts:', error);
-      toast.error("Failed to generate concepts. Please try again.");
+      toast.error("Failed to create inspirations. Please try again.");
     } finally {
       setIsGenerating(false);
     }
@@ -573,10 +573,10 @@ const Custom = () => {
   };
 
   const processSteps = [
-    { step: 1, title: "Share Your Inspiration", icon: MessageCircle },
-    { step: 2, title: "AI Generates Concepts", icon: Sparkles },
+    { step: 1, title: "Share Your Vision", icon: MessageCircle },
+    { step: 2, title: "Visualize Your Ideas", icon: Sparkles },
     { step: 3, title: "Approve the Final CAD", icon: FileCheck },
-    { step: 4, title: "Cast, Set & Polish in NYC", icon: Gem },
+    { step: 4, title: "Handcrafted in NYC", icon: Gem },
     { step: 5, title: "Ships Fully Insured", icon: Package },
   ];
 
@@ -593,7 +593,7 @@ const Custom = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-luxury-champagne/15 border border-luxury-champagne/20 rounded-full mb-6 sm:mb-8">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-luxury-champagne" />
-              <span className="text-xs sm:text-sm font-medium text-luxury-text">Ramesses Custom Lab</span>
+              <span className="text-xs sm:text-sm font-medium text-luxury-text">Ramesses Design Studio</span>
             </div>
             
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-4 sm:mb-6 leading-tight px-2">
@@ -604,7 +604,7 @@ const Custom = () => {
               Start with rough ideas — we'll help you shape them. No design experience required.
             </p>
             <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
-              Every concept you generate is saved to your account. Come back anytime to continue or refine.
+              Every inspiration you create is saved to your account. Come back anytime to continue or refine.
             </p>
           </div>
         </div>
@@ -636,7 +636,7 @@ const Custom = () => {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design an Engagement Ring</h3>
                   <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
-                    Custom engagement rings with AI-powered concept generation, multi-angle views, and premium craftsmanship.
+                    Custom engagement rings designed with you, handcrafted by master jewelers in NYC's Diamond District.
                   </p>
                   <Button 
                     className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
@@ -696,59 +696,59 @@ const Custom = () => {
           <div className="max-w-4xl mx-auto">
             {/* Steps */}
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 mb-10">
-              {/* Step 1 — Explore Ideas */}
+              {/* Step 1 — Share Your Vision */}
               <div className="text-center">
                 <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
                   <span className="text-base font-serif font-semibold text-luxury-champagne">1</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Sparkles className="w-4 h-4 text-luxury-champagne" />
-                  <h3 className="text-sm font-semibold text-luxury-text">Explore Ideas</h3>
+                  <h3 className="text-sm font-semibold text-luxury-text">Share Your Vision</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Generate instant concepts or start with inspiration.
+                  Tell us about your dream piece.
                 </p>
               </div>
               
-              {/* Step 2 — Refine Direction */}
+              {/* Step 2 — See It Come to Life */}
               <div className="text-center">
                 <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
                   <span className="text-base font-serif font-semibold text-luxury-champagne">2</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Palette className="w-4 h-4 text-luxury-champagne" />
-                  <h3 className="text-sm font-semibold text-luxury-text">Refine Direction</h3>
+                  <h3 className="text-sm font-semibold text-luxury-text">See It Come to Life</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Adjust styles, stones, and details at your pace.
+                  Visualize design inspirations instantly.
                 </p>
               </div>
               
-              {/* Step 3 — Jeweler Review */}
+              {/* Step 3 — Refine with Your Jeweler */}
               <div className="text-center">
                 <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
                   <span className="text-base font-serif font-semibold text-luxury-champagne">3</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <FileCheck className="w-4 h-4 text-luxury-champagne" />
-                  <h3 className="text-sm font-semibold text-luxury-text">Jeweler Review</h3>
+                  <h3 className="text-sm font-semibold text-luxury-text">Refine with Your Jeweler</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  A master jeweler reviews feasibility and pricing.
+                  Work one-on-one to perfect every detail.
                 </p>
               </div>
               
-              {/* Step 4 — Crafted in NYC */}
+              {/* Step 4 — Handcrafted in NYC */}
               <div className="text-center">
                 <div className="w-10 h-10 rounded-full bg-luxury-champagne/10 border border-luxury-champagne/20 flex items-center justify-center mx-auto mb-4">
                   <span className="text-base font-serif font-semibold text-luxury-champagne">4</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Gem className="w-4 h-4 text-luxury-champagne" />
-                  <h3 className="text-sm font-semibold text-luxury-text">Crafted in NYC</h3>
+                  <h3 className="text-sm font-semibold text-luxury-text">Handcrafted in NYC</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Your piece is made in New York's Diamond District.
+                  Master jewelers bring your vision to life.
                 </p>
               </div>
             </div>
@@ -1068,7 +1068,7 @@ const Custom = () => {
                     {/* Trust messaging */}
                     <div className="text-center py-3 border-t border-luxury-divider">
                       <p className="text-sm text-luxury-text-muted/80">
-                        AI generates starting points for exploration — not final designs. A master jeweler reviews every piece before production.
+                        These inspirations help you explore possibilities. Your dedicated master jeweler will refine every detail and handcraft your final piece in our Diamond District atelier.
                       </p>
                     </div>
                     
@@ -1081,12 +1081,12 @@ const Custom = () => {
                       {isGenerating ? (
                         <>
                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Creating your designs…
+                          Crafting your inspirations…
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-5 h-5 mr-2" />
-                          Generate Concepts
+                          Create Inspirations
                         </>
                       )}
                     </Button>
@@ -1118,12 +1118,12 @@ const Custom = () => {
                     </div>
                     
                     <p className="text-center text-xs text-luxury-text-muted">
-                      Already have a design in mind? Click "Upload Your Design" to skip AI and request a direct quote.
+                      Already have a design in mind? Click "Upload Your Design" to skip this step and request a direct quote.
                     </p>
                     
                     {!user && (
                       <p className="text-center text-sm text-luxury-text-muted">
-                        You'll be asked to sign in before generating concepts.
+                        You'll be asked to sign in before creating inspirations.
                       </p>
                     )}
                   </form>
@@ -1150,9 +1150,9 @@ const Custom = () => {
                   <Sparkles className="w-12 h-12 text-luxury-champagne animate-spin" style={{ animationDuration: '3s' }} />
                 </div>
               </div>
-              <h3 className="text-2xl font-serif text-luxury-text mb-2">Creating your designs…</h3>
-              <p className="text-luxury-text-muted mb-1">We're generating concepts based on your inputs.</p>
-              <p className="text-xs text-luxury-text-muted/70">This takes about 15–30 seconds.</p>
+              <h3 className="text-2xl font-serif text-luxury-text mb-2">Crafting your inspirations…</h3>
+              <p className="text-luxury-text-muted mb-1">We're creating design inspirations based on your vision.</p>
+              <p className="text-xs text-luxury-text-muted/70">This takes just a moment…</p>
             </div>
           </div>
         </section>
@@ -1164,10 +1164,10 @@ const Custom = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Custom Concepts</h2>
+                <h2 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">Your Design Inspirations</h2>
                 <p className="text-luxury-text-muted mb-1">Like one? Save it. Want changes? Request variations — nothing is final until you approve.</p>
                 <p className="text-sm text-luxury-text-muted/70 mb-1">
-                  AI renderings are a starting point. Your jeweler will refine every detail before anything is made.
+                  These are design inspirations to help guide the conversation with your jeweler. Every piece is handcrafted to your exact specifications.
                 </p>
                 <p className="text-sm text-luxury-text-muted/70">
                   All saved designs live in{" "}
@@ -1223,7 +1223,7 @@ const Custom = () => {
                     }}
                     className="text-luxury-text-muted hover:text-luxury-text"
                   >
-                    Clear & Generate New Concepts
+                    Start Fresh
                   </Button>
                 </div>
               )}
@@ -1243,7 +1243,7 @@ const Custom = () => {
               From inspiration to finished piece, we guide you every step of the way.
             </p>
             <p className="text-sm text-luxury-text-muted/70 max-w-xl mx-auto">
-              AI helps you explore ideas. A Diamond District master jeweler reviews and refines every detail. No work begins without your approval.
+              Explore ideas visually, then work one-on-one with a Diamond District master jeweler who handcrafts your piece.
             </p>
           </div>
           
@@ -1275,9 +1275,9 @@ const Custom = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { title: "Master Jeweler Quality", desc: "30+ years of Diamond District expertise in every piece" },
-              { title: "AI-Powered Concepts", desc: "See your ideas come to life before committing" },
+              { title: "Visual Design Studio", desc: "Visualize your ideas before we handcraft them" },
               { title: "Unlimited Revisions", desc: "We refine until you're 100% satisfied with the design" },
-              { title: "Made in NYC", desc: "Designed and crafted on 47th Street" },
+              { title: "Handcrafted in NYC", desc: "Designed and crafted on 47th Street" },
               { title: "1-on-1 Support", desc: "Work directly with your dedicated jeweler" },
               { title: "Insured Shipping", desc: "Fully insured nationwide delivery" },
             ].map((item, index) => (

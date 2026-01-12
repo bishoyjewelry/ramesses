@@ -88,7 +88,7 @@ export function ImageToDesign({ isOpen, onClose, onDesignGenerated }: ImageToDes
       if (error) throw error;
 
       if (data?.success && data?.concept) {
-        toast.success("Design generated from your image!");
+        toast.success("Inspiration created from your image!");
         onDesignGenerated(data.concept);
         handleClose();
       } else {
@@ -231,7 +231,7 @@ export function ImageToDesign({ isOpen, onClose, onDesignGenerated }: ImageToDes
             ) : (
               <>
                 <Sparkles className="w-4 h-4 mr-2" />
-                Generate Custom Design
+                Create Inspiration from Image
               </>
             )}
           </Button>
