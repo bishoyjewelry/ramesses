@@ -174,16 +174,16 @@ const Custom = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   // Auto-save draft when form changes
-  const saveDraftDebounced = useCallback(() => {
+ const saveDraftDebounced = useCallback(() => {
     const draft: CustomDraft = {
       activeFlow,
       generalForm,
       engagementForm,
-      concepts,
+      concepts: [], // Never save concepts - they're too large for localStorage
       timestamp: Date.now(),
     };
     saveDraft(draft);
-  }, [activeFlow, generalForm, engagementForm, concepts, saveDraft]);
+  }, [activeFlow, generalForm, engagementForm, saveDraft]);
 
   // Save draft whenever form state changes (NOT concepts - they're too large for localStorage)
   useEffect(() => {
