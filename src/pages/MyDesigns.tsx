@@ -200,7 +200,7 @@ const MyDesigns = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-serif text-luxury-text mb-2">My Designs</h1>
-                <p className="text-luxury-text-muted">Your saved design inspirations — edit, refine, or send to our master jewelers.</p>
+                <p className="text-luxury-text-muted">Your saved design inspirations — edit, refine, or send to our master jewelers for handcrafting.</p>
               </div>
               <Link to="/custom">
                 <Button className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover">
@@ -294,7 +294,7 @@ const MyDesigns = () => {
                 <CardContent className="py-16 text-center">
                   <Sparkles className="w-16 h-16 text-luxury-champagne/30 mx-auto mb-4" />
                   <h3 className="text-xl font-serif text-luxury-text mb-2">No saved designs yet.</h3>
-                  <p className="text-luxury-text-muted mb-6">Use the Design Studio to create new inspirations instantly.</p>
+                  <p className="text-luxury-text-muted mb-6">Use the Design Studio to see your vision come to life.</p>
                   <Link to="/custom">
                     <Button className="bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover">
                       Start Designing

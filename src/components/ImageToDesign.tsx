@@ -88,7 +88,7 @@ export function ImageToDesign({ isOpen, onClose, onDesignGenerated }: ImageToDes
       if (error) throw error;
 
       if (data?.success && data?.concept) {
-        toast.success("Inspiration created from your image!");
+        toast.success("Design created from your image!");
         onDesignGenerated(data.concept);
         handleClose();
       } else {
@@ -217,7 +217,7 @@ export function ImageToDesign({ isOpen, onClose, onDesignGenerated }: ImageToDes
             />
           </div>
 
-          {/* Generate Button */}
+          {/* See Your Vision Button */}
           <Button
             onClick={handleGenerate}
             disabled={!imagePreview || isGenerating}
@@ -226,12 +226,12 @@ export function ImageToDesign({ isOpen, onClose, onDesignGenerated }: ImageToDes
             {isGenerating ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Creating Your Design...
+                Bringing your vision to life...
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 mr-2" />
-                Create Inspiration from Image
+                See Your Vision from Image
               </>
             )}
           </Button>

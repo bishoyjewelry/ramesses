@@ -20,14 +20,13 @@ export const AuthCallout = ({ redirectTo = "/custom" }: AuthCalloutProps) => {
     <Card className="border-2 border-luxury-champagne/30 bg-luxury-champagne/5 shadow-soft rounded-xl">
       <CardContent className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-          <div className="flex-1">
+        <div className="flex-1">
             <h3 className="text-xl font-serif luxury-heading text-luxury-text mb-2">
-              Create a Free Account to Save and Publish Your Designs
+              Create a Free Account to Save Your Designs
             </h3>
             <p className="text-luxury-text-muted font-body">
-              You can explore the Design Studio freely, but to submit a design for a quote, save your ideas, 
-              or publish your finished piece to the Ramesses Creator Marketplace, you'll need to sign in 
-              or create a free account.
+              You can explore the Design Studio freely, but to send a design to our master jewelers, save your ideas, 
+              or share your finished piece, you'll need to sign in or create a free account.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">

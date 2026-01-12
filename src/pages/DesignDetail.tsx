@@ -226,7 +226,7 @@ const DesignDetail = () => {
       if (error?.message?.includes('429') || error?.status === 429) {
         toast.error("Rate limit exceeded. Please try again in a moment.");
       } else if (error?.message?.includes('402') || error?.status === 402) {
-        toast.error("Credits exhausted. Please add credits to continue.");
+        toast.error("Design credits exhausted. Please add credits to continue.");
       } else {
         toast.error("Failed to create variations. Please try again.");
       }
