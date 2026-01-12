@@ -119,7 +119,7 @@ export const SubmitDesignModal = ({
                 id="notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Tell us what the rendering missed or what you want changed (e.g., thinner band, higher setting, hidden halo, engraving, different prongs)."
+                placeholder="Tell us what you'd like adjusted or what the design missed (e.g., thinner band, higher setting, hidden halo, engraving, different prongs)."
                 className="min-h-[100px] border-luxury-divider focus:border-luxury-champagne resize-none"
               />
             </div>

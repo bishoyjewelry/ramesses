@@ -173,7 +173,7 @@ export default function EngagementRings() {
               </Button>
             </div>
             <p className="text-xs text-luxury-text-muted/70 mt-4">
-              Visualize your idea — final details are always refined by our master jewelers.
+              See your vision — final details are always refined by our master jewelers.
             </p>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function EngagementRings() {
                   <h3 className="text-sm font-semibold text-luxury-text">Design Together</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Visualize inspirations, then refine with a jeweler.
+                  See your vision, then refine with a jeweler.
                 </p>
               </div>
               
@@ -282,7 +282,7 @@ export default function EngagementRings() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-xs text-luxury-text-muted/70 mt-3">
-                Visualize your idea — final details are always refined by our master jewelers.
+                See your vision — final details are always refined by our master jewelers.
               </p>
             </div>
           </div>

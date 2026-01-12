@@ -574,7 +574,7 @@ const Custom = () => {
 
   const processSteps = [
     { step: 1, title: "Share Your Vision", icon: MessageCircle },
-    { step: 2, title: "Visualize Your Ideas", icon: Sparkles },
+    { step: 2, title: "See It Come to Life", icon: Sparkles },
     { step: 3, title: "Approve the Final CAD", icon: FileCheck },
     { step: 4, title: "Handcrafted in NYC", icon: Gem },
     { step: 5, title: "Ships Fully Insured", icon: Package },
@@ -720,7 +720,7 @@ const Custom = () => {
                   <h3 className="text-sm font-semibold text-luxury-text">See It Come to Life</h3>
                 </div>
                 <p className="text-xs text-luxury-text-muted font-body leading-relaxed">
-                  Visualize design inspirations instantly.
+                  See design inspirations instantly.
                 </p>
               </div>
               
@@ -1072,7 +1072,7 @@ const Custom = () => {
                       </p>
                     </div>
                     
-                    {/* Generate Concepts Button */}
+                    {/* See Your Vision Button */}
                     <Button 
                       type="submit" 
                       disabled={isGenerating}
@@ -1081,12 +1081,12 @@ const Custom = () => {
                       {isGenerating ? (
                         <>
                           <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Crafting your inspirations…
+                          Bringing your vision to life…
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-5 h-5 mr-2" />
-                          Create Inspirations
+                          See Your Vision
                         </>
                       )}
                     </Button>
@@ -1113,17 +1113,17 @@ const Custom = () => {
                         className="flex-1 border-luxury-divider text-luxury-text-muted hover:border-luxury-champagne hover:text-luxury-champagne py-4"
                       >
                         <ImagePlus className="w-4 h-4 mr-2" />
-                        Upload Your Design
+                        Upload Your Inspiration
                       </Button>
                     </div>
                     
                     <p className="text-center text-xs text-luxury-text-muted">
-                      Already have a design in mind? Click "Upload Your Design" to skip this step and request a direct quote.
+                      Already have a design in mind? Click "Upload Your Inspiration" to skip this step and request a direct quote.
                     </p>
                     
                     {!user && (
                       <p className="text-center text-sm text-luxury-text-muted">
-                        You'll be asked to sign in before creating inspirations.
+                        You'll be asked to sign in before seeing your vision.
                       </p>
                     )}
                   </form>
@@ -1150,8 +1150,8 @@ const Custom = () => {
                   <Sparkles className="w-12 h-12 text-luxury-champagne animate-spin" style={{ animationDuration: '3s' }} />
                 </div>
               </div>
-              <h3 className="text-2xl font-serif text-luxury-text mb-2">Crafting your inspirations…</h3>
-              <p className="text-luxury-text-muted mb-1">We're creating design inspirations based on your vision.</p>
+              <h3 className="text-2xl font-serif text-luxury-text mb-2">Bringing your vision to life…</h3>
+              <p className="text-luxury-text-muted mb-1">Creating design inspirations based on your vision.</p>
               <p className="text-xs text-luxury-text-muted/70">This takes just a moment…</p>
             </div>
           </div>
@@ -1275,7 +1275,7 @@ const Custom = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { title: "Master Jeweler Quality", desc: "30+ years of Diamond District expertise in every piece" },
-              { title: "Visual Design Studio", desc: "Visualize your ideas before we handcraft them" },
+              { title: "Visual Design Studio", desc: "See your ideas before we handcraft them" },
               { title: "Unlimited Revisions", desc: "We refine until you're 100% satisfied with the design" },
               { title: "Handcrafted in NYC", desc: "Designed and crafted on 47th Street" },
               { title: "1-on-1 Support", desc: "Work directly with your dedicated jeweler" },
