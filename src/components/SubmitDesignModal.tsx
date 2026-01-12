@@ -60,7 +60,7 @@ export const SubmitDesignModal = ({
 
             {/* Reassurance */}
             <p className="text-xs text-luxury-text-muted/80 bg-luxury-bg px-3 py-2 rounded-lg">
-              AI renderings are a starting point. Every design is reviewed and refined by a master jeweler.
+              These are design inspirations to guide the conversation. Every design is reviewed and handcrafted by a master jeweler.
             </p>
 
             {/* Primary: Submit now */}
@@ -165,7 +165,7 @@ export const SubmitDesignModal = ({
 
             {/* Reassurance */}
             <p className="text-xs text-luxury-text-muted/80">
-              Every design is reviewed and refined by a master jeweler.
+              Every design is reviewed and handcrafted by a master jeweler.
             </p>
 
             {/* Submit button */}

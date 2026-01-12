@@ -720,7 +720,7 @@ const AdminCadQueue = () => {
 
                       {/* Source */}
                       <TableCell className="text-sm text-muted-foreground">
-                        {design ? 'AI Concept' : 'Direct Upload'}
+                        {design ? 'Design Studio' : 'Direct Upload'}
                       </TableCell>
 
                       {/* Status */}

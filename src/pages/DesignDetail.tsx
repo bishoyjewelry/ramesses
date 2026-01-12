@@ -219,16 +219,16 @@ const DesignDetail = () => {
       if (data?.success && data.design_ids?.length > 0) {
         toast.success(`${data.design_ids.length} new variations added to My Designs`);
       } else {
-        toast.error(data?.error || "No variations were generated. Please try again.");
+        toast.error(data?.error || "No variations were created. Please try again.");
       }
     } catch (error: any) {
       console.error('Error generating variations:', error);
       if (error?.message?.includes('429') || error?.status === 429) {
         toast.error("Rate limit exceeded. Please try again in a moment.");
       } else if (error?.message?.includes('402') || error?.status === 402) {
-        toast.error("AI credits exhausted. Please add credits to continue.");
+        toast.error("Credits exhausted. Please add credits to continue.");
       } else {
-        toast.error("Failed to generate variations. Please try again.");
+        toast.error("Failed to create variations. Please try again.");
       }
     } finally {
       setIsGenerating(false);
