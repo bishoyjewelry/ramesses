@@ -1,59 +1,43 @@
 import { Link } from "react-router-dom";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import bannerPendant from "@/assets/banner-pendant.png";
 import bannerRing from "@/assets/banner-ring.png";
 import masterJeweler from "@/assets/master-jeweler.jpg";
 
 // Placeholder creations - replace with dynamic data later
-const customCreations = [
-  {
-    id: 1,
-    image: bannerPendant,
-    title: "Sapphire Halo Pendant",
-  },
-  {
-    id: 2,
-    image: bannerRing,
-    title: "Vintage Emerald Ring",
-  },
-  {
-    id: 3,
-    image: bannerPendant,
-    title: "Custom Diamond Necklace",
-  },
-];
+const customCreations = [{
+  id: 1,
+  image: bannerPendant,
+  title: "Sapphire Halo Pendant"
+}, {
+  id: 2,
+  image: bannerRing,
+  title: "Vintage Emerald Ring"
+}, {
+  id: 3,
+  image: bannerPendant,
+  title: "Custom Diamond Necklace"
+}];
 
 // Placeholder testimonials - replace with dynamic data later
-const testimonials = [
-  {
-    id: 1,
-    quote: "They restored my grandmother's ring exactly how I imagined. The craftsmanship is exceptional.",
-    author: "Sarah M.",
-    location: "Los Angeles, CA",
-  },
-  {
-    id: 2,
-    quote: "From design to delivery, the entire process was seamless. My engagement ring is absolutely perfect.",
-    author: "Michael T.",
-    location: "Chicago, IL",
-  },
-  {
-    id: 3,
-    quote: "I've sent three pieces for repair. Every time, they come back better than new. Truly professional.",
-    author: "Jennifer L.",
-    location: "Miami, FL",
-  },
-];
-
+const testimonials = [{
+  id: 1,
+  quote: "They restored my grandmother's ring exactly how I imagined. The craftsmanship is exceptional.",
+  author: "Sarah M.",
+  location: "Los Angeles, CA"
+}, {
+  id: 2,
+  quote: "From design to delivery, the entire process was seamless. My engagement ring is absolutely perfect.",
+  author: "Michael T.",
+  location: "Chicago, IL"
+}, {
+  id: 3,
+  quote: "I've sent three pieces for repair. Every time, they come back better than new. Truly professional.",
+  author: "Jennifer L.",
+  location: "Miami, FL"
+}];
 export const HomeContent = () => {
-  return (
-    <>
+  return <>
       {/* ==================== SERVICE ROUTING ==================== */}
       <section className="py-16 md:py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
@@ -67,20 +51,14 @@ export const HomeContent = () => {
                 Designed from scratch by a 47th Street master jeweler.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link 
-                  to="/custom"
-                  className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                <Link to="/custom" className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
                     hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                    active:scale-[0.98] active:shadow-sm transition-all duration-150"
-                >
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150">
                   Start a Custom Design
                 </Link>
-                <Link 
-                  to="/engagement-rings"
-                  className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                <Link to="/engagement-rings" className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
                     hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                    active:scale-[0.98] active:shadow-sm transition-all duration-150"
-                >
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150">
                   Design an Engagement Ring
                 </Link>
               </div>
@@ -94,13 +72,12 @@ export const HomeContent = () => {
               <p className="text-muted-foreground text-base leading-relaxed mb-8">
                 Nationwide service, fully insured, handled in NYC.
               </p>
-              <Link 
-                to="/repairs"
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide
+              <Link to="/repairs" onClick={() => window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            })} className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide
                   hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                  active:scale-[0.98] active:shadow-sm transition-all duration-150"
-              >
+                  active:scale-[0.98] active:shadow-sm transition-all duration-150">
                 Start Repairs
               </Link>
             </div>
@@ -114,11 +91,7 @@ export const HomeContent = () => {
           <div className="max-w-5xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-8 md:gap-16 items-center">
             {/* Image - carries the weight */}
             <div className="aspect-[4/5] overflow-hidden">
-              <img
-                src={masterJeweler}
-                alt="Master jeweler crafting jewelry at the bench in NYC's Diamond District"
-                className="w-full h-full object-cover"
-              />
+              <img src={masterJeweler} alt="Master jeweler crafting jewelry at the bench in NYC's Diamond District" className="w-full h-full object-cover" />
             </div>
             
             {/* Copy - minimal, trust-anchoring */}
@@ -127,7 +100,7 @@ export const HomeContent = () => {
                 Diamond District Craftsmanship
               </h2>
               <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-prose">
-                Every piece is crafted or restored by the same hands that have worked New York's Diamond District for over four decades.
+                With over four decades at the bench, Ramses’s journey began at age 12 in Egypt and led him to New York City, where he refined his craft working with Tiffany & Co. For the past 30 years, he has served generations of clients—many of whom still return year after year. From young couples creating their first engagement ring to high-end collectors seeking one-of-a-kind pieces, his work is built on trust, precision, and care. He sees himself as a skilled craftsman—but his customers see an artist.
               </p>
             </div>
           </div>
@@ -142,30 +115,21 @@ export const HomeContent = () => {
               Recent Custom Creations
             </h2>
             
-            <Carousel
-              opts={{
-                align: "center",
-                loop: true,
-              }}
-              className="w-full"
-            >
+            <Carousel opts={{
+            align: "center",
+            loop: true
+          }} className="w-full">
               <CarouselContent className="-ml-0">
-                {customCreations.map((creation) => (
-                  <CarouselItem key={creation.id} className="pl-0">
+                {customCreations.map(creation => <CarouselItem key={creation.id} className="pl-0">
                     <div className="flex flex-col items-center">
                       <div className="w-full max-w-md aspect-square bg-background overflow-hidden">
-                        <img
-                          src={creation.image}
-                          alt={creation.title}
-                          className="w-full h-full object-cover"
-                        />
+                        <img src={creation.image} alt={creation.title} className="w-full h-full object-cover" />
                       </div>
                       <p className="mt-6 text-muted-foreground text-sm tracking-wide">
                         {creation.title}
                       </p>
                     </div>
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               <CarouselPrevious className="left-0 sm:-left-4 bg-background/80 hover:bg-background border-border/40" />
               <CarouselNext className="right-0 sm:-right-4 bg-background/80 hover:bg-background border-border/40" />
@@ -178,16 +142,12 @@ export const HomeContent = () => {
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <Carousel
-              opts={{
-                align: "center",
-                loop: true,
-              }}
-              className="w-full"
-            >
+            <Carousel opts={{
+            align: "center",
+            loop: true
+          }} className="w-full">
               <CarouselContent className="-ml-0">
-                {testimonials.map((testimonial) => (
-                  <CarouselItem key={testimonial.id} className="pl-0">
+                {testimonials.map(testimonial => <CarouselItem key={testimonial.id} className="pl-0">
                     <div className="text-center px-6 sm:px-12 py-4">
                       <blockquote className="font-display text-foreground text-xl md:text-2xl font-normal leading-relaxed mb-10 italic">
                         "{testimonial.quote}"
@@ -201,8 +161,7 @@ export const HomeContent = () => {
                         </p>
                       </div>
                     </div>
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               <CarouselPrevious className="left-0 sm:-left-8 bg-background/80 hover:bg-background border-border/40" />
               <CarouselNext className="right-0 sm:-right-8 bg-background/80 hover:bg-background border-border/40" />
@@ -221,12 +180,9 @@ export const HomeContent = () => {
             <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md mx-auto">
               Designs from the Ramesses community — order as-is or customize further.
             </p>
-            <Link 
-              to="/creator-marketplace"
-              className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3 text-sm tracking-wide
+            <Link to="/creator-marketplace" className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3 text-sm tracking-wide
                 hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                active:scale-[0.98] active:shadow-sm transition-all duration-150"
-            >
+                active:scale-[0.98] active:shadow-sm transition-all duration-150">
               Explore the Marketplace
             </Link>
           </div>
@@ -246,6 +202,5 @@ export const HomeContent = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
