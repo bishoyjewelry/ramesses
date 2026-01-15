@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, User, ChevronDown } from "lucide-react";
+import { Menu, X, User, ChevronDown, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartDrawer } from "./CartDrawer";
 import { AccountDropdown } from "./AccountDropdown";
@@ -150,6 +150,15 @@ export const Navigation = () => {
 
           {/* Right side actions with consistent spacing */}
           <div className="flex items-center" style={{ gap: '24px' }}>
+            {/* Phone Number */}
+            <a
+              href="tel:+12123910352"
+              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="hidden lg:inline">(212) 391-0352</span>
+            </a>
+
             {/* Track Repair - Desktop (text only) */}
             <button
               onClick={handleTrackRepair}
