@@ -44,6 +44,17 @@ export const Hero = () => {
               >
                 Looking for repairs? Browse services with transparent pricing →
               </Link>
+              
+              {/* Phone number */}
+              <p className="text-primary-foreground/50 text-sm">
+                Or call us directly:{" "}
+                <a 
+                  href="tel:+12123910352" 
+                  className="text-primary-foreground/70 hover:text-primary-foreground transition-colors underline underline-offset-2"
+                >
+                  (212) 391-0352
+                </a>
+              </p>
             </div>
             
             {/* Trust Bar */}
