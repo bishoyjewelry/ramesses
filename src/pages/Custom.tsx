@@ -20,7 +20,7 @@ import { useCustomDraft, CustomDraft } from "@/hooks/useCustomDraft";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, 
-  Palette, FileCheck, Package, Loader2, Wand2, ImagePlus, HelpCircle, Camera
+  Palette, FileCheck, Package, Loader2, Wand2, ImagePlus, HelpCircle, Camera, Phone, Clock
 } from "lucide-react";
 
 // Ring style images
@@ -635,9 +635,10 @@ const Custom = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design an Engagement Ring</h3>
-                  <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
+                  <p className="text-luxury-text-muted font-body mb-2 leading-relaxed text-sm sm:text-base">
                     Custom engagement rings designed with you, handcrafted by master jewelers in NYC's Diamond District.
                   </p>
+                  <p className="text-luxury-champagne font-semibold text-sm mb-3 sm:mb-4">Starting at $2,500</p>
                   <Button 
                     className="w-full sm:w-auto bg-luxury-champagne text-luxury-text hover:bg-luxury-champagne-hover font-semibold tap-target"
                     onClick={(e) => {
@@ -669,9 +670,10 @@ const Custom = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-2xl font-serif text-luxury-text mb-1.5 sm:mb-2">Design Any Jewelry</h3>
-                  <p className="text-luxury-text-muted font-body mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
+                  <p className="text-luxury-text-muted font-body mb-2 leading-relaxed text-sm sm:text-base">
                     Rings, pendants, chains, earrings, bracelets, redesigns, and more.
                   </p>
+                  <p className="text-luxury-champagne font-semibold text-sm mb-3 sm:mb-4">Starting at $1,500</p>
                   <Button 
                     variant="outline"
                     className="w-full sm:w-auto border-luxury-champagne text-luxury-champagne hover:bg-luxury-champagne hover:text-luxury-text font-semibold tap-target"
@@ -751,6 +753,14 @@ const Custom = () => {
                   Master jewelers bring your vision to life.
                 </p>
               </div>
+            </div>
+            
+            {/* Timeline note */}
+            <div className="flex items-center justify-center gap-2 mt-6 mb-2">
+              <Clock className="w-4 h-4 text-luxury-text-muted" />
+              <p className="text-sm text-luxury-text-muted font-body">
+                Most pieces ready in 3-4 weeks. Rush orders available — just let us know your timeline.
+              </p>
             </div>
             
             {/* Reassurance line */}
@@ -1094,6 +1104,18 @@ const Custom = () => {
                       All details can be adjusted by your jeweler.
                     </p>
                     
+                    {/* Phone number */}
+                    <div className="flex items-center justify-center gap-2 text-sm text-luxury-text-muted">
+                      <Phone className="w-4 h-4" />
+                      <span>Prefer to talk? Call us:</span>
+                      <a 
+                        href="tel:+12123910352" 
+                        className="text-luxury-champagne hover:underline font-medium"
+                      >
+                        (212) 391-0352
+                      </a>
+                    </div>
+                    
                     {/* Surprise Me Button */}
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button 
@@ -1232,39 +1254,9 @@ const Custom = () => {
         </section>
       )}
 
-      {/* HOW IT WORKS */}
-      <section className="py-20 bg-luxury-bg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif text-luxury-text mb-4">
-              How Our Custom Process Works
-            </h2>
-            <p className="text-luxury-text-muted max-w-2xl mx-auto mb-2">
-              From inspiration to finished piece, we guide you every step of the way.
-            </p>
-            <p className="text-sm text-luxury-text-muted/70 max-w-xl mx-auto">
-              Explore ideas visually, then work one-on-one with a Diamond District master jeweler who handcrafts your piece.
-            </p>
-          </div>
-          
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {processSteps.map((step) => (
-                <div key={step.step} className="text-center relative">
-                  <div className="w-14 h-14 bg-luxury-champagne/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-luxury-champagne">
-                    <step.icon className="w-6 h-6 text-luxury-champagne" />
-                  </div>
-                  <div className="text-xs font-semibold text-luxury-champagne mb-1">Step {step.step}</div>
-                  <h3 className="text-sm font-medium text-luxury-text leading-snug">{step.title}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-20 bg-service-bg">
+      <section className="py-20 bg-[#1F1F1F]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
@@ -1281,12 +1273,12 @@ const Custom = () => {
               { title: "1-on-1 Support", desc: "Work directly with your dedicated jeweler" },
               { title: "Insured Shipping", desc: "Fully insured nationwide delivery" },
             ].map((item, index) => (
-              <div key={index} className="bg-service-bg-secondary rounded-xl p-6 border border-service-gold/20">
+              <div key={index} className="bg-[#2C2C2C] rounded-xl p-6 border border-luxury-champagne/20">
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-service-gold flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-luxury-champagne flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-sm text-service-text-muted">{item.desc}</p>
+                    <p className="text-sm text-gray-400">{item.desc}</p>
                   </div>
                 </div>
               </div>
