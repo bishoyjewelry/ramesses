@@ -34,6 +34,7 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const Shipping = React.lazy(() => import("./pages/Shipping"));
 const Privacy = React.lazy(() => import("./pages/Privacy"));
 const Terms = React.lazy(() => import("./pages/Terms"));
+const Cart = React.lazy(() => import("./pages/Cart"));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="/shipping" element={<Suspense fallback={<PageLoader />}><Shipping /></Suspense>} />
             <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />
             <Route path="/terms" element={<Suspense fallback={<PageLoader />}><Terms /></Suspense>} />
+            <Route path="/cart" element={<Suspense fallback={<PageLoader />}><Cart /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Mobile Bottom Navigation */}
