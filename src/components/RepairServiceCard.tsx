@@ -36,11 +36,8 @@ export const RepairServiceCard = ({ service, onSelect, isSelected }: RepairServi
 
       <div className="mb-3">
         <span className="text-lg font-semibold text-foreground">
-          {service.basePrice === 0 ? "Free Quote" : `From $${service.basePrice}`}
+          {service.basePrice === 0 ? "Free Quote" : `$${service.basePrice}`}
         </span>
-        {service.priceNote && (
-          <p className="text-xs text-muted-foreground">{service.priceNote}</p>
-        )}
       </div>
 
       <div className="flex items-center justify-between gap-2">
