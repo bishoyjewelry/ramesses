@@ -6,6 +6,9 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { RepairServiceCard } from "@/components/RepairServiceCard";
 import { repairServices, categories, serviceTypes, getPopularServices, searchServices } from "@/data/repairServices";
+import { useRepairCartStore } from "@/stores/repairCartStore";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Track service with quantity
 interface SelectedServiceWithQuantity {
@@ -14,11 +17,15 @@ interface SelectedServiceWithQuantity {
 }
 
 const Repairs = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedServiceType, setSelectedServiceType] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedServices, setSelectedServices] = useState<SelectedServiceWithQuantity[]>([]);
+  
+  const { addItems, getTotalItems } = useRepairCartStore();
+  const cartItemCount = getTotalItems();
 
   const filteredServices = useMemo(() => {
     let results = repairServices;
@@ -76,6 +83,20 @@ const Repairs = () => {
   const discountedTotal = hasBulkDiscount ? Math.round(subtotal * 0.8) : subtotal;
   
   const trendingSearches = ["ring sizing", "chain repair", "watch battery", "engraving", "gold plating"];
+
+  const handleAddToCart = () => {
+    const cartItems = selectedServices.map((s) => ({
+      id: s.service.id,
+      name: s.service.name,
+      price: s.service.basePrice,
+      quantity: s.quantity,
+      turnaroundDays: s.service.turnaroundDays,
+    }));
+    
+    addItems(cartItems);
+    toast.success(`Added ${totalQuantity} ${totalQuantity === 1 ? 'service' : 'services'} to cart!`);
+    setSelectedServices([]); // Clear selections
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -296,9 +317,25 @@ const Repairs = () => {
                   <p className="font-semibold">${subtotal}</p>
                 )}
               </div>
-              <Button variant="secondary" size="lg">
-                Continue
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="secondary" 
+                  size="lg"
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </Button>
+                {cartItemCount > 0 && (
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    className="border-background/30 text-background hover:bg-background/10"
+                    onClick={() => navigate('/cart')}
+                  >
+                    View Cart ({cartItemCount})
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
