@@ -10,9 +10,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2, Wrench } from "lucide-react";
-import { useCartStore } from "@/stores/cartStore";
+import { useCartStore, CartItem as ShopifyCartItem } from "@/stores/cartStore";
 import { useRepairCartStore } from "@/stores/repairCartStore";
 import { createStorefrontCheckout } from "@/lib/shopify";
+import { convertRepairItemsToCartItems } from "@/lib/repairShopifyMapping";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -23,21 +24,21 @@ interface CartDrawerProps {
 
 export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { 
     items: shopifyItems, 
-    isLoading, 
     updateQuantity: updateShopifyQuantity, 
-    removeItem: removeShopifyItem, 
-    setLoading,
-    setCheckoutUrl
+    removeItem: removeShopifyItem,
+    clearCart: clearShopifyCart
   } = useCartStore();
   
   const {
     items: repairItems,
     updateQuantity: updateRepairQuantity,
     removeItem: removeRepairItem,
+    clearCart: clearRepairCart,
     getSubtotal: getRepairSubtotal,
     getDiscountedTotal: getRepairDiscountedTotal,
     hasBulkDiscount,
@@ -56,24 +57,41 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
   // Combined total price
   const totalPrice = shopifyTotalPrice + repairDiscountedTotal;
 
-  const handleCheckout = async () => {
-    if (shopifyItems.length === 0) return;
-    
-    setLoading(true);
+  const handleUnifiedCheckout = async () => {
+    setIsCheckingOut(true);
     try {
-      const checkoutUrl = await createStorefrontCheckout(shopifyItems);
-      setCheckoutUrl(checkoutUrl);
-      window.open(checkoutUrl, '_blank');
-      setIsOpen(false);
+      // Combine all items for checkout
+      const allItems: ShopifyCartItem[] = [...shopifyItems];
+      
+      // Convert repair items to Shopify cart items
+      if (repairItems.length > 0) {
+        const repairCartItems = await convertRepairItemsToCartItems(repairItems);
+        allItems.push(...repairCartItems);
+      }
+      
+      if (allItems.length > 0) {
+        const checkoutUrl = await createStorefrontCheckout(allItems);
+        
+        // Clear both carts after successful checkout initiation
+        clearShopifyCart();
+        clearRepairCart();
+        
+        // Open checkout in new tab
+        window.open(checkoutUrl, '_blank');
+        setIsOpen(false);
+        toast.success("Redirecting to checkout...");
+      } else {
+        toast.error("No items to checkout");
+      }
     } catch (error) {
       console.error('Checkout failed:', error);
       toast.error("Failed to create checkout. Please try again.");
     } finally {
-      setLoading(false);
+      setIsCheckingOut(false);
     }
   };
 
-  const handleRepairCheckout = () => {
+  const handleViewCart = () => {
     setIsOpen(false);
     navigate('/cart');
   };
@@ -245,9 +263,9 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
               </div>
               
               <div className="flex-shrink-0 space-y-4 pt-4 border-t border-border bg-background">
-                {/* Repair Services Total */}
-                {repairItems.length > 0 && (
-                  <div className="space-y-2">
+                {/* Subtotals */}
+                <div className="space-y-2">
+                  {repairItems.length > 0 && (
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-muted-foreground">Repair Services</span>
                       {hasRepairDiscount ? (
@@ -259,54 +277,52 @@ export const CartDrawer = ({ isScrolled = true }: CartDrawerProps) => {
                         <span className="font-semibold">${repairSubtotal}</span>
                       )}
                     </div>
-                    <Button 
-                      onClick={handleRepairCheckout}
-                      variant="outline"
-                      className="w-full" 
-                      size="sm"
-                    >
-                      <Wrench className="w-4 h-4 mr-2" />
-                      Continue with Repairs
-                    </Button>
-                  </div>
-                )}
+                  )}
+                  
+                  {shopifyItems.length > 0 && repairItems.length > 0 && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-muted-foreground">Products</span>
+                      <span className="font-semibold">${shopifyTotalPrice.toFixed(2)}</span>
+                    </div>
+                  )}
+                </div>
 
-                {/* Shopify Products Total */}
-                {shopifyItems.length > 0 && (
-                  <div className="space-y-2">
-                    {repairItems.length > 0 && (
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">Products</span>
-                        <span className="font-semibold">${shopifyTotalPrice.toFixed(2)}</span>
-                      </div>
-                    )}
-                    <Button 
-                      onClick={handleCheckout}
-                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
-                      size="lg"
-                      disabled={shopifyItems.length === 0 || isLoading}
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          {t('cart.creating')}
-                        </>
-                      ) : (
-                        <>
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          {t('cart.checkout')} (${shopifyTotalPrice.toFixed(2)})
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
+                {/* Total */}
+                <div className="flex justify-between items-center pt-2 border-t border-border">
+                  <span className="text-lg font-semibold">{t('cart.total')}</span>
+                  <span className="text-xl font-bold text-primary">${totalPrice.toFixed(2)}</span>
+                </div>
 
-                {/* Show combined total only when both types exist */}
-                {repairItems.length > 0 && shopifyItems.length > 0 && (
-                  <div className="flex justify-between items-center pt-2 border-t border-border">
-                    <span className="text-lg font-semibold">{t('cart.total')}</span>
-                    <span className="text-xl font-bold text-primary">${totalPrice.toFixed(2)}</span>
-                  </div>
+                {/* Unified Checkout Button */}
+                <Button 
+                  onClick={handleUnifiedCheckout}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
+                  size="lg"
+                  disabled={totalItems === 0 || isCheckingOut}
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Checkout (${totalPrice.toFixed(2)})
+                    </>
+                  )}
+                </Button>
+
+                {/* View Cart link for fulfillment options */}
+                {repairItems.length > 0 && (
+                  <Button 
+                    onClick={handleViewCart}
+                    variant="outline"
+                    className="w-full" 
+                    size="sm"
+                  >
+                    View Cart for Fulfillment Options
+                  </Button>
                 )}
               </div>
             </>

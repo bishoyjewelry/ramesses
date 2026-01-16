@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,20 +18,17 @@ import {
   Mail,
   ExternalLink,
   Loader2,
-  Tag
+  Tag,
+  Clock
 } from "lucide-react";
 import { useCartStore, CartItem as ShopifyCartItem } from "@/stores/cartStore";
 import { useRepairCartStore, RepairCartItem } from "@/stores/repairCartStore";
 import { createStorefrontCheckout } from "@/lib/shopify";
+import { convertRepairItemsToCartItems } from "@/lib/repairShopifyMapping";
 import { toast } from "sonner";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-
-interface CustomerInfo {
-  name: string;
-  email: string;
-  phone: string;
-}
+import { useAuth } from "@/hooks/useAuth";
 
 interface ShippingAddress {
   street: string;
@@ -42,6 +39,7 @@ interface ShippingAddress {
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { user, isLoading: authLoading } = useAuth();
   
   // Shopify cart
   const shopifyItems = useCartStore((state) => state.items);
@@ -58,12 +56,7 @@ const Cart = () => {
   const repairDiscountedTotal = useRepairCartStore((state) => state.getDiscountedTotal());
   const hasBulkDiscount = useRepairCartStore((state) => state.hasBulkDiscount());
   
-  // Form state
-  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
-    name: "",
-    email: "",
-    phone: "",
-  });
+  // Form state - only for guest checkout
   const [fulfillmentMethod, setFulfillmentMethod] = useState<"dropoff" | "mailin">("dropoff");
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     street: "",
@@ -80,15 +73,12 @@ const Cart = () => {
   );
   const grandTotal = shopifyTotal + repairDiscountedTotal;
   const hasItems = shopifyItems.length > 0 || repairItems.length > 0;
+  const isLoggedIn = !!user;
 
   const handleCheckout = async () => {
-    // Validate customer info
-    if (!customerInfo.name || !customerInfo.email || !customerInfo.phone) {
-      toast.error("Please fill in all customer information");
-      return;
-    }
-
-    if (fulfillmentMethod === "mailin" && (!shippingAddress.street || !shippingAddress.city || !shippingAddress.state || !shippingAddress.zip)) {
+    // Only validate shipping address for mail-in repairs
+    if (repairItems.length > 0 && fulfillmentMethod === "mailin" && 
+        (!shippingAddress.street || !shippingAddress.city || !shippingAddress.state || !shippingAddress.zip)) {
       toast.error("Please fill in your shipping address for mail-in service");
       return;
     }
@@ -96,29 +86,27 @@ const Cart = () => {
     setIsLoading(true);
 
     try {
-      // Prepare cart items for Shopify checkout
+      // Combine all items for checkout
       const allItems: ShopifyCartItem[] = [...shopifyItems];
       
-      // Note: Repair services are now in Shopify, but we need to look them up by SKU
-      // For now, we'll use the existing Shopify cart items and handle repairs separately
+      // Convert repair items to Shopify cart items
+      if (repairItems.length > 0) {
+        const repairCartItems = await convertRepairItemsToCartItems(repairItems);
+        allItems.push(...repairCartItems);
+      }
       
       if (allItems.length > 0) {
         const checkoutUrl = await createStorefrontCheckout(allItems);
         
-        // Clear carts after successful checkout initiation
+        // Clear both carts after successful checkout initiation
         clearShopifyCart();
+        clearRepairCart();
         
         // Open checkout in new tab
         window.open(checkoutUrl, '_blank');
         toast.success("Redirecting to checkout...");
-      }
-      
-      // Handle repair items separately if only repairs in cart
-      if (repairItems.length > 0 && shopifyItems.length === 0) {
-        // For repair-only orders, redirect to contact/quote flow
-        toast.info("Repair orders require a quote. Redirecting to contact form...");
-        navigate("/contact");
-        clearRepairCart();
+      } else {
+        toast.error("No items to checkout. Please add items to your cart.");
       }
       
     } catch (error) {
@@ -359,50 +347,6 @@ const Cart = () => {
 
             {/* Order Summary & Checkout */}
             <div className="space-y-6">
-              {/* Customer Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Customer Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      placeholder="John Doe"
-                      value={customerInfo.name}
-                      onChange={(e) =>
-                        setCustomerInfo({ ...customerInfo, name: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      value={customerInfo.email}
-                      onChange={(e) =>
-                        setCustomerInfo({ ...customerInfo, email: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="(555) 123-4567"
-                      value={customerInfo.phone}
-                      onChange={(e) =>
-                        setCustomerInfo({ ...customerInfo, phone: e.target.value })
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
               {/* Fulfillment Method (for repairs) */}
               {repairItems.length > 0 && (
                 <Card>
@@ -424,7 +368,11 @@ const Cart = () => {
                             Drop-off
                           </Label>
                           <p className="text-sm text-muted-foreground mt-1">
-                            Visit our store at 123 Jewelry Lane, NYC
+                            55 West 47th Street, New York, NY 10036
+                          </p>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                            <Clock className="h-3 w-3" />
+                            Mon-Fri 10am-8pm
                           </p>
                         </div>
                       </div>
@@ -553,7 +501,7 @@ const Cart = () => {
                     ) : (
                       <ExternalLink className="h-5 w-5 mr-2" />
                     )}
-                    {isLoading ? "Processing..." : "Proceed to Checkout"}
+                    {isLoading ? "Processing..." : `Checkout ($${grandTotal.toFixed(2)})`}
                   </Button>
                   
                   <p className="text-xs text-center text-muted-foreground">
