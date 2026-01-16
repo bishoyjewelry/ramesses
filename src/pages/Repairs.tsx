@@ -7,12 +7,18 @@ import { Footer } from "@/components/Footer";
 import { RepairServiceCard } from "@/components/RepairServiceCard";
 import { repairServices, categories, serviceTypes, getPopularServices, searchServices } from "@/data/repairServices";
 
+// Track service with quantity
+interface SelectedServiceWithQuantity {
+  service: (typeof repairServices)[0];
+  quantity: number;
+}
+
 const Repairs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedServiceType, setSelectedServiceType] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedServices, setSelectedServices] = useState<typeof repairServices>([]);
+  const [selectedServices, setSelectedServices] = useState<SelectedServiceWithQuantity[]>([]);
 
   const filteredServices = useMemo(() => {
     let results = repairServices;
@@ -31,12 +37,30 @@ const Repairs = () => {
   const popularServices = getPopularServices();
 
   const handleSelectService = (service: (typeof repairServices)[0]) => {
-    const exists = selectedServices.find((s) => s.id === service.id);
+    const exists = selectedServices.find((s) => s.service.id === service.id);
     if (exists) {
-      setSelectedServices(selectedServices.filter((s) => s.id !== service.id));
+      setSelectedServices(selectedServices.filter((s) => s.service.id !== service.id));
     } else {
-      setSelectedServices([...selectedServices, service]);
+      setSelectedServices([...selectedServices, { service, quantity: 1 }]);
     }
+  };
+
+  const handleQuantityChange = (serviceId: string, newQuantity: number) => {
+    if (newQuantity < 1) {
+      // Remove service if quantity goes below 1
+      setSelectedServices(selectedServices.filter((s) => s.service.id !== serviceId));
+    } else if (newQuantity <= 10) {
+      setSelectedServices(
+        selectedServices.map((s) =>
+          s.service.id === serviceId ? { ...s, quantity: newQuantity } : s
+        )
+      );
+    }
+  };
+
+  const getQuantity = (serviceId: string): number => {
+    const found = selectedServices.find((s) => s.service.id === serviceId);
+    return found?.quantity || 0;
   };
 
   const clearFilters = () => {
@@ -45,7 +69,12 @@ const Repairs = () => {
     setSearchQuery("");
   };
 
-  const totalEstimate = selectedServices.reduce((sum, s) => sum + s.basePrice, 0);
+  // Calculate totals with bulk discount
+  const totalQuantity = selectedServices.reduce((sum, s) => sum + s.quantity, 0);
+  const subtotal = selectedServices.reduce((sum, s) => sum + s.service.basePrice * s.quantity, 0);
+  const hasBulkDiscount = totalQuantity >= 2;
+  const discountedTotal = hasBulkDiscount ? Math.round(subtotal * 0.8) : subtotal;
+  
   const trendingSearches = ["ring sizing", "chain repair", "watch battery", "engraving", "gold plating"];
 
   return (
@@ -193,7 +222,9 @@ const Repairs = () => {
                         key={service.id}
                         service={service}
                         onSelect={handleSelectService}
-                        isSelected={selectedServices.some((s) => s.id === service.id)}
+                        isSelected={selectedServices.some((s) => s.service.id === service.id)}
+                        quantity={getQuantity(service.id)}
+                        onQuantityChange={handleQuantityChange}
                       />
                     ))}
                   </div>
@@ -211,7 +242,9 @@ const Repairs = () => {
                       key={service.id}
                       service={service}
                       onSelect={handleSelectService}
-                      isSelected={selectedServices.some((s) => s.id === service.id)}
+                      isSelected={selectedServices.some((s) => s.service.id === service.id)}
+                      quantity={getQuantity(service.id)}
+                      onQuantityChange={handleQuantityChange}
                     />
                   ))}
                 </div>
@@ -234,10 +267,14 @@ const Repairs = () => {
           <div className="container-wide mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <ShoppingCart className="w-5 h-5" />
-              <span className="font-medium">{selectedServices.length} selected</span>
+              <span className="font-medium">
+                {totalQuantity} {totalQuantity === 1 ? 'service' : 'services'} selected
+              </span>
               <div className="hidden sm:flex items-center gap-2 text-sm opacity-80">
                 {selectedServices.slice(0, 3).map((s) => (
-                  <span key={s.id} className="bg-background/20 px-2 py-0.5 rounded">{s.name}</span>
+                  <span key={s.service.id} className="bg-background/20 px-2 py-0.5 rounded">
+                    {s.quantity > 1 ? `${s.quantity}× ` : ''}{s.service.name}
+                  </span>
                 ))}
                 {selectedServices.length > 3 && (
                   <span className="opacity-70">+{selectedServices.length - 3} more</span>
@@ -247,7 +284,17 @@ const Repairs = () => {
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-xs opacity-70">Estimate</p>
-                <p className="font-semibold">From ${totalEstimate}</p>
+                {hasBulkDiscount ? (
+                  <div className="flex items-center gap-2">
+                    <span className="line-through opacity-50">${subtotal}</span>
+                    <span className="font-semibold">${discountedTotal}</span>
+                    <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                      20% bulk discount
+                    </span>
+                  </div>
+                ) : (
+                  <p className="font-semibold">${subtotal}</p>
+                )}
               </div>
               <Button variant="secondary" size="lg">
                 Continue
