@@ -47,14 +47,17 @@ const STOREFRONT_QUERY = `
           id
           title
           description
+          descriptionHtml
           handle
+          productType
+          tags
           priceRange {
             minVariantPrice {
               amount
               currencyCode
             }
           }
-          images(first: 5) {
+          images(first: 10) {
             edges {
               node {
                 url
@@ -62,7 +65,7 @@ const STOREFRONT_QUERY = `
               }
             }
           }
-          variants(first: 10) {
+          variants(first: 20) {
             edges {
               node {
                 id
@@ -89,9 +92,115 @@ const STOREFRONT_QUERY = `
   }
 `;
 
+const PRODUCT_BY_HANDLE_QUERY = `
+  query GetProductByHandle($handle: String!) {
+    productByHandle(handle: $handle) {
+      id
+      title
+      description
+      descriptionHtml
+      handle
+      productType
+      tags
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      images(first: 10) {
+        edges {
+          node {
+            url
+            altText
+          }
+        }
+      }
+      variants(first: 20) {
+        edges {
+          node {
+            id
+            title
+            price {
+              amount
+              currencyCode
+            }
+            availableForSale
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+      }
+      options {
+        name
+        values
+      }
+    }
+  }
+`;
+
 export async function getProducts(first: number = 50) {
   const data = await storefrontApiRequest(STOREFRONT_QUERY, { first });
   return data?.data?.products?.edges || [];
+}
+
+export async function getProductByHandle(handle: string) {
+  const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
+  return data?.data?.productByHandle || null;
+}
+
+// Formatted product type for cleaner component usage
+export interface FormattedProduct {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  descriptionHtml: string;
+  productType: string;
+  tags: string[];
+  price: number;
+  currency: string;
+  images: Array<{ url: string; alt: string }>;
+  variants: Array<{
+    id: string;
+    title: string;
+    price: number;
+    currency: string;
+    available: boolean;
+    options: Array<{ name: string; value: string }>;
+  }>;
+  options: Array<{ name: string; values: string[] }>;
+  category: 'repairs' | 'jewelry';
+}
+
+export function formatProduct(shopifyProduct: any): FormattedProduct {
+  return {
+    id: shopifyProduct.id,
+    handle: shopifyProduct.handle,
+    title: shopifyProduct.title,
+    description: shopifyProduct.description || '',
+    descriptionHtml: shopifyProduct.descriptionHtml || '',
+    productType: shopifyProduct.productType || '',
+    tags: shopifyProduct.tags || [],
+    price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
+    currency: shopifyProduct.priceRange.minVariantPrice.currencyCode,
+    images: shopifyProduct.images.edges.map((edge: any) => ({
+      url: edge.node.url,
+      alt: edge.node.altText || shopifyProduct.title
+    })),
+    variants: shopifyProduct.variants.edges.map((edge: any) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      price: parseFloat(edge.node.price.amount),
+      currency: edge.node.price.currencyCode,
+      available: edge.node.availableForSale,
+      options: edge.node.selectedOptions || []
+    })),
+    options: shopifyProduct.options || [],
+    category: shopifyProduct.productType?.toLowerCase().includes('repair') ? 'repairs' : 'jewelry'
+  };
 }
 
 const CART_CREATE_MUTATION = `
