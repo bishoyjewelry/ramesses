@@ -286,6 +286,11 @@ const Custom = () => {
     setIsGenerating(true);
     setConcepts([]);
     
+    // Scroll to results area immediately so user sees loading indicator
+    setTimeout(() => {
+      conceptsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+    
     try {
       const formInputs = activeFlow === "engagement" ? {
         flowType: "engagement",
@@ -603,8 +608,14 @@ const Custom = () => {
             <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-3 max-w-3xl mx-auto leading-relaxed font-body px-2">
               Start with rough ideas — we'll help you shape them. No design experience required.
             </p>
-            <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+            <p className="text-sm text-luxury-text-muted/70 mb-2 max-w-2xl mx-auto font-body px-2">
               Every inspiration you create is saved to your account. Come back anytime to continue or refine.
+            </p>
+            <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+              Or get inspired by{' '}
+              <Link to="/creator-marketplace" className="text-luxury-champagne hover:underline font-medium">
+                community designs →
+              </Link>
             </p>
           </div>
         </div>

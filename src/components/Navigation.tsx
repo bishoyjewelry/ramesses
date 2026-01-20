@@ -50,6 +50,7 @@ export const Navigation = () => {
     { to: "/custom", label: "Custom Jewelry" },
     { to: "/engagement-rings", label: "Engagement Rings" },
     { to: "/repairs", label: "Repairs" },
+    { to: "/creator-marketplace", label: "Inspiration Gallery" },
     { to: "/contact", label: "Contact" },
   ];
 
