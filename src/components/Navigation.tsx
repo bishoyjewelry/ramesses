@@ -49,12 +49,12 @@ export const Navigation = () => {
   const navLinks = [
     { to: "/custom", label: "Custom Jewelry" },
     { to: "/engagement-rings", label: "Engagement Rings" },
+    { to: "/design-gallery", label: "Design Gallery" },
     { to: "/repairs", label: "Repairs" },
-    { to: "/creator-marketplace", label: "Inspiration Gallery" },
     { to: "/contact", label: "Contact" },
   ];
 
-  const isShopActive = location.pathname === '/shop' || location.pathname === '/creator-marketplace';
+  const isShopActive = location.pathname === '/shop' || location.pathname === '/design-gallery';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-area-top ${
@@ -136,12 +136,12 @@ export const Navigation = () => {
                       Our Collection
                     </Link>
                     <Link
-                      to="/creator-marketplace"
+                      to="/design-gallery"
                       className="block px-4 py-2.5 text-sm transition-colors hover:bg-muted/50"
                       onClick={() => setShopDropdownOpen(false)}
                     >
-                      <span className="font-medium text-muted-foreground hover:text-foreground">Community Designs</span>
-                      <span className="block text-xs text-primary mt-0.5">Earn commission</span>
+                      <span className="font-medium text-muted-foreground hover:text-foreground">Design Gallery</span>
+                      <span className="block text-xs text-primary mt-0.5">Ready to order</span>
                     </Link>
                   </div>
                 </div>
@@ -232,16 +232,16 @@ export const Navigation = () => {
                 Our Collection
               </Link>
               <Link
-                to="/creator-marketplace"
+                to="/design-gallery"
                 className={`px-6 py-3 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center justify-between ${
-                  location.pathname === '/creator-marketplace' 
+                  location.pathname === '/design-gallery' 
                     ? 'text-foreground bg-muted/50' 
                     : 'text-muted-foreground'
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                <span>Community Designs</span>
-                <span className="text-xs text-primary">Earn commission</span>
+                <span>Design Gallery</span>
+                <span className="text-xs text-primary">Ready to order</span>
               </Link>
 
               {/* Track Repair - Mobile */}

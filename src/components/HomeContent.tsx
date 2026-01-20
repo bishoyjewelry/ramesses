@@ -80,14 +80,21 @@ export const HomeContent = () => {
               <p className="text-muted-foreground text-base leading-relaxed mb-8">
                 Nationwide service, fully insured, handled in NYC.
               </p>
-              <Link to="/repairs" onClick={() => window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-            })} className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide
-                  hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                  active:scale-[0.98] active:shadow-sm transition-all duration-150">
-                Start Repairs
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link to="/repairs" onClick={() => window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              })} className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150">
+                  Start Repairs
+                </Link>
+                <Link to="/repairs" className="inline-block border border-primary text-primary font-medium px-7 py-3.5 text-sm tracking-wide text-center
+                    hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
+                    active:scale-[0.98] active:shadow-sm transition-all duration-150">
+                  View Services & Pricing
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -146,15 +153,15 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      {/* ==================== INSPIRATION GALLERY PREVIEW ==================== */}
+      {/* ==================== DESIGN GALLERY PREVIEW ==================== */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 font-normal tracking-tight leading-tight">
-              Inspiration Gallery
+              Design Gallery
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Browse stunning designs from our community. Order as-is or customize to make it uniquely yours.
+              Stunning designs ready to be crafted. Order as shown or customize to make it yours.
             </p>
           </div>
           
@@ -163,7 +170,7 @@ export const HomeContent = () => {
             {featuredDesigns.map((design) => (
               <Link
                 key={design.id}
-                to="/creator-marketplace"
+                to="/design-gallery"
                 className="group block"
               >
                 <div className="aspect-square overflow-hidden bg-secondary/30 border border-border/30 mb-3">
@@ -185,12 +192,12 @@ export const HomeContent = () => {
           
           <div className="text-center">
             <Link 
-              to="/creator-marketplace"
+              to="/design-gallery"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium px-8 py-3.5 text-sm tracking-wide
                 hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
                 active:scale-[0.98] active:shadow-sm transition-all duration-150"
             >
-              Explore All Designs
+              View All Designs
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -225,25 +232,6 @@ export const HomeContent = () => {
               <CarouselPrevious className="left-0 sm:-left-8 bg-background/80 hover:bg-background border-border/40" />
               <CarouselNext className="right-0 sm:-right-8 bg-background/80 hover:bg-background border-border/40" />
             </Carousel>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== CREATOR MARKETPLACE ==================== */}
-      <section className="py-16 md:py-24 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto text-center">
-            <h2 className="font-display text-xl md:text-2xl text-foreground mb-4 font-normal tracking-tight leading-tight">
-              Creator Marketplace
-            </h2>
-            <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md mx-auto">
-              Designs from the Ramesses community — order as-is or customize further.
-            </p>
-            <Link to="/creator-marketplace" className="inline-block bg-primary text-primary-foreground font-medium px-7 py-3 text-sm tracking-wide
-                hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
-                active:scale-[0.98] active:shadow-sm transition-all duration-150">
-              Explore the Marketplace
-            </Link>
           </div>
         </div>
       </section>

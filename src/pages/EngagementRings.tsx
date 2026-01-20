@@ -313,9 +313,20 @@ export default function EngagementRings() {
             <p className="text-lg text-muted-foreground mb-4 max-w-2xl mx-auto">
               Start with rough ideas — we'll help you refine them. No design experience needed.
             </p>
-            <p className="text-sm text-muted-foreground/70 mb-8 max-w-xl mx-auto">
+            <p className="text-sm text-muted-foreground/70 mb-4 max-w-xl mx-auto">
               Every inspiration you create is saved to your account. Come back anytime to continue.
             </p>
+            
+            {user && (
+              <p className="text-sm text-muted-foreground/70 mb-8 max-w-xl mx-auto">
+                <Link to="/my-designs" className="text-primary hover:underline">
+                  View your saved designs →
+                </Link>
+              </p>
+            )}
+            {!user && (
+              <p className="text-sm text-muted-foreground/70 mb-8 max-w-xl mx-auto">&nbsp;</p>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
