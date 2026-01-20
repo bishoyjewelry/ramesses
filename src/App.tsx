@@ -73,6 +73,7 @@ const App = () => (
             <Route path="/design/:id" element={<Suspense fallback={<PageLoader />}><DesignView /></Suspense>} />
             <Route path="/track-repair" element={<Suspense fallback={<PageLoader />}><TrackRepair /></Suspense>} />
             <Route path="/reset-password" element={<Suspense fallback={<PageLoader />}><ResetPassword /></Suspense>} />
+            <Route path="/design-gallery" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
             <Route path="/creator-marketplace" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
             <Route path="/shipping" element={<Suspense fallback={<PageLoader />}><Shipping /></Suspense>} />
             <Route path="/privacy" element={<Suspense fallback={<PageLoader />}><Privacy /></Suspense>} />

@@ -611,12 +611,26 @@ const Custom = () => {
             <p className="text-sm text-luxury-text-muted/70 mb-2 max-w-2xl mx-auto font-body px-2">
               Every inspiration you create is saved to your account. Come back anytime to continue or refine.
             </p>
-            <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+            <p className="text-sm text-luxury-text-muted/70 mb-4 max-w-2xl mx-auto font-body px-2">
               Or get inspired by{' '}
-              <Link to="/creator-marketplace" className="text-luxury-champagne hover:underline font-medium">
+              <Link to="/design-gallery" className="text-luxury-champagne hover:underline font-medium">
                 community designs →
               </Link>
             </p>
+            
+            {user && (
+              <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+                Have saved designs?{' '}
+                <Link to="/my-designs" className="text-luxury-champagne hover:underline font-medium">
+                  View My Designs →
+                </Link>
+              </p>
+            )}
+            {!user && (
+              <p className="text-sm text-luxury-text-muted/70 mb-8 sm:mb-12 max-w-2xl mx-auto font-body px-2">
+                &nbsp;
+              </p>
+            )}
           </div>
         </div>
       </section>
