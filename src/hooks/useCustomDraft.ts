@@ -95,11 +95,11 @@ export function useCustomDraft() {
         const parsed: CustomDraft = JSON.parse(stored);
         
         // Check if draft has meaningful data (not just empty defaults)
+        // Only show restore banner for meaningful progress
         const hasContent = 
-          parsed.activeFlow !== null ||
           parsed.concepts.length > 0 ||
-          parsed.generalForm.pieceType !== "" ||
-          parsed.engagementForm.style !== "";
+          (parsed.generalForm.description && parsed.generalForm.description.length > 20) ||
+          (parsed.engagementForm.specialRequests && parsed.engagementForm.specialRequests.length > 20);
 
         if (hasContent) {
           setDraftData(parsed);

@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { ArrowRight } from "lucide-react";
 import bannerPendant from "@/assets/banner-pendant.png";
 import bannerRing from "@/assets/banner-ring.png";
 import masterJeweler from "@/assets/master-jeweler.jpg";
+
+// Featured community designs for Inspiration Gallery preview
+const featuredDesigns = [
+  { id: 1, image: bannerRing, title: "Vintage Emerald Ring", creator: "Sarah M." },
+  { id: 2, image: bannerPendant, title: "Sapphire Halo Pendant", creator: "Michael T." },
+  { id: 3, image: bannerRing, title: "Art Deco Diamond Ring", creator: "Jennifer L." },
+];
 
 // Placeholder creations - replace with dynamic data later
 const customCreations = [{
@@ -138,8 +146,59 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      {/* ==================== TESTIMONIALS ==================== */}
+      {/* ==================== INSPIRATION GALLERY PREVIEW ==================== */}
       <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 font-normal tracking-tight leading-tight">
+              Inspiration Gallery
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Browse stunning designs from our community. Order as-is or customize to make it uniquely yours.
+            </p>
+          </div>
+          
+          {/* Featured Design Grid */}
+          <div className="grid md:grid-cols-3 gap-6 mb-10 max-w-4xl mx-auto">
+            {featuredDesigns.map((design) => (
+              <Link
+                key={design.id}
+                to="/creator-marketplace"
+                className="group block"
+              >
+                <div className="aspect-square overflow-hidden bg-secondary/30 border border-border/30 mb-3">
+                  <img 
+                    src={design.image} 
+                    alt={design.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                  />
+                </div>
+                <h3 className="text-foreground font-medium text-sm group-hover:text-primary transition-colors">
+                  {design.title}
+                </h3>
+                <p className="text-muted-foreground text-xs">
+                  by {design.creator}
+                </p>
+              </Link>
+            ))}
+          </div>
+          
+          <div className="text-center">
+            <Link 
+              to="/creator-marketplace"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium px-8 py-3.5 text-sm tracking-wide
+                hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
+                active:scale-[0.98] active:shadow-sm transition-all duration-150"
+            >
+              Explore All Designs
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== TESTIMONIALS ==================== */}
+      <section className="py-16 md:py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <Carousel opts={{
