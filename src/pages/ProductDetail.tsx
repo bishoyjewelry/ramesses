@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Minus, Plus, Truck, Shield, Package, ChevronDown, Loader2, ShoppingCart } from "lucide-react";
+import DOMPurify from "dompurify";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
@@ -180,12 +181,17 @@ const ProductDetail = () => {
                 <span className="text-base font-normal text-muted-foreground ml-2">{product.currency}</span>
               </p>
 
-              {/* Description */}
+              {/* Description - sanitized to prevent XSS */}
               <div className="py-4 border-t border-b border-border">
                 {product.descriptionHtml ? (
                   <div 
                     className="prose prose-sm max-w-none text-muted-foreground [&>p]:text-muted-foreground"
-                    dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                    dangerouslySetInnerHTML={{ 
+                      __html: DOMPurify.sanitize(product.descriptionHtml, {
+                        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'h1', 'h2', 'h3', 'span', 'div'],
+                        ALLOWED_ATTR: ['href', 'target', 'rel', 'class']
+                      })
+                    }}
                   />
                 ) : product.description ? (
                   <p className="text-muted-foreground leading-relaxed">
