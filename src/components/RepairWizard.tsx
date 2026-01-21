@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { validateImageFiles } from "@/lib/fileValidation";
 
 // Types
 type FulfillmentMethod = "mail_in" | "drop_off" | "courier";
@@ -153,7 +154,7 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
     }));
   };
 
-  // Handle image upload
+  // Handle image upload with validation
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
@@ -161,7 +162,15 @@ export const RepairWizard = ({ preselectedRepair, notSureMode }: RepairWizardPro
         toast.error("Maximum 6 images allowed");
         return;
       }
-      setUploadedImages((prev) => [...prev, ...files]);
+      
+      // Validate file types
+      const { validFiles, errors } = validateImageFiles(files);
+      if (errors.length > 0) {
+        toast.error("Only JPG, PNG, WebP, and GIF images are allowed");
+        return;
+      }
+      
+      setUploadedImages((prev) => [...prev, ...validFiles]);
     }
   };
 

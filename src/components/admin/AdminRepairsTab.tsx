@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { validateImageFiles } from "@/lib/fileValidation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -255,11 +256,20 @@ export const AdminRepairsTab = () => {
     const files = event.target.files;
     if (!files || files.length === 0 || !selectedRepair) return;
     
+    // Validate file types before upload
+    const fileArray = Array.from(files);
+    const { validFiles, errors } = validateImageFiles(fileArray);
+    if (errors.length > 0) {
+      toast.error("Only JPG, PNG, WebP, and GIF images are allowed");
+      return;
+    }
+    if (validFiles.length === 0) return;
+    
     setUploadingImages(true);
     const newUrls: string[] = [];
     
     try {
-      for (const file of Array.from(files)) {
+      for (const file of validFiles) {
         const fileExt = file.name.split('.').pop();
         const fileName = `${selectedRepair.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         

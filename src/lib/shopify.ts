@@ -4,7 +4,9 @@ import { CartItem } from "@/stores/cartStore";
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STORE_PERMANENT_DOMAIN = '0hag3q-aj.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = 'bb0592ff0748bc68d990af6e09cf37ff';
+// Shopify Storefront tokens are designed for client-side use (read-only, rate-limited)
+// Using env variable for easier rotation and environment-specific configuration
+const SHOPIFY_STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || 'bb0592ff0748bc68d990af6e09cf37ff';
 
 export async function storefrontApiRequest(query: string, variables: any = {}) {
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {

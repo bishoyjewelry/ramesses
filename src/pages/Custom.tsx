@@ -18,6 +18,7 @@ import { ConceptRefinement } from "@/components/ConceptRefinement";
 import { useAuth } from "@/hooks/useAuth";
 import { useCustomDraft, CustomDraft } from "@/hooks/useCustomDraft";
 import { supabase } from "@/integrations/supabase/client";
+import { validateImageFiles } from "@/lib/fileValidation";
 import { 
   Upload, Sparkles, Gem, Heart, ArrowRight, CheckCircle2, MessageCircle, 
   Palette, FileCheck, Package, Loader2, Wand2, ImagePlus, HelpCircle, Camera, Phone, Clock
@@ -260,7 +261,15 @@ const Custom = () => {
         toast.error("Maximum 6 images allowed");
         return;
       }
-      setUploadedImages(prev => [...prev, ...files]);
+      
+      // Validate file types
+      const { validFiles, errors } = validateImageFiles(files);
+      if (errors.length > 0) {
+        toast.error("Only JPG, PNG, WebP, and GIF images are allowed");
+        return;
+      }
+      
+      setUploadedImages(prev => [...prev, ...validFiles]);
     }
   };
 
