@@ -125,6 +125,9 @@ const Custom = () => {
   const inspirationName = searchParams.get('name');
   const inspirationPrice = searchParams.get('price');
   
+  // Check if we have a complete inspiration
+  const hasInspiration = !!(inspirationId && inspirationImage && inspirationName);
+  
   // Draft management
   const {
     showRestoreBanner,
@@ -627,11 +630,17 @@ const Custom = () => {
             </div>
             
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif luxury-heading text-luxury-text mb-4 sm:mb-6 leading-tight px-2">
-              Start Your Custom Jewelry Project
+              {hasInspiration 
+                ? `Customize Your Design`
+                : 'Start Your Custom Jewelry Project'
+              }
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl text-luxury-text-muted mb-3 max-w-3xl mx-auto leading-relaxed font-body px-2">
-              Start with rough ideas — we'll help you shape them. No design experience required.
+              {hasInspiration
+                ? "Tell us how you'd like to modify this design. Our master jewelers will bring your vision to life."
+                : "Start with rough ideas — we'll help you shape them. No design experience required."
+              }
             </p>
             <p className="text-sm text-luxury-text-muted/70 mb-2 max-w-2xl mx-auto font-body px-2">
               Every inspiration you create is saved to your account. Come back anytime to continue or refine.
@@ -659,6 +668,41 @@ const Custom = () => {
           </div>
         </div>
       </section>
+
+      {/* INSPIRATION BANNER - Shown when coming from Design Gallery */}
+      {hasInspiration && (
+        <section className="py-6 sm:py-8 bg-luxury-bg">
+          <div className="container mx-auto px-4">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-luxury-champagne/10 border border-luxury-champagne/30 rounded-xl p-5 sm:p-6 shadow-sm">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <img 
+                    src={decodeURIComponent(inspirationImage!)} 
+                    alt={decodeURIComponent(inspirationName!)} 
+                    className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-lg shadow-md ring-2 ring-luxury-champagne/40 flex-shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs uppercase tracking-wider text-luxury-champagne font-medium mb-1">
+                      Your Starting Point
+                    </p>
+                    <h3 className="text-lg sm:text-xl font-serif text-luxury-text truncate">
+                      {decodeURIComponent(inspirationName!)}
+                    </h3>
+                    {inspirationPrice && (
+                      <p className="text-luxury-champagne font-semibold mt-1">
+                        Starting at ${parseInt(inspirationPrice).toLocaleString()}
+                      </p>
+                    )}
+                    <p className="text-sm text-luxury-text-muted mt-2 hidden sm:block">
+                      Describe the changes you'd like below
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SELECTION CARDS */}
       <section className="py-8 sm:py-12 bg-luxury-bg">
