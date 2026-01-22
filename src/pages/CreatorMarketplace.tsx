@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/Navigation";
 import { ShippingBanner } from "@/components/ShippingBanner";
@@ -8,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DesignOrderModal } from "@/components/DesignOrderModal";
+import { CustomizeDesignModal } from "@/components/CustomizeDesignModal";
 import { Clock, Truck } from "lucide-react";
 import bannerRing from "@/assets/banner-ring.png";
 import bannerPendant from "@/assets/banner-pendant.png";
@@ -99,6 +99,8 @@ const getStartingPrice = (title: string): number => {
 const CreatorMarketplace = () => {
   const [selectedDesign, setSelectedDesign] = useState<(DesignWithCreator & { startingPrice: number }) | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
+  const [selectedDesignForCustomize, setSelectedDesignForCustomize] = useState<(DesignWithCreator & { startingPrice: number }) | null>(null);
 
   const { data: designs, isLoading } = useQuery({
     queryKey: ["marketplace-designs"],
@@ -131,6 +133,11 @@ const CreatorMarketplace = () => {
   const handleOrderClick = (design: DesignWithCreator & { startingPrice: number }) => {
     setSelectedDesign(design);
     setIsOrderModalOpen(true);
+  };
+
+  const handleCustomizeClick = (design: DesignWithCreator & { startingPrice: number }) => {
+    setSelectedDesignForCustomize(design);
+    setIsCustomizeModalOpen(true);
   };
 
   return (
@@ -212,18 +219,14 @@ const CreatorMarketplace = () => {
                       >
                         Order This Design
                       </Button>
-                      <Link 
-                        to={`/custom?inspiration=${design.slug}&image=${encodeURIComponent(design.main_image_url)}&name=${encodeURIComponent(design.title)}&price=${design.startingPrice}`} 
-                        className="flex-1"
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleCustomizeClick(design)}
+                        className="flex-1 border-primary text-primary hover:bg-primary/5 rounded-sm text-xs tracking-widest uppercase"
                       >
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="w-full border-primary text-primary hover:bg-primary/5 rounded-sm text-xs tracking-widest uppercase"
-                        >
-                          Customize
-                        </Button>
-                      </Link>
+                        Customize
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -276,6 +279,16 @@ const CreatorMarketplace = () => {
           }}
         />
       )}
+
+      {/* Customize Modal */}
+      <CustomizeDesignModal
+        design={selectedDesignForCustomize}
+        isOpen={isCustomizeModalOpen}
+        onClose={() => {
+          setIsCustomizeModalOpen(false);
+          setSelectedDesignForCustomize(null);
+        }}
+      />
 
       <Footer />
     </div>
