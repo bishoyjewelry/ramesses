@@ -119,6 +119,12 @@ const Custom = () => {
   const modeParam = searchParams.get('mode');
   const styleParam = searchParams.get('style');
   
+  // Inspiration from Design Gallery
+  const inspirationId = searchParams.get('inspiration');
+  const inspirationImage = searchParams.get('image');
+  const inspirationName = searchParams.get('name');
+  const inspirationPrice = searchParams.get('price');
+  
   // Draft management
   const {
     showRestoreBanner,
@@ -163,13 +169,23 @@ const Custom = () => {
   });
   const [isSubmittingDirect, setIsSubmittingDirect] = useState(false);
   
-  // General jewelry form state
-  const [generalForm, setGeneralForm] = useState(DEFAULT_GENERAL_FORM);
+  // General jewelry form state - pre-fill description if coming from inspiration
+  const initialDescription = inspirationName 
+    ? `I'd like a design similar to "${decodeURIComponent(inspirationName)}" with the following changes: `
+    : "";
   
-  // Engagement ring form state
+  const [generalForm, setGeneralForm] = useState({
+    ...DEFAULT_GENERAL_FORM,
+    description: initialDescription,
+  });
+  
+  // Engagement ring form state - pre-fill specialRequests if coming from inspiration
   const [engagementForm, setEngagementForm] = useState({
     ...DEFAULT_ENGAGEMENT_FORM,
     style: styleParam || "",
+    specialRequests: inspirationName 
+      ? `Starting from "${decodeURIComponent(inspirationName)}" design. ` 
+      : "",
   });
   
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
@@ -846,6 +862,33 @@ const Custom = () => {
                     </h2>
                     <p className="text-luxury-text-muted text-sm sm:text-base">Select your preferences below.</p>
                   </div>
+                  
+                  {/* Inspiration Banner - shown when coming from Design Gallery */}
+                  {inspirationImage && (
+                    <div className="mb-8 p-4 bg-primary/5 rounded-lg border border-primary/20">
+                      <p className="text-sm text-primary font-medium mb-3">Starting from this design:</p>
+                      <div className="flex items-center gap-4">
+                        <img 
+                          src={decodeURIComponent(inspirationImage)} 
+                          alt={inspirationName ? decodeURIComponent(inspirationName) : 'Inspiration'} 
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                        <div>
+                          <p className="font-serif font-medium text-foreground">
+                            {inspirationName ? decodeURIComponent(inspirationName) : 'Gallery Design'}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Customize this design to make it uniquely yours
+                          </p>
+                          {inspirationPrice && (
+                            <p className="text-sm text-primary mt-1">
+                              Starting at ${parseInt(inspirationPrice).toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   
                   <form onSubmit={(e) => { e.preventDefault(); handleGenerateConcepts(); }} className="space-y-8">
                     {activeFlow === "general" ? (

@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import { ShippingBanner } from "@/components/ShippingBanner";
 import { Hero } from "@/components/Hero";
 import { HomeContent } from "@/components/HomeContent";
 import { Footer } from "@/components/Footer";
@@ -6,12 +7,12 @@ import { Footer } from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Free Shipping Banner */}
-      <div className="bg-foreground text-background text-center py-2 text-sm">
-        <span className="text-primary">✦</span> Free Insured Shipping on All Orders <span className="text-primary">✦</span>
+      {/* Sticky header container with banner + navigation */}
+      <div className="sticky top-0 z-50">
+        <ShippingBanner />
+        <Navigation />
       </div>
       
-      <Navigation />
       <main>
         <Hero />
         <HomeContent />
