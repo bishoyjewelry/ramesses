@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navigation } from "@/components/Navigation";
+import { ShippingBanner } from "@/components/ShippingBanner";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DesignOrderModal } from "@/components/DesignOrderModal";
 import { Clock, Truck } from "lucide-react";
 import bannerRing from "@/assets/banner-ring.png";
 import bannerPendant from "@/assets/banner-pendant.png";
@@ -94,6 +97,9 @@ const getStartingPrice = (title: string): number => {
 };
 
 const CreatorMarketplace = () => {
+  const [selectedDesign, setSelectedDesign] = useState<(DesignWithCreator & { startingPrice: number }) | null>(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
   const { data: designs, isLoading } = useQuery({
     queryKey: ["marketplace-designs"],
     queryFn: async () => {
@@ -122,19 +128,21 @@ const CreatorMarketplace = () => {
     ? designs.map(d => ({ ...d, startingPrice: getStartingPrice(d.title) }))
     : curatedDesigns;
 
+  const handleOrderClick = (design: DesignWithCreator & { startingPrice: number }) => {
+    setSelectedDesign(design);
+    setIsOrderModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Free Shipping Banner */}
-      <div className="bg-foreground text-background text-center py-2 text-sm fixed top-0 left-0 right-0 z-[60]">
-        <span className="text-primary">✦</span> Free Insured Shipping on All Orders <span className="text-primary">✦</span>
-      </div>
-
-      <div className="pt-8">
+      {/* Sticky header container with banner + navigation */}
+      <div className="sticky top-0 z-50">
+        <ShippingBanner />
         <Navigation />
       </div>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 sm:pt-40 sm:pb-20">
+      <section className="pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground mb-6">
@@ -197,15 +205,17 @@ const CreatorMarketplace = () => {
 
                     {/* Action Buttons */}
                     <div className="flex gap-3 pt-3">
-                      <Link to={`/contact?design=${design.slug}`} className="flex-1">
-                        <Button
-                          size="sm"
-                          className="w-full bg-primary text-primary-foreground hover:bg-[hsl(var(--color-gold-hover))] rounded-sm text-xs tracking-widest uppercase"
-                        >
-                          Order This Design
-                        </Button>
-                      </Link>
-                      <Link to={`/custom?inspiration=${design.slug}`} className="flex-1">
+                      <Button
+                        size="sm"
+                        onClick={() => handleOrderClick(design)}
+                        className="flex-1 bg-primary text-primary-foreground hover:bg-[hsl(var(--color-gold-hover))] rounded-sm text-xs tracking-widest uppercase"
+                      >
+                        Order This Design
+                      </Button>
+                      <Link 
+                        to={`/custom?inspiration=${design.slug}&image=${encodeURIComponent(design.main_image_url)}&name=${encodeURIComponent(design.title)}&price=${design.startingPrice}`} 
+                        className="flex-1"
+                      >
                         <Button
                           size="sm"
                           variant="outline"
@@ -254,6 +264,18 @@ const CreatorMarketplace = () => {
           </div>
         </div>
       </section>
+
+      {/* Order Modal */}
+      {selectedDesign && (
+        <DesignOrderModal
+          design={selectedDesign}
+          isOpen={isOrderModalOpen}
+          onClose={() => {
+            setIsOrderModalOpen(false);
+            setSelectedDesign(null);
+          }}
+        />
+      )}
 
       <Footer />
     </div>
