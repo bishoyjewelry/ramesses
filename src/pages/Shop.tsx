@@ -26,7 +26,12 @@ const Shop = () => {
           const title = product.node.title.toLowerCase();
           
           // Exclude if title contains repair-related keywords
-          const repairKeywords = ['sizing', 'soldering', 'unsoldering', 'repair', 'polish', 'rhodium', 'prong', 'clasp', 'chain repair'];
+          const repairKeywords = [
+            'sizing', 'reshaping', 'soldering', 'unsoldering', 
+            'repair', 'polish', 'rhodium', 'prong', 'engraving',
+            'lengthening', 'shortening', 'restringing', 'clasp',
+            'refinish', 'cleaning', 'inspection', 'chain repair'
+          ];
           const isRepair = repairKeywords.some(keyword => title.includes(keyword));
           
           return !isRepair;
