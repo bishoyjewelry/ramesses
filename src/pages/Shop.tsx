@@ -24,17 +24,14 @@ const Shop = () => {
         // Filter out repair services - only show jewelry products
         const jewelryProducts = data.filter((product: ShopifyProduct) => {
           const title = product.node.title.toLowerCase();
-          
-          // Exclude if title contains repair-related keywords
           const repairKeywords = [
-            'sizing', 'reshaping', 'soldering', 'unsoldering', 
-            'repair', 'polish', 'rhodium', 'prong', 'engraving',
-            'lengthening', 'shortening', 'restringing', 'clasp',
-            'refinish', 'cleaning', 'inspection', 'chain repair'
+            'sizing', 'reshaping', 'soldering', 'prong', 'refinish', 'rhodium',
+            'lengthening', 'shortening', 'restringing', 'clasp', 'repair',
+            'watch', 'battery', 'crystal', 'stem', 'crown', 'overhaul', 'pressure',
+            'engraving', 'cleaning', 'inspection', 'appraisal', 'conversion',
+            'polish', 'restoration', 'service', 'removal', 'replacement'
           ];
-          const isRepair = repairKeywords.some(keyword => title.includes(keyword));
-          
-          return !isRepair;
+          return !repairKeywords.some(keyword => title.includes(keyword));
         });
         
         setProducts(jewelryProducts);
