@@ -29,7 +29,8 @@ const Shop = () => {
             'lengthening', 'shortening', 'restringing', 'clasp', 'repair',
             'watch', 'battery', 'crystal', 'stem', 'crown', 'overhaul', 'pressure',
             'engraving', 'cleaning', 'inspection', 'appraisal', 'conversion',
-            'polish', 'restoration', 'service', 'removal', 'replacement'
+            'polish', 'restoration', 'service', 'removal', 'replacement',
+            'plating', 'electroplating', 'setting', 'tightening'
           ];
           return !repairKeywords.some(keyword => title.includes(keyword));
         });
