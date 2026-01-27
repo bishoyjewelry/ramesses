@@ -29,6 +29,7 @@ const MyDesigns = React.lazy(() => import("./pages/MyDesigns"));
 const DesignDetail = React.lazy(() => import("./pages/DesignDetail"));
 const DesignView = React.lazy(() => import("./pages/DesignView"));
 const CreatorMarketplace = React.lazy(() => import("./pages/CreatorMarketplace"));
+const OurWork = React.lazy(() => import("./pages/OurWork"));
 const TrackRepair = React.lazy(() => import("./pages/TrackRepair"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const Shipping = React.lazy(() => import("./pages/Shipping"));
@@ -73,6 +74,8 @@ const App = () => (
             <Route path="/design/:id" element={<Suspense fallback={<PageLoader />}><DesignView /></Suspense>} />
             <Route path="/track-repair" element={<Suspense fallback={<PageLoader />}><TrackRepair /></Suspense>} />
             <Route path="/reset-password" element={<Suspense fallback={<PageLoader />}><ResetPassword /></Suspense>} />
+            <Route path="/our-work" element={<Suspense fallback={<PageLoader />}><OurWork /></Suspense>} />
+            <Route path="/design-ideas" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
             <Route path="/design-gallery" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
             <Route path="/creator-marketplace" element={<Suspense fallback={<PageLoader />}><CreatorMarketplace /></Suspense>} />
             <Route path="/shipping" element={<Suspense fallback={<PageLoader />}><Shipping /></Suspense>} />
