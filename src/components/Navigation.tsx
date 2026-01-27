@@ -49,12 +49,13 @@ export const Navigation = () => {
   const navLinks = [
     { to: "/custom", label: "Custom Jewelry" },
     { to: "/engagement-rings", label: "Engagement Rings" },
-    { to: "/design-gallery", label: "Design Gallery" },
+    { to: "/our-work", label: "Our Work" },
+    { to: "/design-ideas", label: "Design Ideas" },
     { to: "/repairs", label: "Repairs" },
     { to: "/contact", label: "Contact" },
   ];
 
-  const isShopActive = location.pathname === '/shop' || location.pathname === '/design-gallery';
+  const isShopActive = location.pathname === '/shop' || location.pathname === '/design-ideas';
 
   return (
     <header className={`transition-all duration-300 ${
@@ -136,11 +137,11 @@ export const Navigation = () => {
                       Our Collection
                     </Link>
                     <Link
-                      to="/design-gallery"
+                      to="/design-ideas"
                       className="block px-4 py-2.5 text-sm transition-colors hover:bg-muted/50"
                       onClick={() => setShopDropdownOpen(false)}
                     >
-                      <span className="font-medium text-muted-foreground hover:text-foreground">Design Gallery</span>
+                      <span className="font-medium text-muted-foreground hover:text-foreground">Design Ideas</span>
                       <span className="block text-xs text-primary mt-0.5">Ready to order</span>
                     </Link>
                   </div>
@@ -232,15 +233,15 @@ export const Navigation = () => {
                 Our Collection
               </Link>
               <Link
-                to="/design-gallery"
+                to="/design-ideas"
                 className={`px-6 py-3 text-base font-medium transition-colors hover:bg-muted tap-target flex items-center justify-between ${
-                  location.pathname === '/design-gallery' 
+                  location.pathname === '/design-ideas' 
                     ? 'text-foreground bg-muted/50' 
                     : 'text-muted-foreground'
                 }`}
                 onClick={() => setIsOpen(false)}
               >
-                <span>Design Gallery</span>
+                <span>Design Ideas</span>
                 <span className="text-xs text-primary">Ready to order</span>
               </Link>
 

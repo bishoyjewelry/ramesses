@@ -31,17 +31,20 @@ export const Footer = () => {
 
           {/* Links - minimal horizontal layout */}
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-10 text-sm">
-            <Link to="/repairs" className="text-muted-foreground/60 hover:text-foreground transition-colors">
-              Repairs
-            </Link>
             <Link to="/custom" className="text-muted-foreground/60 hover:text-foreground transition-colors">
               Custom
             </Link>
+            <Link to="/our-work" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Our Work
+            </Link>
+            <Link to="/design-ideas" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Design Ideas
+            </Link>
+            <Link to="/repairs" className="text-muted-foreground/60 hover:text-foreground transition-colors">
+              Repairs
+            </Link>
             <Link to="/shop" className="text-muted-foreground/60 hover:text-foreground transition-colors">
               Shop
-            </Link>
-            <Link to="/design-gallery" className="text-muted-foreground/60 hover:text-foreground transition-colors">
-              Design Gallery
             </Link>
             <Link to="/contact" className="text-muted-foreground/60 hover:text-foreground transition-colors">
               Contact

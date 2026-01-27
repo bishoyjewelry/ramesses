@@ -39,7 +39,7 @@ export const Hero = () => {
                   Start Your Design
                 </Button>
               </Link>
-              <Link to="/design-gallery">
+              <Link to="/design-ideas">
                 <Button 
                   variant="outline" 
                   size="lg"

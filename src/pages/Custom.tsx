@@ -647,7 +647,7 @@ const Custom = () => {
             </p>
             <p className="text-sm text-luxury-text-muted/70 mb-4 max-w-2xl mx-auto font-body px-2">
               Or get inspired by{' '}
-              <Link to="/design-gallery" className="text-luxury-champagne hover:underline font-medium">
+              <Link to="/design-ideas" className="text-luxury-champagne hover:underline font-medium">
                 community designs →
               </Link>
             </p>

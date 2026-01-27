@@ -153,10 +153,10 @@ const CreatorMarketplace = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground mb-6">
-              Design Gallery
+              Design Ideas
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground/80 leading-relaxed max-w-2xl mx-auto">
-              Stunning designs ready to be crafted. Order as shown or customize to make it uniquely yours.
+              Get inspired by these designs. Order as shown or customize to make it uniquely yours.
             </p>
           </div>
         </div>

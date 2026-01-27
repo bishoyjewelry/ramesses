@@ -153,12 +153,12 @@ export const HomeContent = () => {
         </div>
       </section>
 
-      {/* ==================== DESIGN GALLERY PREVIEW ==================== */}
+      {/* ==================== DESIGN IDEAS PREVIEW ==================== */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 font-normal tracking-tight leading-tight">
-              Design Gallery
+              Design Ideas
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Stunning designs ready to be crafted. Order as shown or customize to make it yours.
@@ -170,7 +170,7 @@ export const HomeContent = () => {
             {featuredDesigns.map((design) => (
               <Link
                 key={design.id}
-                to="/design-gallery"
+                to="/design-ideas"
                 className="group block"
               >
                 <div className="aspect-square overflow-hidden bg-secondary/30 border border-border/30 mb-3">
@@ -192,7 +192,7 @@ export const HomeContent = () => {
           
           <div className="text-center">
             <Link 
-              to="/design-gallery"
+              to="/design-ideas"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium px-8 py-3.5 text-sm tracking-wide
                 hover:bg-[hsl(var(--color-gold-hover))] focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background
                 active:scale-[0.98] active:shadow-sm transition-all duration-150"
